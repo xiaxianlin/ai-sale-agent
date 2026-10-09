@@ -1,0 +1,51 @@
+# 知识产权归甲方所有（COM-IP-01）
+# NFR-SEC-06 数据不出域——出网白名单防火墙模板（iptables 形态，默认 DROP）
+#
+# 依据：docs/07-实现方案/NFR/SR-NFR-SEC-06-数据不出域.md §6.1、
+#      docs/02-设计文档/06-安全与合规设计.md §6
+#
+# 同源逻辑（决策 D2）：本文件的放行条目与代码层出域白名单引擎
+# platform/core/net/egress.py（EgressGuard 目的地注册表：host/port/用途/负责人）
+# 逐条对应——「新增/变更出域目的地」必须双侧同步修改并走 docs/06-变更管理/ 变更流程，
+# 任何单侧修改视为配置漂移（月度审计报表的对账项，见 platform/core/net/report.py 第四节）。
+#
+# 使用方式：本文件为模板（<...> 为部署占位符，域名解析出的 CIDR 在部署评审时固化）。
+# 应用与验证步骤见同目录 README.md；阿里云安全组出方向规则与本文同源生成
+# （安全组无 LOG 能力，违规检测证据以宿主机 iptables 的 EGRESS-DROP 日志为准）。
+#
+# ⚠ 生效前提：deepseek_api 条目仅在 OI-09 数据边界评估获甲方确认（confirmed）后方可应用，
+#   与 EgressGuard 侧 status=enabled 的唯一放行途径一致（SR §6.4）；未确认阶段整条注释保留。
+
+### 0. 基线：出方向默认 DROP（fail-closed，白名单外一律拒绝——与 EgressGuard 未注册即拒同语义）
+iptables -P OUTPUT DROP
+# 已建立连接的回包放行（否则 established 流量被误杀）
+iptables -A OUTPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
+
+### 1. 内网放行（PG / Milvus / Redis / TEI 均内网互通，Embedding 数据不出内网）
+iptables -A OUTPUT -d <内网网段>/16 -j ACCEPT
+# 内网 DNS（仅放行内网解析器，禁止绕行公网 DoH）
+iptables -A OUTPUT -p udp --dport 53 -d <内网DNS> -j ACCEPT
+
+### 2. 出域白名单目的地（与 EgressGuard 注册表逐条同源；每条带 code 注释供对账）
+# [deepseek_api] DeepSeek-V3 API｜用途：LLM 调用（已脱敏文本+知识片段）｜负责人：AI 平台组｜OI-09 confirmed 后启用
+iptables -A OUTPUT -p tcp -d <api.deepseek.com 解析CIDR> --dport 443 -m comment --comment "deepseek_api" -j ACCEPT
+# [aliyun_oss] 阿里云 OSS｜用途：素材归档/备份/确认件（加密归档）｜负责人：应用组｜已定（06 §6）
+iptables -A OUTPUT -p tcp -d <oss 区域CIDR> --dport 443 -m comment --comment "aliyun_oss" -j ACCEPT
+# [dingtalk] 钉钉开放平台｜用途：告警通知（不含客户 PII）｜负责人：应用组
+iptables -A OUTPUT -p tcp -d <oapi.dingtalk.com 解析CIDR> --dport 443 -m comment --comment "dingtalk" -j ACCEPT
+# [wechat] 企业微信 API｜用途：告警通知（不含客户 PII）｜负责人：应用组
+iptables -A OUTPUT -p tcp -d <qyapi.weixin.qq.com 解析CIDR> --dport 443 -m comment --comment "wechat" -j ACCEPT
+# [smtp] 邮件服务商｜用途：业务邮件外发（收件人授权提供）｜负责人：应用组
+iptables -A OUTPUT -p tcp -d <smtp 服务商CIDR> --dport 465 -m comment --comment "smtp" -j ACCEPT
+# [proxy_provider] 住宅 IP 代理供应商｜用途：仅代理协议流量（不含业务载荷）｜负责人：运营组
+iptables -A OUTPUT -p tcp -d <代理供应商CIDR> --dport <代理端口> -m comment --comment "proxy_provider" -j ACCEPT
+
+### 3. 兜底：DROP 前记日志（EGRESS-DROP 为违规出域检测的证据源，接入 Loki → 告警引擎，SR §6.5）
+iptables -A OUTPUT -j LOG --log-prefix "EGRESS-DROP " --log-level 4
+iptables -A OUTPUT -j DROP
+
+### 4. Embedding 本地强制（第四道防护的第三层，SR §6.3 / SR-KB-013 §6.1）
+# TEI（BGE-M3）容器出网显式 DROP：向量化数据不出内网（FR-KB-013 硬约束）
+iptables -I DOCKER-USER -s <TEI容器网段> -j DROP
+# 应用层联动：egress 白名单不含任何 embedding 类目的地——即使代码断言被绕过，
+# OUTPUT 默认 DROP 也使外部 Embedding API 调用必然失败并产生 EGRESS-DROP 日志 → 告警
