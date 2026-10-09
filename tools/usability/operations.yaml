@@ -1,0 +1,102 @@
+# 知识产权归甲方所有（COM-IP-01）——AI 外贸销售智能体系统交付物，许可与再分发依双方合同约定。
+# ============================================================================
+# 运维操作 → API 声明清单（FR-KB-023「全部管理操作无需 SQL/命令行」的单一事实源，迭代 0.3）
+# ----------------------------------------------------------------------------
+# 用途：tools/usability/coverage_check.py 以 AST 提取 services/kb/api/ 实际路由，
+#       与本清单比对——声明了但无 API 支撑 → 报缺口（核对不通过）；有管理路由
+#       未在本清单登记 → 报漏洞（防新功能绕过登记走命令行兜底）。
+# 维护规则：新增/修改管理路由必须同步登记本清单（与代码同一提交）；
+#       字段：code 操作码 / name 操作名（界面用语）/ api 支撑端点 /
+#       steps 界面操作步数（≤3，SR-KB-023 §6.3）/ dangerous 危险级（false|true|high）。
+# 预置范围（迭代 0.3 已实现）：条目 CRUD/发布、批量导入、进度查询、错误报告下载、
+#       模板下载、版本列表/对比/回滚、评测触发与查询、看板统计、统一检索。
+# ============================================================================
+
+schema_version: 1
+
+operations:
+  - code: KB_ITEM_CREATE
+    name: 新建知识条目（保存草稿或直接发布）
+    api: POST /api/v1/knowledge/items
+    steps: 2
+    dangerous: false
+  - code: KB_ITEM_LIST
+    name: 知识条目列表检索与过滤
+    api: GET /api/v1/knowledge/items
+    steps: 2
+    dangerous: false
+  - code: KB_ITEM_DETAIL
+    name: 查看知识条目详情
+    api: GET /api/v1/knowledge/items/{uid}
+    steps: 2
+    dangerous: false
+  - code: KB_ITEM_UPDATE
+    name: 修改知识条目（发布/归档/恢复状态流转）
+    api: PUT /api/v1/knowledge/items/{uid}
+    steps: 3
+    dangerous: false
+  - code: KB_ITEM_DELETE
+    name: 删除知识条目（软删，30 天可恢复）
+    api: DELETE /api/v1/knowledge/items/{uid}
+    steps: 3
+    dangerous: high
+  - code: KB_SCHEMA_VIEW
+    name: 查看表单字段定义（六大库动态表单）
+    api: GET /api/v1/knowledge/schemas
+    steps: 1
+    dangerous: false
+  - code: KB_IMPORT_TEMPLATE
+    name: 下载批量导入模板
+    api: GET /api/v1/knowledge/import/template
+    steps: 2
+    dangerous: false
+  - code: KB_IMPORT_UPLOAD
+    name: 上传 Excel 批量导入
+    api: POST /api/v1/knowledge/import
+    steps: 3
+    dangerous: false
+  - code: KB_IMPORT_PROGRESS
+    name: 查询导入任务进度
+    api: GET /api/v1/knowledge/import/{job_id}
+    steps: 2
+    dangerous: false
+  - code: KB_IMPORT_ERROR_REPORT
+    name: 下载导入错误行报告
+    api: GET /api/v1/knowledge/import/{job_id}/errors
+    steps: 2
+    dangerous: false
+  - code: KB_VERSION_LIST
+    name: 查看条目版本历史
+    api: GET /api/v1/knowledge/items/{uid}/versions
+    steps: 2
+    dangerous: false
+  - code: KB_VERSION_DIFF
+    name: 对比两个版本差异
+    api: GET /api/v1/knowledge/items/{uid}/versions/{version_from}/diff/{version_to}
+    steps: 2
+    dangerous: false
+  - code: KB_VERSION_ROLLBACK
+    name: 回滚条目到指定版本
+    api: POST /api/v1/knowledge/items/{uid}/rollback
+    steps: 3
+    dangerous: high
+  - code: KB_EVAL_TRIGGER
+    name: 触发检索质量评测
+    api: POST /api/v1/knowledge/evaluate
+    steps: 2
+    dangerous: false
+  - code: KB_EVAL_QUERY
+    name: 查看评测结果与报告
+    api: GET /api/v1/knowledge/evaluate/{job_id}
+    steps: 2
+    dangerous: false
+  - code: KB_STATS_VIEW
+    name: 查看看板统计（条目数/状态分布/近 7 日变更）
+    api: GET /api/v1/admin/stats
+    steps: 1
+    dangerous: false
+  - code: KB_SEARCH_API
+    name: 统一知识检索（服务端 API，P1-P5 共用契约）
+    api: POST /api/v1/knowledge/search
+    steps: 1
+    dangerous: false
