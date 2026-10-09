@@ -1,0 +1,30 @@
+{
+  "name": "phase0_precheck_smoke",
+  "version": 1,
+  "status": "draft",
+  "cases": [
+    {"case_id": "P001", "query": "ST-3200 为壁挂式电视支架", "expected_chunk_ids": [1], "kb_type": "product"},
+    {"case_id": "P002", "query": "最大承载85kg", "expected_chunk_ids": [1], "kb_type": "product"},
+    {"case_id": "P003", "query": "电视支架产品手册 安装模板", "expected_chunk_ids": [1], "kb_type": "product"},
+    {"case_id": "P004", "query": "承载重量 最大负载", "expected_chunk_ids": [2], "kb_type": "product"},
+    {"case_id": "P005", "query": "安装孔距 600x400", "expected_chunk_ids": [2], "kb_type": "product"},
+    {"case_id": "P006", "query": "本体重量 含包装为七千克", "expected_chunk_ids": [2], "kb_type": "product"},
+    {"case_id": "P007", "query": "每箱两台 毛重十四千克", "expected_chunk_ids": [3], "kb_type": "product"},
+    {"case_id": "P008", "query": "出口唛头按订单印刷", "expected_chunk_ids": [3], "kb_type": "product"},
+    {"case_id": "P009", "query": "A 级客户为月采购超过五千件的核心经销商", "expected_chunk_ids": [4], "kb_type": "customer"},
+    {"case_id": "P010", "query": "偶发询盘客户 首单建议样品确认后再批量", "expected_chunk_ids": [4], "kb_type": "customer"},
+    {"case_id": "P011", "query": "新订单须预付定金", "expected_chunk_ids": [4], "kb_type": "customer"},
+    {"case_id": "P012", "query": "客户要求降价百分之十时 先确认目标数量再回应阶梯价格", "expected_chunk_ids": [5], "kb_type": "skill"},
+    {"case_id": "P013", "query": "让步必须换取对等条件", "expected_chunk_ids": [5], "kb_type": "skill"},
+    {"case_id": "P014", "query": "赠品策略 价格不动", "expected_chunk_ids": [5], "kb_type": "skill"},
+    {"case_id": "P015", "query": "报价单必须包含型号", "expected_chunk_ids": [6], "kb_type": "process"},
+    {"case_id": "P016", "query": "FOB 单价 最小起订量与有效期", "expected_chunk_ids": [6], "kb_type": "process"},
+    {"case_id": "P017", "query": "超出授权折扣范围时", "expected_chunk_ids": [6], "kb_type": "process"},
+    {"case_id": "P018", "query": "向欧洲经销商承诺十五天交货", "expected_chunk_ids": [7], "kb_type": "negative_case"},
+    {"case_id": "P019", "query": "错过本地销售旺季 转向竞品供应商下单", "expected_chunk_ids": [7], "kb_type": "negative_case"},
+    {"case_id": "P020", "query": "交期承诺必须走排产确认流程", "expected_chunk_ids": [7], "kb_type": "negative_case"},
+    {"case_id": "P021", "query": "支架产品线主打型号为 ST-3200", "expected_chunk_ids": [8], "kb_type": "training"},
+    {"case_id": "P022", "query": "云台产品线主打型号为 GP-100", "expected_chunk_ids": [8], "kb_type": "training"},
+    {"case_id": "P023", "query": "课后练习 明天晨会分享", "expected_chunk_ids": [8], "kb_type": "training"}
+  ]
+}
