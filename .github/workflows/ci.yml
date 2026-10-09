@@ -1,0 +1,23 @@
+# CI 六门禁（开发规范 §5）——迭代 0.1 起步版：测试/静态/注释头/许可证/密钥扫描
+name: ci
+on: [push, pull_request]
+jobs:
+  gates:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: pip install -e ".[dev]"
+      - name: 单元测试
+        run: python -m pytest
+      - name: 静态检查
+        run: ruff check platform services tools
+      - name: 注释头门禁（COM-IP-04）
+        run: python tools/ci_gates/check_headers.py platform services tools
+      - name: 开源许可证门禁（COM-IP-05）
+        run: python tools/ci_gates/license_gate.py
+      - name: 密钥扫描
+        run: python tools/ci_gates/scan_secrets.py
+      - name: 架构守护（NFR-SCA-01）
+        run: python tools/archguard/check_account_id.py
