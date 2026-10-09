@@ -158,7 +158,9 @@ def scan_directory(root: Path) -> list[str]:
     for path in sorted(root.rglob("*")):
         if not path.is_file() or path.suffix not in {".py", ".sql"}:
             continue
-        if any(part in {"__pycache__", ".venv", "node_modules"} for part in path.relative_to(root).parts):
+        if any(part in {"__pycache__", ".venv", "node_modules", "tests", "test"} for part in path.relative_to(root).parts):
+            # tests/ 目录豁免：测试夹具中的 tenant_id=1/account_id=0 为设计默认单值（03-数据库设计 §2），
+            # 魔数不变式（INV-2b）仅约束生产代码
             continue
         text = path.read_text(encoding="utf-8", errors="replace")
         warnings.extend(scan_ddl_text(text, str(path)))

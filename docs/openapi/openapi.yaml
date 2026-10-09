@@ -1,0 +1,243 @@
+# v1 冻结：P0 验收后变更走接口设计 §5 版本化（docs/02-设计文档/04-接口设计.md §5）。
+# 统一检索 API（FR-KB-030）OpenAPI 3.1 规范 v1 —— 冻结基线快照。
+# 来源：services/kb/api/schemas.py（契约即代码）经 services/kb/app.py create_app
+# 的 live OpenAPI 导出（生成时组件：InMemoryVectorStore + FakeEmbeddingClient，
+# 不影响契约内容）。防漂移口径：冻结字段不得删除/改名/改类型/收紧必填，新增
+# 字段必须可选（向下兼容）——live 比对由契约测试
+# services/kb/tests/test_api_search.py 与 CI 门禁拦截。
+# 版本记录：v1（2026-10-09，迭代 0.2 收口）首版冻结。
+openapi: 3.1.0
+info:
+  title: kb-service 统一知识检索 API
+  description: FR-KB-030 统一检索 API（契约冻结 v1，04-接口设计 §2）：P1-P5 全模块唯一知识入口。P0 验收后变更走 04 §5 版本化流程；冻结基线快照见 docs/openapi/openapi.yaml。
+  version: 1.0.0
+paths:
+  /api/v1/knowledge/search:
+    post:
+      tags:
+      - knowledge
+      summary: 统一知识检索（FR-KB-030，契约冻结 v1：P1-P5 全模块唯一知识入口）
+      description: "执行统一检索：鉴权（依赖）→ 三段式检索（预算守卫）→ 回表组装 → 信封返回。\n\n- 480ms 硬截止（KB_API_TIMEOUT_S 经 app.state\
+        \ 注入）：超时或全部召回路\n  失败 → 50002/503（降级语义）；\n- latency_ms 为端到端在线测量值（含回表，NFR-PER-02 验收测量口径）；\n- consumer\
+        \ 当前仅作鉴权产物保留（差异化默认值后续迭代接入，见模块\n  docstring 偏差标注③）。"
+      operationId: knowledge_search_api_v1_knowledge_search_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    SearchData:
+      properties:
+        results:
+          items:
+            $ref: '#/components/schemas/SearchResultItem'
+          type: array
+          title: Results
+          description: 命中结果列表（按得分降序）
+        latency_ms:
+          type: integer
+          title: Latency Ms
+          description: 端到端时延（毫秒，NFR-PER-02 在线测量口径）
+        rewritten_query:
+          type: string
+          title: Rewritten Query
+          description: 查询改写结果（SR-KB-015，可观测）
+      type: object
+      required:
+      - results
+      - latency_ms
+      - rewritten_query
+      title: SearchData
+      description: 检索结果 data 段（04 §2 响应 data 逐字段一致，冻结 v1）。
+    SearchRequest:
+      properties:
+        query:
+          type: string
+          maxLength: 512
+          minLength: 1
+          title: Query
+          description: 查询文本（1~512 字符）
+          examples:
+          - ST-3200 支架的最大承载和认证情况
+        kb_types:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Kb Types
+          description: 知识库类型子集（六大库枚举）；缺省查全部六大库
+          examples:
+          - - product
+            - process
+        filters:
+          anyOf:
+          - additionalProperties:
+              items:
+                type: string
+              type: array
+            type: object
+          - type: 'null'
+          title: Filters
+          description: 标量维度过滤（维度白名单校验，各维度间 AND 组合）
+          examples:
+          - process_node:
+            - 报价
+            scene_tag:
+            - 询价
+            sku:
+            - ST-3200
+        top_k:
+          type: integer
+          maximum: 20.0
+          minimum: 1.0
+          title: Top K
+          description: 返回条数；缺省 5，上限 20
+          default: 5
+        rerank:
+          type: boolean
+          title: Rerank
+          description: 是否走三段式精排（SR-KB-015）；缺省 true
+          default: true
+      additionalProperties: false
+      type: object
+      required:
+      - query
+      title: SearchRequest
+      description: '检索入参模型（04-接口设计 §2 请求示例逐字段一致，冻结 v1）。
+
+
+        extra="forbid"：契约外字段 fail-closed 拒绝（映射 40001）——冻结接口的
+
+        防漂移治理口径，杜绝消费方字段拼错的静默吞没。'
+    SearchResponse:
+      properties:
+        code:
+          type: integer
+          title: Code
+          description: 0=成功；非 0 见 §1.3 错误码表
+          default: 0
+        message:
+          type: string
+          title: Message
+          description: 成功恒 ok；失败为错误摘要
+          default: ok
+        data:
+          $ref: '#/components/schemas/SearchData'
+        trace_id:
+          type: string
+          title: Trace Id
+          description: 全链路追踪 ID（X-Trace-Id 透传或新生成 uuid）
+      type: object
+      required:
+      - data
+      - trace_id
+      title: SearchResponse
+      description: 统一响应信封（04-接口设计 §1.3：code/message/data/trace_id 四键齐全）。
+    SearchResultItem:
+      properties:
+        chunk_id:
+          type: integer
+          title: Chunk Id
+          description: 知识块主键（= PG knowledge_chunk.id）
+        kb_type:
+          type: string
+          title: Kb Type
+          description: 所属知识库类型（六大库枚举）
+        title:
+          type: string
+          title: Title
+          description: 知识条目标题（回表补齐）
+        snippet:
+          type: string
+          title: Snippet
+          description: 命中摘录文本（检索视图携带）
+        source:
+          $ref: '#/components/schemas/SourceRef'
+          description: 来源追溯（回表补齐）
+        score:
+          type: number
+          title: Score
+          description: 得分（重排生效时为精排分，否则为 RRF 融合分）
+      type: object
+      required:
+      - chunk_id
+      - kb_type
+      - title
+      - snippet
+      - source
+      - score
+      title: SearchResultItem
+      description: 单条检索结果（04 §2 results 数组元素）。
+    SourceRef:
+      properties:
+        item_uid:
+          type: string
+          title: Item Uid
+          description: 知识条目 UID
+        origin_file:
+          type: string
+          title: Origin File
+          description: 原始材料路径
+        version:
+          type: integer
+          title: Version
+          description: 条目当前版本号
+      type: object
+      required:
+      - item_uid
+      - origin_file
+      - version
+      title: SourceRef
+      description: 来源追溯（04 §2 source 对象；SRS §12.2 可回溯原始材料与版本）。
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
