@@ -1,0 +1,50 @@
+# AI 外贸销售智能体——本地联调栈（迭代 0.3 收口：容器化部署联调）
+# 用法：docker compose -f deploy/compose/compose.yaml up -d
+# 生产部署（阿里云 ECS）以此为基础 + deploy/nginx + 出域防火墙（deploy/firewall）
+# 说明：凭证为本地联调默认值，生产必须经 Docker Secrets/KMS 注入（NFR-SEC-04）
+services:
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: kb
+      POSTGRES_PASSWORD: kb_local_dev
+      POSTGRES_DB: kb
+    ports: ["15432:5432"]
+    volumes: [pgdata:/var/lib/postgresql/data]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U kb"]
+      interval: 5s
+      retries: 10
+  redis:
+    image: redis:7
+    ports: ["16379:6379"]
+  # Milvus standalone（官方三件套：etcd + minio + milvus）
+  etcd:
+    image: quay.io/coreos/etcd:v3.5.18
+    environment:
+      ETCD_AUTO_COMPACTION_MODE: revision
+      ETCD_AUTO_COMPACTION_RETENTION: "1000"
+      ETCD_QUOTA_BACKEND_BYTES: "4294967296"
+    command: etcd -advertise-client-urls=http://etcd:2379 -listen-client-urls http://0.0.0.0:2379 --data-dir /etcd
+  minio:
+    image: minio/minio:RELEASE.2023-03-20T20-16-18Z
+    environment:
+      MINIO_ACCESS_KEY: minioadmin
+      MINIO_SECRET_KEY: minioadmin
+    command: minio server /minio_data
+  milvus:
+    image: milvusdb/milvus:v2.5.6
+    command: ["milvus", "run", "standalone"]
+    environment:
+      ETCD_ENDPOINTS: etcd:2379
+      MINIO_ADDRESS: minio:9000
+    ports: ["19530:19530", "9091:9091"]
+    depends_on: [etcd, minio]
+    # 本机 TEI（BGE-M3）：--profile tei 启用；arm64 拉取失败时本机用 Fake，ECS(x86) 必用 TEI
+  tei:
+    image: ghcr.io/huggingface/text-embeddings-inference:cpu-1.8.0
+    command: ["--model-id", "BAAI/bge-m3", "--auto-truncate"]
+    ports: ["18080:8080"]
+    profiles: ["tei"]
+volumes:
+  pgdata:

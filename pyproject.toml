@@ -20,11 +20,18 @@ asr = ["openai-whisper>=20231117"]
 dev = ["pytest>=8.0", "httpx>=0.27", "ruff>=0.4"]
 
 [tool.pytest.ini_options]
-pythonpath = ["."]
-testpaths = ["platform", "services", "tools"]
+pythonpath = ["src"]
+testpaths = ["src", "tools"]
 # 可选依赖缺失时，对应测试自动跳过（解析器用 importorskip）
 addopts = "-q"
 
 [tool.ruff]
 line-length = 110
 target-version = "py312"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"

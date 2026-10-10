@@ -186,7 +186,7 @@ def test_全支撑通过_与模板参数归一匹配(tmp_path: Path) -> None:
 def test_真实仓库核对_全部门禁通过() -> None:
     """门禁级断言：当前 services/kb/api 全部路由被 operations.yaml 覆盖（新增路由必须同步登记）。"""
     operations = ops_registry.load_operations(OPS_YAML)
-    endpoints = coverage_check.extract_endpoints(REPO_ROOT / "services" / "kb" / "api", REPO_ROOT)
+    endpoints = coverage_check.extract_endpoints(REPO_ROOT / "src" / "services" / "kb" / "api", REPO_ROOT)
     result = coverage_check.check_coverage(operations, endpoints)
     assert result.passed, result.problems
     assert len(result.rows) == 17

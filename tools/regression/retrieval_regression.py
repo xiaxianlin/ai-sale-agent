@@ -36,7 +36,7 @@ from typing import Any, Sequence, TextIO
 # 仓库根自举：直接以文件路径执行时（python3 tools/regression/*.py），
 # sys.path[0] 为脚本目录，仓库根不在路径上——补齐后才能导入 services 包
 if __package__ in (None, ""):
-    sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+    sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "src"))
 
 from services.kb.core.evaluation import (  # noqa: E402  (路径自举后导入)
     ATTRIBUTION_CATEGORIES,

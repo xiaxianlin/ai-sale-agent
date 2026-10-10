@@ -41,7 +41,7 @@ from typing import Any, Sequence
 # 仓库根自举：直接以文件路径执行时 sys.path[0] 为脚本目录，补齐仓库根才能导入 services 包
 _REPO_ROOT = Path(__file__).resolve().parents[2]
 if __package__ in (None, ""):
-    sys.path.insert(0, str(_REPO_ROOT))
+    sys.path.insert(0, str(_REPO_ROOT / "src"))
 
 
 def _restore_stdlib_platform() -> None:

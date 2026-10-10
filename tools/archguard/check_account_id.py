@@ -172,7 +172,7 @@ def scan_directory(root: Path) -> list[str]:
 
 def main(argv: list[str]) -> int:
     """门禁入口：无参按仓根默认目录扫描（CI 形态）；有参按显式目录扫描（元测试形态）。"""
-    dirs = [Path(a) for a in argv] if argv else [REPO_ROOT / "services", REPO_ROOT / "migrations"]
+    dirs = [Path(a) for a in argv] if argv else [REPO_ROOT / "src/services", REPO_ROOT / "migrations"]
     warnings: list[str] = []
     for d in dirs:
         if not d.exists():

@@ -37,7 +37,7 @@ if str(_REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(_REPO_ROOT))
 
 try:  # 单一事实源优先；独立拷贝运行时回落到本地基线白名单
-    from platform.core.i18n.messages import ZH_WHITELIST as _WHITELIST
+    from foundation.i18n.messages import ZH_WHITELIST as _WHITELIST
 except Exception:  # noqa: BLE001  # 独立运行兜底（正常仓库内不会走到）
     _WHITELIST = frozenset({
         "SKU", "MOQ", "API", "URL", "ID", "TopK", "CSV", "Excel", "PDF", "OCR", "ASR", "JWT",
@@ -46,7 +46,7 @@ except Exception:  # noqa: BLE001  # 独立运行兜底（正常仓库内不会�
     })
 
 #: 缺省扫描根（管理 API 层 + 平台公共层；前端目录随 kb-admin-web 迭代加入）
-DEFAULT_ROOTS: tuple[str, ...] = ("services/kb/api", "platform/core")
+DEFAULT_ROOTS: tuple[str, ...] = ("src/services/kb/api", "src/platform/core")
 
 #: 用户可见文案的关键字参数名（取自 SR-NFR-USA-02 §6.5 可见属性的后端对应物）
 USER_FACING_KWARGS: frozenset[str] = frozenset({

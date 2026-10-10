@@ -5,7 +5,7 @@
 ## 结构（开发规范 §2）
 
 ```
-platform/    通用基座：配置中心 / RBAC / 审计 / 租户上下文（FR-SAAS-007 通用能力层）
+src/         src 布局：foundation/（通用基座：配置中心/RBAC/审计/租户上下文，原 platform——避标准库冲突改名）+ services/
 services/    业务服务：kb（知识库）/ training / agent-core / agent-runner / site / saas（按阶段落位）
 tools/       工程门禁与交付：CI 门禁 / 架构守护 / 交付流水线
 migrations/  数据库迁移（alembic，随迭代补齐）

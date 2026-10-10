@@ -323,7 +323,7 @@ def render_report(
 
 def _parse_args(argv: Sequence[str]) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="无 SQL/命令行覆盖核对（FR-KB-023）")
-    parser.add_argument("--api-root", default=str(_REPO_ROOT / "services" / "kb" / "api"),
+    parser.add_argument("--api-root", default=str(_REPO_ROOT / "src" / "services" / "kb" / "api"),
                         help="路由定义目录（默认 services/kb/api）")
     parser.add_argument("--ops", default=str(_REPO_ROOT / "tools" / "usability" / "operations.yaml"),
                         help="运维操作声明清单（默认 tools/usability/operations.yaml）")
