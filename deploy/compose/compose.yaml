@@ -27,6 +27,7 @@ services:
       ETCD_QUOTA_BACKEND_BYTES: "4294967296"
     command: etcd -advertise-client-urls=http://etcd:2379 -listen-client-urls http://0.0.0.0:2379 --data-dir /etcd
   minio:
+    profiles: ["s3"]
     image: minio/minio:RELEASE.2023-03-20T20-16-18Z
     environment:
       MINIO_ACCESS_KEY: minioadmin
@@ -36,10 +37,12 @@ services:
     image: milvusdb/milvus:v2.5.6
     command: ["milvus", "run", "standalone"]
     environment:
+      # 外部 etcd + 本地存储（免 minio 对象存储的轻量组合；生产 ECS 可 --profile s3 切对象存储）
       ETCD_ENDPOINTS: etcd:2379
-      MINIO_ADDRESS: minio:9000
+      COMMON_STORAGETYPE: local
+    volumes: ["milvusdata:/var/lib/milvus"]
     ports: ["19530:19530", "9091:9091"]
-    depends_on: [etcd, minio]
+    depends_on: [etcd]
     # 本机 TEI（BGE-M3）：--profile tei 启用；arm64 拉取失败时本机用 Fake，ECS(x86) 必用 TEI
   tei:
     image: ghcr.io/huggingface/text-embeddings-inference:cpu-1.8.0
@@ -48,3 +51,4 @@ services:
     profiles: ["tei"]
 volumes:
   pgdata:
+  milvusdata:

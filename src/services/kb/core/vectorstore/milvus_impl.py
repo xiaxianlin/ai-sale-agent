@@ -233,6 +233,12 @@ class MilvusStore:
                 )
         except Exception as exc:  # pymilvus.MilvusException 等读写失败统一转译
             raise MilvusUnavailableError(f"Milvus upsert 失败：{exc}") from exc
+        # 联调修正：写入后显式 flush，保证「写后即检」可见性（FR-KB-017 分钟级生效；
+        # Milvus 缺省后台落盘延迟可达数秒，集成对拍曾因此 0 命中）
+        try:
+            self._client.flush(self._collection)
+        except Exception as exc:  # noqa: BLE001  flush 失败不阻断写入（后台仍会落盘）
+            raise MilvusUnavailableError(f"Milvus flush 失败（数据已写入）：{exc}") from exc
 
     def delete(self, chunk_ids: list[int]) -> None:
         """按主键批量删除：filter 仅由 int 字面量拼接，无注入面（SR §6.4）。"""
