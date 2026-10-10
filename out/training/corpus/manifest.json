@@ -1,0 +1,282 @@
+{
+ "product_SIM0001_ST1001.docx": {
+  "kb_type": "product",
+  "uid": "SIM0001",
+  "sku": "ST-1001",
+  "anchors": [
+   "SIM0001",
+   "ST1001"
+  ],
+  "family": "ST"
+ },
+ "product_SIM0002_MC1002.docx": {
+  "kb_type": "product",
+  "uid": "SIM0002",
+  "sku": "MC-1002",
+  "anchors": [
+   "SIM0002",
+   "MC1002"
+  ],
+  "family": "MC"
+ },
+ "product_SIM0003_MC1003.docx": {
+  "kb_type": "product",
+  "uid": "SIM0003",
+  "sku": "MC-1003",
+  "anchors": [
+   "SIM0003",
+   "MC1003"
+  ],
+  "family": "MC"
+ },
+ "product_SIM0004_LM1004.docx": {
+  "kb_type": "product",
+  "uid": "SIM0004",
+  "sku": "LM-1004",
+  "anchors": [
+   "SIM0004",
+   "LM1004"
+  ],
+  "family": "LM"
+ },
+ "product_SIM0005_LM1005.docx": {
+  "kb_type": "product",
+  "uid": "SIM0005",
+  "sku": "LM-1005",
+  "anchors": [
+   "SIM0005",
+   "LM1005"
+  ],
+  "family": "LM"
+ },
+ "product_SIM0006_LM1006.docx": {
+  "kb_type": "product",
+  "uid": "SIM0006",
+  "sku": "LM-1006",
+  "anchors": [
+   "SIM0006",
+   "LM1006"
+  ],
+  "family": "LM"
+ },
+ "product_SIM0007_MC1007.docx": {
+  "kb_type": "product",
+  "uid": "SIM0007",
+  "sku": "MC-1007",
+  "anchors": [
+   "SIM0007",
+   "MC1007"
+  ],
+  "family": "MC"
+ },
+ "product_SIM0008_GP1008.docx": {
+  "kb_type": "product",
+  "uid": "SIM0008",
+  "sku": "GP-1008",
+  "anchors": [
+   "SIM0008",
+   "GP1008"
+  ],
+  "family": "GP"
+ },
+ "product_SIM0009_ST1009.docx": {
+  "kb_type": "product",
+  "uid": "SIM0009",
+  "sku": "ST-1009",
+  "anchors": [
+   "SIM0009",
+   "ST1009"
+  ],
+  "family": "ST"
+ },
+ "product_SIM0010_MC1010.docx": {
+  "kb_type": "product",
+  "uid": "SIM0010",
+  "sku": "MC-1010",
+  "anchors": [
+   "SIM0010",
+   "MC1010"
+  ],
+  "family": "MC"
+ },
+ "customer_SIM0011_MC1011.docx": {
+  "kb_type": "customer",
+  "uid": "SIM0011",
+  "sku": "MC-1011",
+  "anchors": [
+   "SIM0011",
+   "MC1011"
+  ],
+  "family": "MC"
+ },
+ "customer_SIM0012_GP1012.docx": {
+  "kb_type": "customer",
+  "uid": "SIM0012",
+  "sku": "GP-1012",
+  "anchors": [
+   "SIM0012",
+   "GP1012"
+  ],
+  "family": "GP"
+ },
+ "customer_SIM0013_ST1013.docx": {
+  "kb_type": "customer",
+  "uid": "SIM0013",
+  "sku": "ST-1013",
+  "anchors": [
+   "SIM0013",
+   "ST1013"
+  ],
+  "family": "ST"
+ },
+ "customer_SIM0014_MC1014.docx": {
+  "kb_type": "customer",
+  "uid": "SIM0014",
+  "sku": "MC-1014",
+  "anchors": [
+   "SIM0014",
+   "MC1014"
+  ],
+  "family": "MC"
+ },
+ "skill_SIM0015_GP1015.docx": {
+  "kb_type": "skill",
+  "uid": "SIM0015",
+  "sku": "GP-1015",
+  "anchors": [
+   "SIM0015",
+   "GP1015"
+  ],
+  "family": "GP"
+ },
+ "skill_SIM0016_ST1016.xlsx": {
+  "kb_type": "skill",
+  "uid": "SIM0016",
+  "sku": "ST-1016",
+  "anchors": [
+   "SIM0016",
+   "ST1016"
+  ],
+  "family": "ST"
+ },
+ "skill_SIM0017_GP1017.docx": {
+  "kb_type": "skill",
+  "uid": "SIM0017",
+  "sku": "GP-1017",
+  "anchors": [
+   "SIM0017",
+   "GP1017"
+  ],
+  "family": "GP"
+ },
+ "skill_SIM0018_GP1018.docx": {
+  "kb_type": "skill",
+  "uid": "SIM0018",
+  "sku": "GP-1018",
+  "anchors": [
+   "SIM0018",
+   "GP1018"
+  ],
+  "family": "GP"
+ },
+ "process_SIM0019_GP1019.docx": {
+  "kb_type": "process",
+  "uid": "SIM0019",
+  "sku": "GP-1019",
+  "anchors": [
+   "SIM0019",
+   "GP1019"
+  ],
+  "family": "GP"
+ },
+ "process_SIM0020_ST1020.docx": {
+  "kb_type": "process",
+  "uid": "SIM0020",
+  "sku": "ST-1020",
+  "anchors": [
+   "SIM0020",
+   "ST1020"
+  ],
+  "family": "ST"
+ },
+ "process_SIM0021_LM1021.docx": {
+  "kb_type": "process",
+  "uid": "SIM0021",
+  "sku": "LM-1021",
+  "anchors": [
+   "SIM0021",
+   "LM1021"
+  ],
+  "family": "LM"
+ },
+ "negative_case_SIM0022_GP1022.docx": {
+  "kb_type": "negative_case",
+  "uid": "SIM0022",
+  "sku": "GP-1022",
+  "anchors": [
+   "SIM0022",
+   "GP1022"
+  ],
+  "family": "GP"
+ },
+ "negative_case_SIM0023_MC1023.docx": {
+  "kb_type": "negative_case",
+  "uid": "SIM0023",
+  "sku": "MC-1023",
+  "anchors": [
+   "SIM0023",
+   "MC1023"
+  ],
+  "family": "MC"
+ },
+ "negative_case_SIM0024_ST1024.docx": {
+  "kb_type": "negative_case",
+  "uid": "SIM0024",
+  "sku": "ST-1024",
+  "anchors": [
+   "SIM0024",
+   "ST1024"
+  ],
+  "family": "ST"
+ },
+ "training_SIM0025_MC1025.docx": {
+  "kb_type": "training",
+  "uid": "SIM0025",
+  "sku": "MC-1025",
+  "anchors": [
+   "SIM0025",
+   "MC1025"
+  ],
+  "family": "MC"
+ },
+ "training_SIM0026_GP1026.docx": {
+  "kb_type": "training",
+  "uid": "SIM0026",
+  "sku": "GP-1026",
+  "anchors": [
+   "SIM0026",
+   "GP1026"
+  ],
+  "family": "GP"
+ },
+ "training_SIM0027_MC1027.docx": {
+  "kb_type": "training",
+  "uid": "SIM0027",
+  "sku": "MC-1027",
+  "anchors": [
+   "SIM0027",
+   "MC1027"
+  ],
+  "family": "MC"
+ },
+ "training_SIM0028_GP1028.docx": {
+  "kb_type": "training",
+  "uid": "SIM0028",
+  "sku": "GP-1028",
+  "anchors": [
+   "SIM0028",
+   "GP1028"
+  ],
+  "family": "GP"
+ }
+}
