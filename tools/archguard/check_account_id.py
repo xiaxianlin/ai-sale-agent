@@ -31,6 +31,7 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 # 知识域共享表白名单（SR-NFR-SCA-01 §6.2/§7 data.shared_tables 同源，随 03-数据库设计 §3.1 同步维护）
 SHARED_TABLES = {
     "knowledge_item",
+    "knowledge_version",  # 子表：经 FK knowledge_item(id) 继承账号/租户维度（03-数据库设计 §3.1 权威结构）
     "knowledge_chunk",
     "skill_library",
     "negative_case",

@@ -1,0 +1,4407 @@
+{
+  "name": "simcorp",
+  "version": 1,
+  "status": "draft",
+  "cases": [
+    {
+      "case_id": "sim-0001",
+      "query": "SIM0328 这个节点操作规程 价格取数",
+      "expected_chunk_ids": [
+        328
+      ],
+      "kb_type": "process",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0002",
+      "query": "SIM0058 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        58
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0003",
+      "query": "SIM0013 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        13
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0004",
+      "query": "SIM0380 这次丢单的根因和改进",
+      "expected_chunk_ids": [
+        380
+      ],
+      "kb_type": "negative_case",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0005",
+      "query": "SIM0141 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        141
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0006",
+      "query": "SIM0126 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        126
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0007",
+      "query": "SIM0115 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        115
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0008",
+      "query": "SIM0072 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        72
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0009",
+      "query": "SIM0378 这次丢单的根因和改进",
+      "expected_chunk_ids": [
+        378
+      ],
+      "kb_type": "negative_case",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0010",
+      "query": "SIM0053 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        53
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0011",
+      "query": "SIM0347 这个节点操作规程 价格取数",
+      "expected_chunk_ids": [
+        347
+      ],
+      "kb_type": "process",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0012",
+      "query": "SIM0497 课程目标与课后练习",
+      "expected_chunk_ids": [
+        497
+      ],
+      "kb_type": "training",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0013",
+      "query": "SIM0457 课程目标与课后练习",
+      "expected_chunk_ids": [
+        457
+      ],
+      "kb_type": "training",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0014",
+      "query": "SIM0280 话术要点 让步要换什么条件",
+      "expected_chunk_ids": [
+        280
+      ],
+      "kb_type": "skill",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0015",
+      "query": "SIM0045 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        45
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0016",
+      "query": "SIM0303 话术要点 让步要换什么条件",
+      "expected_chunk_ids": [
+        303
+      ],
+      "kb_type": "skill",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0017",
+      "query": "SIM0217 这个客户是什么分级 月采购量",
+      "expected_chunk_ids": [
+        217
+      ],
+      "kb_type": "customer",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0018",
+      "query": "SIM0017 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        17
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0019",
+      "query": "SIM0016 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        16
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0020",
+      "query": "SIM0048 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        48
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0021",
+      "query": "SIM0112 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        112
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0022",
+      "query": "SIM0120 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        120
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0023",
+      "query": "SIM0259 话术要点 让步要换什么条件",
+      "expected_chunk_ids": [
+        259
+      ],
+      "kb_type": "skill",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0024",
+      "query": "SIM0309 话术要点 让步要换什么条件",
+      "expected_chunk_ids": [
+        309
+      ],
+      "kb_type": "skill",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0025",
+      "query": "SIM0014 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        14
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0026",
+      "query": "SIM0288 话术要点 让步要换什么条件",
+      "expected_chunk_ids": [
+        288
+      ],
+      "kb_type": "skill",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0027",
+      "query": "SIM0102 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        102
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0028",
+      "query": "SIM0367 这个节点操作规程 价格取数",
+      "expected_chunk_ids": [
+        367
+      ],
+      "kb_type": "process",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0029",
+      "query": "SIM0333 这个节点操作规程 价格取数",
+      "expected_chunk_ids": [
+        333
+      ],
+      "kb_type": "process",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0030",
+      "query": "SIM0360 这个节点操作规程 价格取数",
+      "expected_chunk_ids": [
+        360
+      ],
+      "kb_type": "process",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0031",
+      "query": "SIM0487 课程目标与课后练习",
+      "expected_chunk_ids": [
+        487
+      ],
+      "kb_type": "training",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0032",
+      "query": "SIM0215 这个客户是什么分级 月采购量",
+      "expected_chunk_ids": [
+        215
+      ],
+      "kb_type": "customer",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0033",
+      "query": "SIM0113 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        113
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0034",
+      "query": "SIM0230 这个客户是什么分级 月采购量",
+      "expected_chunk_ids": [
+        230
+      ],
+      "kb_type": "customer",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0035",
+      "query": "SIM0302 话术要点 让步要换什么条件",
+      "expected_chunk_ids": [
+        302
+      ],
+      "kb_type": "skill",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0036",
+      "query": "SIM0143 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        143
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0037",
+      "query": "SIM0415 这次丢单的根因和改进",
+      "expected_chunk_ids": [
+        415
+      ],
+      "kb_type": "negative_case",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0038",
+      "query": "SIM0446 课程目标与课后练习",
+      "expected_chunk_ids": [
+        446
+      ],
+      "kb_type": "training",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0039",
+      "query": "SIM0004 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        4
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0040",
+      "query": "SIM0389 这次丢单的根因和改进",
+      "expected_chunk_ids": [
+        389
+      ],
+      "kb_type": "negative_case",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0041",
+      "query": "SIM0413 这次丢单的根因和改进",
+      "expected_chunk_ids": [
+        413
+      ],
+      "kb_type": "negative_case",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0042",
+      "query": "SIM0082 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        82
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0043",
+      "query": "SIM0358 这个节点操作规程 价格取数",
+      "expected_chunk_ids": [
+        358
+      ],
+      "kb_type": "process",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0044",
+      "query": "SIM0484 课程目标与课后练习",
+      "expected_chunk_ids": [
+        484
+      ],
+      "kb_type": "training",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0045",
+      "query": "SIM0175 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        175
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0046",
+      "query": "SIM0465 课程目标与课后练习",
+      "expected_chunk_ids": [
+        465
+      ],
+      "kb_type": "training",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0047",
+      "query": "SIM0080 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        80
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0048",
+      "query": "SIM0111 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        111
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0049",
+      "query": "SIM0391 这次丢单的根因和改进",
+      "expected_chunk_ids": [
+        391
+      ],
+      "kb_type": "negative_case",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0050",
+      "query": "SIM0173 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        173
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0051",
+      "query": "SIM0491 课程目标与课后练习",
+      "expected_chunk_ids": [
+        491
+      ],
+      "kb_type": "training",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0052",
+      "query": "SIM0481 课程目标与课后练习",
+      "expected_chunk_ids": [
+        481
+      ],
+      "kb_type": "training",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0053",
+      "query": "SIM0195 这个客户是什么分级 月采购量",
+      "expected_chunk_ids": [
+        195
+      ],
+      "kb_type": "customer",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0054",
+      "query": "SIM0050 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        50
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0055",
+      "query": "SIM0184 这个客户是什么分级 月采购量",
+      "expected_chunk_ids": [
+        184
+      ],
+      "kb_type": "customer",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0056",
+      "query": "SIM0434 课程目标与课后练习",
+      "expected_chunk_ids": [
+        434
+      ],
+      "kb_type": "training",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0057",
+      "query": "SIM0177 这个客户是什么分级 月采购量",
+      "expected_chunk_ids": [
+        177
+      ],
+      "kb_type": "customer",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0058",
+      "query": "SIM0310 话术要点 让步要换什么条件",
+      "expected_chunk_ids": [
+        310
+      ],
+      "kb_type": "skill",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0059",
+      "query": "SIM0136 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        136
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0060",
+      "query": "SIM0414 这次丢单的根因和改进",
+      "expected_chunk_ids": [
+        414
+      ],
+      "kb_type": "negative_case",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0061",
+      "query": "SIM0023 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        23
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0062",
+      "query": "SIM0374 这个节点操作规程 价格取数",
+      "expected_chunk_ids": [
+        374
+      ],
+      "kb_type": "process",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0063",
+      "query": "SIM0236 这个客户是什么分级 月采购量",
+      "expected_chunk_ids": [
+        236
+      ],
+      "kb_type": "customer",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0064",
+      "query": "SIM0275 话术要点 让步要换什么条件",
+      "expected_chunk_ids": [
+        275
+      ],
+      "kb_type": "skill",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0065",
+      "query": "SIM0064 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        64
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0066",
+      "query": "SIM0194 这个客户是什么分级 月采购量",
+      "expected_chunk_ids": [
+        194
+      ],
+      "kb_type": "customer",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0067",
+      "query": "SIM0041 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        41
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0068",
+      "query": "SIM0283 话术要点 让步要换什么条件",
+      "expected_chunk_ids": [
+        283
+      ],
+      "kb_type": "skill",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0069",
+      "query": "SIM0151 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        151
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0070",
+      "query": "SIM0425 这次丢单的根因和改进",
+      "expected_chunk_ids": [
+        425
+      ],
+      "kb_type": "negative_case",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0071",
+      "query": "SIM0322 话术要点 让步要换什么条件",
+      "expected_chunk_ids": [
+        322
+      ],
+      "kb_type": "skill",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0072",
+      "query": "SIM0317 话术要点 让步要换什么条件",
+      "expected_chunk_ids": [
+        317
+      ],
+      "kb_type": "skill",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0073",
+      "query": "SIM0186 这个客户是什么分级 月采购量",
+      "expected_chunk_ids": [
+        186
+      ],
+      "kb_type": "customer",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0074",
+      "query": "SIM0296 话术要点 让步要换什么条件",
+      "expected_chunk_ids": [
+        296
+      ],
+      "kb_type": "skill",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0075",
+      "query": "SIM0099 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        99
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0076",
+      "query": "SIM0361 这个节点操作规程 价格取数",
+      "expected_chunk_ids": [
+        361
+      ],
+      "kb_type": "process",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0077",
+      "query": "SIM0036 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        36
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0078",
+      "query": "SIM0024 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        24
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0079",
+      "query": "SIM0339 这个节点操作规程 价格取数",
+      "expected_chunk_ids": [
+        339
+      ],
+      "kb_type": "process",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0080",
+      "query": "SIM0117 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        117
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0081",
+      "query": "SIM0396 这次丢单的根因和改进",
+      "expected_chunk_ids": [
+        396
+      ],
+      "kb_type": "negative_case",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0082",
+      "query": "SIM0149 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        149
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0083",
+      "query": "SIM0445 课程目标与课后练习",
+      "expected_chunk_ids": [
+        445
+      ],
+      "kb_type": "training",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0084",
+      "query": "SIM0479 课程目标与课后练习",
+      "expected_chunk_ids": [
+        479
+      ],
+      "kb_type": "training",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0085",
+      "query": "SIM0052 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        52
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0086",
+      "query": "SIM0448 课程目标与课后练习",
+      "expected_chunk_ids": [
+        448
+      ],
+      "kb_type": "training",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0087",
+      "query": "SIM0455 课程目标与课后练习",
+      "expected_chunk_ids": [
+        455
+      ],
+      "kb_type": "training",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0088",
+      "query": "SIM0233 这个客户是什么分级 月采购量",
+      "expected_chunk_ids": [
+        233
+      ],
+      "kb_type": "customer",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0089",
+      "query": "SIM0326 这个节点操作规程 价格取数",
+      "expected_chunk_ids": [
+        326
+      ],
+      "kb_type": "process",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0090",
+      "query": "SIM0187 这个客户是什么分级 月采购量",
+      "expected_chunk_ids": [
+        187
+      ],
+      "kb_type": "customer",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0091",
+      "query": "SIM0084 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        84
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0092",
+      "query": "SIM0190 这个客户是什么分级 月采购量",
+      "expected_chunk_ids": [
+        190
+      ],
+      "kb_type": "customer",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0093",
+      "query": "SIM0182 这个客户是什么分级 月采购量",
+      "expected_chunk_ids": [
+        182
+      ],
+      "kb_type": "customer",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0094",
+      "query": "SIM0108 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        108
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0095",
+      "query": "SIM0344 这个节点操作规程 价格取数",
+      "expected_chunk_ids": [
+        344
+      ],
+      "kb_type": "process",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0096",
+      "query": "SIM0137 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        137
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0097",
+      "query": "SIM0471 课程目标与课后练习",
+      "expected_chunk_ids": [
+        471
+      ],
+      "kb_type": "training",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0098",
+      "query": "SIM0350 这个节点操作规程 价格取数",
+      "expected_chunk_ids": [
+        350
+      ],
+      "kb_type": "process",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0099",
+      "query": "SIM0332 这个节点操作规程 价格取数",
+      "expected_chunk_ids": [
+        332
+      ],
+      "kb_type": "process",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0100",
+      "query": "SIM0037 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        37
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0101",
+      "query": "SIM0312 话术要点 让步要换什么条件",
+      "expected_chunk_ids": [
+        312
+      ],
+      "kb_type": "skill",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0102",
+      "query": "SIM0412 这次丢单的根因和改进",
+      "expected_chunk_ids": [
+        412
+      ],
+      "kb_type": "negative_case",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0103",
+      "query": "SIM0088 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        88
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0104",
+      "query": "SIM0274 话术要点 让步要换什么条件",
+      "expected_chunk_ids": [
+        274
+      ],
+      "kb_type": "skill",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0105",
+      "query": "SIM0439 课程目标与课后练习",
+      "expected_chunk_ids": [
+        439
+      ],
+      "kb_type": "training",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0106",
+      "query": "SIM0495 课程目标与课后练习",
+      "expected_chunk_ids": [
+        495
+      ],
+      "kb_type": "training",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0107",
+      "query": "SIM0410 这次丢单的根因和改进",
+      "expected_chunk_ids": [
+        410
+      ],
+      "kb_type": "negative_case",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0108",
+      "query": "SIM0237 这个客户是什么分级 月采购量",
+      "expected_chunk_ids": [
+        237
+      ],
+      "kb_type": "customer",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0109",
+      "query": "SIM0464 课程目标与课后练习",
+      "expected_chunk_ids": [
+        464
+      ],
+      "kb_type": "training",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0110",
+      "query": "SIM0139 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        139
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0111",
+      "query": "SIM0500 课程目标与课后练习",
+      "expected_chunk_ids": [
+        500
+      ],
+      "kb_type": "training",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0112",
+      "query": "SIM0353 这个节点操作规程 价格取数",
+      "expected_chunk_ids": [
+        353
+      ],
+      "kb_type": "process",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0113",
+      "query": "SIM0286 话术要点 让步要换什么条件",
+      "expected_chunk_ids": [
+        286
+      ],
+      "kb_type": "skill",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0114",
+      "query": "SIM0468 课程目标与课后练习",
+      "expected_chunk_ids": [
+        468
+      ],
+      "kb_type": "training",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0115",
+      "query": "SIM0351 这个节点操作规程 价格取数",
+      "expected_chunk_ids": [
+        351
+      ],
+      "kb_type": "process",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0116",
+      "query": "SIM0167 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        167
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0117",
+      "query": "SIM0029 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        29
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0118",
+      "query": "SIM0118 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        118
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0119",
+      "query": "SIM0483 课程目标与课后练习",
+      "expected_chunk_ids": [
+        483
+      ],
+      "kb_type": "training",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0120",
+      "query": "SIM0162 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        162
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0121",
+      "query": "SIM0206 这个客户是什么分级 月采购量",
+      "expected_chunk_ids": [
+        206
+      ],
+      "kb_type": "customer",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0122",
+      "query": "SIM0138 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        138
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0123",
+      "query": "SIM0034 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        34
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0124",
+      "query": "SIM0109 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        109
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0125",
+      "query": "SIM0291 话术要点 让步要换什么条件",
+      "expected_chunk_ids": [
+        291
+      ],
+      "kb_type": "skill",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0126",
+      "query": "SIM0368 这个节点操作规程 价格取数",
+      "expected_chunk_ids": [
+        368
+      ],
+      "kb_type": "process",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0127",
+      "query": "SIM0381 这次丢单的根因和改进",
+      "expected_chunk_ids": [
+        381
+      ],
+      "kb_type": "negative_case",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0128",
+      "query": "SIM0377 这次丢单的根因和改进",
+      "expected_chunk_ids": [
+        377
+      ],
+      "kb_type": "negative_case",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0129",
+      "query": "SIM0336 这个节点操作规程 价格取数",
+      "expected_chunk_ids": [
+        336
+      ],
+      "kb_type": "process",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0130",
+      "query": "SIM0256 话术要点 让步要换什么条件",
+      "expected_chunk_ids": [
+        256
+      ],
+      "kb_type": "skill",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0131",
+      "query": "SIM0203 这个客户是什么分级 月采购量",
+      "expected_chunk_ids": [
+        203
+      ],
+      "kb_type": "customer",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0132",
+      "query": "SIM0330 这个节点操作规程 价格取数",
+      "expected_chunk_ids": [
+        330
+      ],
+      "kb_type": "process",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0133",
+      "query": "SIM0235 这个客户是什么分级 月采购量",
+      "expected_chunk_ids": [
+        235
+      ],
+      "kb_type": "customer",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0134",
+      "query": "SIM0074 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        74
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0135",
+      "query": "SIM0442 课程目标与课后练习",
+      "expected_chunk_ids": [
+        442
+      ],
+      "kb_type": "training",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0136",
+      "query": "SIM0493 课程目标与课后练习",
+      "expected_chunk_ids": [
+        493
+      ],
+      "kb_type": "training",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0137",
+      "query": "SIM0127 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        127
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0138",
+      "query": "SIM0475 课程目标与课后练习",
+      "expected_chunk_ids": [
+        475
+      ],
+      "kb_type": "training",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0139",
+      "query": "SIM0276 话术要点 让步要换什么条件",
+      "expected_chunk_ids": [
+        276
+      ],
+      "kb_type": "skill",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0140",
+      "query": "SIM0135 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        135
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0141",
+      "query": "SIM0300 话术要点 让步要换什么条件",
+      "expected_chunk_ids": [
+        300
+      ],
+      "kb_type": "skill",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0142",
+      "query": "SIM0220 这个客户是什么分级 月采购量",
+      "expected_chunk_ids": [
+        220
+      ],
+      "kb_type": "customer",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0143",
+      "query": "SIM0299 话术要点 让步要换什么条件",
+      "expected_chunk_ids": [
+        299
+      ],
+      "kb_type": "skill",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0144",
+      "query": "SIM0205 这个客户是什么分级 月采购量",
+      "expected_chunk_ids": [
+        205
+      ],
+      "kb_type": "customer",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0145",
+      "query": "SIM0428 课程目标与课后练习",
+      "expected_chunk_ids": [
+        428
+      ],
+      "kb_type": "training",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0146",
+      "query": "SIM0387 这次丢单的根因和改进",
+      "expected_chunk_ids": [
+        387
+      ],
+      "kb_type": "negative_case",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0147",
+      "query": "SIM0071 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        71
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0148",
+      "query": "SIM0261 话术要点 让步要换什么条件",
+      "expected_chunk_ids": [
+        261
+      ],
+      "kb_type": "skill",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0149",
+      "query": "SIM0253 话术要点 让步要换什么条件",
+      "expected_chunk_ids": [
+        253
+      ],
+      "kb_type": "skill",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0150",
+      "query": "SIM0047 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        47
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0151",
+      "query": "SIM0025 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        25
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0152",
+      "query": "SIM0057 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        57
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0153",
+      "query": "SIM0079 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        79
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0154",
+      "query": "SIM0430 课程目标与课后练习",
+      "expected_chunk_ids": [
+        430
+      ],
+      "kb_type": "training",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0155",
+      "query": "SIM0459 课程目标与课后练习",
+      "expected_chunk_ids": [
+        459
+      ],
+      "kb_type": "training",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0156",
+      "query": "SIM0488 课程目标与课后练习",
+      "expected_chunk_ids": [
+        488
+      ],
+      "kb_type": "training",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0157",
+      "query": "SIM0306 话术要点 让步要换什么条件",
+      "expected_chunk_ids": [
+        306
+      ],
+      "kb_type": "skill",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0158",
+      "query": "SIM0033 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        33
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0159",
+      "query": "SIM0198 这个客户是什么分级 月采购量",
+      "expected_chunk_ids": [
+        198
+      ],
+      "kb_type": "customer",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0160",
+      "query": "SIM0196 这个客户是什么分级 月采购量",
+      "expected_chunk_ids": [
+        196
+      ],
+      "kb_type": "customer",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0161",
+      "query": "SIM0406 这次丢单的根因和改进",
+      "expected_chunk_ids": [
+        406
+      ],
+      "kb_type": "negative_case",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0162",
+      "query": "SIM0240 这个客户是什么分级 月采购量",
+      "expected_chunk_ids": [
+        240
+      ],
+      "kb_type": "customer",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0163",
+      "query": "SIM0271 话术要点 让步要换什么条件",
+      "expected_chunk_ids": [
+        271
+      ],
+      "kb_type": "skill",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0164",
+      "query": "SIM0129 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        129
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0165",
+      "query": "SIM0284 话术要点 让步要换什么条件",
+      "expected_chunk_ids": [
+        284
+      ],
+      "kb_type": "skill",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0166",
+      "query": "SIM0006 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        6
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0167",
+      "query": "SIM0059 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        59
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0168",
+      "query": "SIM0437 课程目标与课后练习",
+      "expected_chunk_ids": [
+        437
+      ],
+      "kb_type": "training",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0169",
+      "query": "SIM0405 这次丢单的根因和改进",
+      "expected_chunk_ids": [
+        405
+      ],
+      "kb_type": "negative_case",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0170",
+      "query": "SIM0329 这个节点操作规程 价格取数",
+      "expected_chunk_ids": [
+        329
+      ],
+      "kb_type": "process",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0171",
+      "query": "SIM0456 课程目标与课后练习",
+      "expected_chunk_ids": [
+        456
+      ],
+      "kb_type": "training",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0172",
+      "query": "SIM0499 课程目标与课后练习",
+      "expected_chunk_ids": [
+        499
+      ],
+      "kb_type": "training",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0173",
+      "query": "SIM0432 课程目标与课后练习",
+      "expected_chunk_ids": [
+        432
+      ],
+      "kb_type": "training",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0174",
+      "query": "SIM0223 这个客户是什么分级 月采购量",
+      "expected_chunk_ids": [
+        223
+      ],
+      "kb_type": "customer",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0175",
+      "query": "SIM0081 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        81
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0176",
+      "query": "SIM0460 课程目标与课后练习",
+      "expected_chunk_ids": [
+        460
+      ],
+      "kb_type": "training",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0177",
+      "query": "SIM0002 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        2
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0178",
+      "query": "SIM0431 课程目标与课后练习",
+      "expected_chunk_ids": [
+        431
+      ],
+      "kb_type": "training",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0179",
+      "query": "SIM0257 话术要点 让步要换什么条件",
+      "expected_chunk_ids": [
+        257
+      ],
+      "kb_type": "skill",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0180",
+      "query": "SIM0092 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        92
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0181",
+      "query": "SIM0260 话术要点 让步要换什么条件",
+      "expected_chunk_ids": [
+        260
+      ],
+      "kb_type": "skill",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0182",
+      "query": "SIM0055 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        55
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0183",
+      "query": "SIM0153 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        153
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0184",
+      "query": "SIM0320 话术要点 让步要换什么条件",
+      "expected_chunk_ids": [
+        320
+      ],
+      "kb_type": "skill",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0185",
+      "query": "SIM0400 这次丢单的根因和改进",
+      "expected_chunk_ids": [
+        400
+      ],
+      "kb_type": "negative_case",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0186",
+      "query": "SIM0474 课程目标与课后练习",
+      "expected_chunk_ids": [
+        474
+      ],
+      "kb_type": "training",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0187",
+      "query": "SIM0348 这个节点操作规程 价格取数",
+      "expected_chunk_ids": [
+        348
+      ],
+      "kb_type": "process",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0188",
+      "query": "SIM0192 这个客户是什么分级 月采购量",
+      "expected_chunk_ids": [
+        192
+      ],
+      "kb_type": "customer",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0189",
+      "query": "SIM0083 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        83
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0190",
+      "query": "SIM0277 话术要点 让步要换什么条件",
+      "expected_chunk_ids": [
+        277
+      ],
+      "kb_type": "skill",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0191",
+      "query": "SIM0272 话术要点 让步要换什么条件",
+      "expected_chunk_ids": [
+        272
+      ],
+      "kb_type": "skill",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0192",
+      "query": "SIM0001 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        1
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0193",
+      "query": "SIM0307 话术要点 让步要换什么条件",
+      "expected_chunk_ids": [
+        307
+      ],
+      "kb_type": "skill",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0194",
+      "query": "SIM0166 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        166
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0195",
+      "query": "SIM0251 话术要点 让步要换什么条件",
+      "expected_chunk_ids": [
+        251
+      ],
+      "kb_type": "skill",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0196",
+      "query": "SIM0010 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        10
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0197",
+      "query": "SIM0331 这个节点操作规程 价格取数",
+      "expected_chunk_ids": [
+        331
+      ],
+      "kb_type": "process",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0198",
+      "query": "SIM0356 这个节点操作规程 价格取数",
+      "expected_chunk_ids": [
+        356
+      ],
+      "kb_type": "process",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0199",
+      "query": "SIM0158 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        158
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0200",
+      "query": "SIM0123 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        123
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0201",
+      "query": "SIM0030 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        30
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0202",
+      "query": "SIM0124 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        124
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0203",
+      "query": "SIM0376 这次丢单的根因和改进",
+      "expected_chunk_ids": [
+        376
+      ],
+      "kb_type": "negative_case",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0204",
+      "query": "SIM0418 这次丢单的根因和改进",
+      "expected_chunk_ids": [
+        418
+      ],
+      "kb_type": "negative_case",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0205",
+      "query": "SIM0044 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        44
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0206",
+      "query": "SIM0249 这个客户是什么分级 月采购量",
+      "expected_chunk_ids": [
+        249
+      ],
+      "kb_type": "customer",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0207",
+      "query": "SIM0424 这次丢单的根因和改进",
+      "expected_chunk_ids": [
+        424
+      ],
+      "kb_type": "negative_case",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0208",
+      "query": "SIM0273 话术要点 让步要换什么条件",
+      "expected_chunk_ids": [
+        273
+      ],
+      "kb_type": "skill",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0209",
+      "query": "SIM0065 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        65
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0210",
+      "query": "SIM0066 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        66
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0211",
+      "query": "SIM0244 这个客户是什么分级 月采购量",
+      "expected_chunk_ids": [
+        244
+      ],
+      "kb_type": "customer",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0212",
+      "query": "SIM0282 话术要点 让步要换什么条件",
+      "expected_chunk_ids": [
+        282
+      ],
+      "kb_type": "skill",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0213",
+      "query": "SIM0085 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        85
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0214",
+      "query": "SIM0366 这个节点操作规程 价格取数",
+      "expected_chunk_ids": [
+        366
+      ],
+      "kb_type": "process",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0215",
+      "query": "SIM0338 这个节点操作规程 价格取数",
+      "expected_chunk_ids": [
+        338
+      ],
+      "kb_type": "process",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0216",
+      "query": "SIM0345 这个节点操作规程 价格取数",
+      "expected_chunk_ids": [
+        345
+      ],
+      "kb_type": "process",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0217",
+      "query": "SIM0373 这个节点操作规程 价格取数",
+      "expected_chunk_ids": [
+        373
+      ],
+      "kb_type": "process",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0218",
+      "query": "SIM0311 话术要点 让步要换什么条件",
+      "expected_chunk_ids": [
+        311
+      ],
+      "kb_type": "skill",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0219",
+      "query": "SIM0103 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        103
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0220",
+      "query": "SIM0160 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        160
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0221",
+      "query": "SIM0357 这个节点操作规程 价格取数",
+      "expected_chunk_ids": [
+        357
+      ],
+      "kb_type": "process",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0222",
+      "query": "SIM0313 话术要点 让步要换什么条件",
+      "expected_chunk_ids": [
+        313
+      ],
+      "kb_type": "skill",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0223",
+      "query": "SIM0225 这个客户是什么分级 月采购量",
+      "expected_chunk_ids": [
+        225
+      ],
+      "kb_type": "customer",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0224",
+      "query": "SIM0265 话术要点 让步要换什么条件",
+      "expected_chunk_ids": [
+        265
+      ],
+      "kb_type": "skill",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0225",
+      "query": "SIM0232 这个客户是什么分级 月采购量",
+      "expected_chunk_ids": [
+        232
+      ],
+      "kb_type": "customer",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0226",
+      "query": "SIM0062 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        62
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0227",
+      "query": "SIM0364 这个节点操作规程 价格取数",
+      "expected_chunk_ids": [
+        364
+      ],
+      "kb_type": "process",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0228",
+      "query": "SIM0116 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        116
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0229",
+      "query": "SIM0343 这个节点操作规程 价格取数",
+      "expected_chunk_ids": [
+        343
+      ],
+      "kb_type": "process",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0230",
+      "query": "SIM0174 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        174
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0231",
+      "query": "SIM0011 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        11
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0232",
+      "query": "SIM0383 这次丢单的根因和改进",
+      "expected_chunk_ids": [
+        383
+      ],
+      "kb_type": "negative_case",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0233",
+      "query": "SIM0355 这个节点操作规程 价格取数",
+      "expected_chunk_ids": [
+        355
+      ],
+      "kb_type": "process",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0234",
+      "query": "SIM0462 课程目标与课后练习",
+      "expected_chunk_ids": [
+        462
+      ],
+      "kb_type": "training",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0235",
+      "query": "SIM0401 这次丢单的根因和改进",
+      "expected_chunk_ids": [
+        401
+      ],
+      "kb_type": "negative_case",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0236",
+      "query": "SIM0031 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        31
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0237",
+      "query": "SIM0269 话术要点 让步要换什么条件",
+      "expected_chunk_ids": [
+        269
+      ],
+      "kb_type": "skill",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0238",
+      "query": "SIM0035 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        35
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0239",
+      "query": "SIM0382 这次丢单的根因和改进",
+      "expected_chunk_ids": [
+        382
+      ],
+      "kb_type": "negative_case",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0240",
+      "query": "SIM0170 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        170
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0241",
+      "query": "SIM0266 话术要点 让步要换什么条件",
+      "expected_chunk_ids": [
+        266
+      ],
+      "kb_type": "skill",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0242",
+      "query": "SIM0122 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        122
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0243",
+      "query": "SIM0441 课程目标与课后练习",
+      "expected_chunk_ids": [
+        441
+      ],
+      "kb_type": "training",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0244",
+      "query": "SIM0295 话术要点 让步要换什么条件",
+      "expected_chunk_ids": [
+        295
+      ],
+      "kb_type": "skill",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0245",
+      "query": "SIM0110 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        110
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0246",
+      "query": "SIM0452 课程目标与课后练习",
+      "expected_chunk_ids": [
+        452
+      ],
+      "kb_type": "training",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0247",
+      "query": "SIM0492 课程目标与课后练习",
+      "expected_chunk_ids": [
+        492
+      ],
+      "kb_type": "training",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0248",
+      "query": "SIM0485 课程目标与课后练习",
+      "expected_chunk_ids": [
+        485
+      ],
+      "kb_type": "training",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0249",
+      "query": "SIM0422 这次丢单的根因和改进",
+      "expected_chunk_ids": [
+        422
+      ],
+      "kb_type": "negative_case",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0250",
+      "query": "SIM0226 这个客户是什么分级 月采购量",
+      "expected_chunk_ids": [
+        226
+      ],
+      "kb_type": "customer",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0251",
+      "query": "SIM0147 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        147
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0252",
+      "query": "SIM0148 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        148
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0253",
+      "query": "SIM0478 课程目标与课后练习",
+      "expected_chunk_ids": [
+        478
+      ],
+      "kb_type": "training",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0254",
+      "query": "SIM0063 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        63
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0255",
+      "query": "SIM0201 这个客户是什么分级 月采购量",
+      "expected_chunk_ids": [
+        201
+      ],
+      "kb_type": "customer",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0256",
+      "query": "SIM0248 这个客户是什么分级 月采购量",
+      "expected_chunk_ids": [
+        248
+      ],
+      "kb_type": "customer",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0257",
+      "query": "SIM0207 这个客户是什么分级 月采购量",
+      "expected_chunk_ids": [
+        207
+      ],
+      "kb_type": "customer",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0258",
+      "query": "SIM0105 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        105
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0259",
+      "query": "SIM0049 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        49
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0260",
+      "query": "SIM0403 这次丢单的根因和改进",
+      "expected_chunk_ids": [
+        403
+      ],
+      "kb_type": "negative_case",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0261",
+      "query": "SIM0241 这个客户是什么分级 月采购量",
+      "expected_chunk_ids": [
+        241
+      ],
+      "kb_type": "customer",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0262",
+      "query": "SIM0169 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        169
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0263",
+      "query": "SIM0453 课程目标与课后练习",
+      "expected_chunk_ids": [
+        453
+      ],
+      "kb_type": "training",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0264",
+      "query": "SIM0091 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        91
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0265",
+      "query": "SIM0372 这个节点操作规程 价格取数",
+      "expected_chunk_ids": [
+        372
+      ],
+      "kb_type": "process",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0266",
+      "query": "SIM0106 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        106
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0267",
+      "query": "SIM0417 这次丢单的根因和改进",
+      "expected_chunk_ids": [
+        417
+      ],
+      "kb_type": "negative_case",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0268",
+      "query": "SIM0222 这个客户是什么分级 月采购量",
+      "expected_chunk_ids": [
+        222
+      ],
+      "kb_type": "customer",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0269",
+      "query": "SIM0411 这次丢单的根因和改进",
+      "expected_chunk_ids": [
+        411
+      ],
+      "kb_type": "negative_case",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0270",
+      "query": "SIM0476 课程目标与课后练习",
+      "expected_chunk_ids": [
+        476
+      ],
+      "kb_type": "training",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0271",
+      "query": "SIM0451 课程目标与课后练习",
+      "expected_chunk_ids": [
+        451
+      ],
+      "kb_type": "training",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0272",
+      "query": "SIM0168 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        168
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0273",
+      "query": "SIM0308 话术要点 让步要换什么条件",
+      "expected_chunk_ids": [
+        308
+      ],
+      "kb_type": "skill",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0274",
+      "query": "SIM0026 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        26
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0275",
+      "query": "SIM0482 课程目标与课后练习",
+      "expected_chunk_ids": [
+        482
+      ],
+      "kb_type": "training",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0276",
+      "query": "SIM0104 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        104
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0277",
+      "query": "SIM0362 这个节点操作规程 价格取数",
+      "expected_chunk_ids": [
+        362
+      ],
+      "kb_type": "process",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0278",
+      "query": "SIM0087 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        87
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0279",
+      "query": "SIM0470 课程目标与课后练习",
+      "expected_chunk_ids": [
+        470
+      ],
+      "kb_type": "training",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0280",
+      "query": "SIM0221 这个客户是什么分级 月采购量",
+      "expected_chunk_ids": [
+        221
+      ],
+      "kb_type": "customer",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0281",
+      "query": "SIM0028 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        28
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0282",
+      "query": "SIM0436 课程目标与课后练习",
+      "expected_chunk_ids": [
+        436
+      ],
+      "kb_type": "training",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0283",
+      "query": "SIM0447 课程目标与课后练习",
+      "expected_chunk_ids": [
+        447
+      ],
+      "kb_type": "training",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0284",
+      "query": "SIM0242 这个客户是什么分级 月采购量",
+      "expected_chunk_ids": [
+        242
+      ],
+      "kb_type": "customer",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0285",
+      "query": "SIM0379 这次丢单的根因和改进",
+      "expected_chunk_ids": [
+        379
+      ],
+      "kb_type": "negative_case",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0286",
+      "query": "SIM0494 课程目标与课后练习",
+      "expected_chunk_ids": [
+        494
+      ],
+      "kb_type": "training",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0287",
+      "query": "SIM0294 话术要点 让步要换什么条件",
+      "expected_chunk_ids": [
+        294
+      ],
+      "kb_type": "skill",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0288",
+      "query": "SIM0438 课程目标与课后练习",
+      "expected_chunk_ids": [
+        438
+      ],
+      "kb_type": "training",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0289",
+      "query": "SIM0386 这次丢单的根因和改进",
+      "expected_chunk_ids": [
+        386
+      ],
+      "kb_type": "negative_case",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0290",
+      "query": "SIM0365 这个节点操作规程 价格取数",
+      "expected_chunk_ids": [
+        365
+      ],
+      "kb_type": "process",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0291",
+      "query": "SIM0119 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        119
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0292",
+      "query": "SIM0219 这个客户是什么分级 月采购量",
+      "expected_chunk_ids": [
+        219
+      ],
+      "kb_type": "customer",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0293",
+      "query": "SIM0020 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        20
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0294",
+      "query": "SIM0114 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        114
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0295",
+      "query": "SIM0496 课程目标与课后练习",
+      "expected_chunk_ids": [
+        496
+      ],
+      "kb_type": "training",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0296",
+      "query": "SIM0227 这个客户是什么分级 月采购量",
+      "expected_chunk_ids": [
+        227
+      ],
+      "kb_type": "customer",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0297",
+      "query": "SIM0498 课程目标与课后练习",
+      "expected_chunk_ids": [
+        498
+      ],
+      "kb_type": "training",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0298",
+      "query": "SIM0385 这次丢单的根因和改进",
+      "expected_chunk_ids": [
+        385
+      ],
+      "kb_type": "negative_case",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0299",
+      "query": "SIM0255 话术要点 让步要换什么条件",
+      "expected_chunk_ids": [
+        255
+      ],
+      "kb_type": "skill",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0300",
+      "query": "SIM0267 话术要点 让步要换什么条件",
+      "expected_chunk_ids": [
+        267
+      ],
+      "kb_type": "skill",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0301",
+      "query": "SIM0423 这次丢单的根因和改进",
+      "expected_chunk_ids": [
+        423
+      ],
+      "kb_type": "negative_case",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0302",
+      "query": "SIM0193 这个客户是什么分级 月采购量",
+      "expected_chunk_ids": [
+        193
+      ],
+      "kb_type": "customer",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0303",
+      "query": "SIM0061 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        61
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0304",
+      "query": "SIM0043 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        43
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0305",
+      "query": "SIM0243 这个客户是什么分级 月采购量",
+      "expected_chunk_ids": [
+        243
+      ],
+      "kb_type": "customer",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0306",
+      "query": "SIM0125 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        125
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0307",
+      "query": "SIM0458 课程目标与课后练习",
+      "expected_chunk_ids": [
+        458
+      ],
+      "kb_type": "training",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0308",
+      "query": "SIM0319 话术要点 让步要换什么条件",
+      "expected_chunk_ids": [
+        319
+      ],
+      "kb_type": "skill",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0309",
+      "query": "SIM0289 话术要点 让步要换什么条件",
+      "expected_chunk_ids": [
+        289
+      ],
+      "kb_type": "skill",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0310",
+      "query": "SIM0340 这个节点操作规程 价格取数",
+      "expected_chunk_ids": [
+        340
+      ],
+      "kb_type": "process",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0311",
+      "query": "SIM0197 这个客户是什么分级 月采购量",
+      "expected_chunk_ids": [
+        197
+      ],
+      "kb_type": "customer",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0312",
+      "query": "SIM0098 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        98
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0313",
+      "query": "SIM0477 课程目标与课后练习",
+      "expected_chunk_ids": [
+        477
+      ],
+      "kb_type": "training",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0314",
+      "query": "SIM0100 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        100
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0315",
+      "query": "SIM0068 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        68
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0316",
+      "query": "SIM0421 这次丢单的根因和改进",
+      "expected_chunk_ids": [
+        421
+      ],
+      "kb_type": "negative_case",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0317",
+      "query": "SIM0473 课程目标与课后练习",
+      "expected_chunk_ids": [
+        473
+      ],
+      "kb_type": "training",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0318",
+      "query": "SIM0213 这个客户是什么分级 月采购量",
+      "expected_chunk_ids": [
+        213
+      ],
+      "kb_type": "customer",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0319",
+      "query": "SIM0179 这个客户是什么分级 月采购量",
+      "expected_chunk_ids": [
+        179
+      ],
+      "kb_type": "customer",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0320",
+      "query": "SIM0258 话术要点 让步要换什么条件",
+      "expected_chunk_ids": [
+        258
+      ],
+      "kb_type": "skill",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0321",
+      "query": "SIM0461 课程目标与课后练习",
+      "expected_chunk_ids": [
+        461
+      ],
+      "kb_type": "training",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0322",
+      "query": "SIM0392 这次丢单的根因和改进",
+      "expected_chunk_ids": [
+        392
+      ],
+      "kb_type": "negative_case",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0323",
+      "query": "SIM0040 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        40
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0324",
+      "query": "SIM0285 话术要点 让步要换什么条件",
+      "expected_chunk_ids": [
+        285
+      ],
+      "kb_type": "skill",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0325",
+      "query": "SIM0076 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        76
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0326",
+      "query": "SIM0056 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        56
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0327",
+      "query": "SIM0015 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        15
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0328",
+      "query": "SIM0419 这次丢单的根因和改进",
+      "expected_chunk_ids": [
+        419
+      ],
+      "kb_type": "negative_case",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0329",
+      "query": "SIM0202 这个客户是什么分级 月采购量",
+      "expected_chunk_ids": [
+        202
+      ],
+      "kb_type": "customer",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0330",
+      "query": "SIM0191 这个客户是什么分级 月采购量",
+      "expected_chunk_ids": [
+        191
+      ],
+      "kb_type": "customer",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0331",
+      "query": "SIM0399 这次丢单的根因和改进",
+      "expected_chunk_ids": [
+        399
+      ],
+      "kb_type": "negative_case",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0332",
+      "query": "SIM0388 这次丢单的根因和改进",
+      "expected_chunk_ids": [
+        388
+      ],
+      "kb_type": "negative_case",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0333",
+      "query": "SIM0204 这个客户是什么分级 月采购量",
+      "expected_chunk_ids": [
+        204
+      ],
+      "kb_type": "customer",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0334",
+      "query": "SIM0150 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        150
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0335",
+      "query": "SIM0301 话术要点 让步要换什么条件",
+      "expected_chunk_ids": [
+        301
+      ],
+      "kb_type": "skill",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0336",
+      "query": "SIM0337 这个节点操作规程 价格取数",
+      "expected_chunk_ids": [
+        337
+      ],
+      "kb_type": "process",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0337",
+      "query": "SIM0287 话术要点 让步要换什么条件",
+      "expected_chunk_ids": [
+        287
+      ],
+      "kb_type": "skill",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0338",
+      "query": "SIM0297 话术要点 让步要换什么条件",
+      "expected_chunk_ids": [
+        297
+      ],
+      "kb_type": "skill",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0339",
+      "query": "SIM0239 这个客户是什么分级 月采购量",
+      "expected_chunk_ids": [
+        239
+      ],
+      "kb_type": "customer",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0340",
+      "query": "SIM0131 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        131
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0341",
+      "query": "SIM0021 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        21
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0342",
+      "query": "SIM0449 课程目标与课后练习",
+      "expected_chunk_ids": [
+        449
+      ],
+      "kb_type": "training",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0343",
+      "query": "SIM0018 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        18
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0344",
+      "query": "SIM0318 话术要点 让步要换什么条件",
+      "expected_chunk_ids": [
+        318
+      ],
+      "kb_type": "skill",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0345",
+      "query": "SIM0466 课程目标与课后练习",
+      "expected_chunk_ids": [
+        466
+      ],
+      "kb_type": "training",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0346",
+      "query": "SIM0342 这个节点操作规程 价格取数",
+      "expected_chunk_ids": [
+        342
+      ],
+      "kb_type": "process",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0347",
+      "query": "SIM0278 话术要点 让步要换什么条件",
+      "expected_chunk_ids": [
+        278
+      ],
+      "kb_type": "skill",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0348",
+      "query": "SIM0433 课程目标与课后练习",
+      "expected_chunk_ids": [
+        433
+      ],
+      "kb_type": "training",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0349",
+      "query": "SIM0146 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        146
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0350",
+      "query": "SIM0209 这个客户是什么分级 月采购量",
+      "expected_chunk_ids": [
+        209
+      ],
+      "kb_type": "customer",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0351",
+      "query": "SIM0467 课程目标与课后练习",
+      "expected_chunk_ids": [
+        467
+      ],
+      "kb_type": "training",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0352",
+      "query": "SIM0270 话术要点 让步要换什么条件",
+      "expected_chunk_ids": [
+        270
+      ],
+      "kb_type": "skill",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0353",
+      "query": "SIM0281 话术要点 让步要换什么条件",
+      "expected_chunk_ids": [
+        281
+      ],
+      "kb_type": "skill",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0354",
+      "query": "SIM0407 这次丢单的根因和改进",
+      "expected_chunk_ids": [
+        407
+      ],
+      "kb_type": "negative_case",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0355",
+      "query": "SIM0145 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        145
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0356",
+      "query": "SIM0134 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        134
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0357",
+      "query": "SIM0180 这个客户是什么分级 月采购量",
+      "expected_chunk_ids": [
+        180
+      ],
+      "kb_type": "customer",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0358",
+      "query": "SIM0067 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        67
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0359",
+      "query": "SIM0450 课程目标与课后练习",
+      "expected_chunk_ids": [
+        450
+      ],
+      "kb_type": "training",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0360",
+      "query": "SIM0144 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        144
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0361",
+      "query": "SIM0472 课程目标与课后练习",
+      "expected_chunk_ids": [
+        472
+      ],
+      "kb_type": "training",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0362",
+      "query": "SIM0352 这个节点操作规程 价格取数",
+      "expected_chunk_ids": [
+        352
+      ],
+      "kb_type": "process",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0363",
+      "query": "SIM0315 话术要点 让步要换什么条件",
+      "expected_chunk_ids": [
+        315
+      ],
+      "kb_type": "skill",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0364",
+      "query": "SIM0254 话术要点 让步要换什么条件",
+      "expected_chunk_ids": [
+        254
+      ],
+      "kb_type": "skill",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0365",
+      "query": "SIM0077 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        77
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0366",
+      "query": "SIM0264 话术要点 让步要换什么条件",
+      "expected_chunk_ids": [
+        264
+      ],
+      "kb_type": "skill",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0367",
+      "query": "SIM0489 课程目标与课后练习",
+      "expected_chunk_ids": [
+        489
+      ],
+      "kb_type": "training",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0368",
+      "query": "SIM0019 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        19
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0369",
+      "query": "SIM0003 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        3
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0370",
+      "query": "SIM0323 话术要点 让步要换什么条件",
+      "expected_chunk_ids": [
+        323
+      ],
+      "kb_type": "skill",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0371",
+      "query": "SIM0325 话术要点 让步要换什么条件",
+      "expected_chunk_ids": [
+        325
+      ],
+      "kb_type": "skill",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0372",
+      "query": "SIM0133 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        133
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0373",
+      "query": "SIM0199 这个客户是什么分级 月采购量",
+      "expected_chunk_ids": [
+        199
+      ],
+      "kb_type": "customer",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0374",
+      "query": "SIM0292 话术要点 让步要换什么条件",
+      "expected_chunk_ids": [
+        292
+      ],
+      "kb_type": "skill",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0375",
+      "query": "SIM0402 这次丢单的根因和改进",
+      "expected_chunk_ids": [
+        402
+      ],
+      "kb_type": "negative_case",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0376",
+      "query": "SIM0262 话术要点 让步要换什么条件",
+      "expected_chunk_ids": [
+        262
+      ],
+      "kb_type": "skill",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0377",
+      "query": "SIM0234 这个客户是什么分级 月采购量",
+      "expected_chunk_ids": [
+        234
+      ],
+      "kb_type": "customer",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0378",
+      "query": "SIM0486 课程目标与课后练习",
+      "expected_chunk_ids": [
+        486
+      ],
+      "kb_type": "training",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0379",
+      "query": "SIM0268 话术要点 让步要换什么条件",
+      "expected_chunk_ids": [
+        268
+      ],
+      "kb_type": "skill",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0380",
+      "query": "SIM0009 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        9
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0381",
+      "query": "SIM0245 这个客户是什么分级 月采购量",
+      "expected_chunk_ids": [
+        245
+      ],
+      "kb_type": "customer",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0382",
+      "query": "SIM0032 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        32
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0383",
+      "query": "SIM0159 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        159
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0384",
+      "query": "SIM0429 课程目标与课后练习",
+      "expected_chunk_ids": [
+        429
+      ],
+      "kb_type": "training",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0385",
+      "query": "SIM0490 课程目标与课后练习",
+      "expected_chunk_ids": [
+        490
+      ],
+      "kb_type": "training",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0386",
+      "query": "SIM0349 这个节点操作规程 价格取数",
+      "expected_chunk_ids": [
+        349
+      ],
+      "kb_type": "process",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0387",
+      "query": "SIM0107 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        107
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0388",
+      "query": "SIM0070 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        70
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0389",
+      "query": "SIM0393 这次丢单的根因和改进",
+      "expected_chunk_ids": [
+        393
+      ],
+      "kb_type": "negative_case",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0390",
+      "query": "SIM0039 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        39
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0391",
+      "query": "SIM0314 话术要点 让步要换什么条件",
+      "expected_chunk_ids": [
+        314
+      ],
+      "kb_type": "skill",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0392",
+      "query": "SIM0154 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        154
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0393",
+      "query": "SIM0394 这次丢单的根因和改进",
+      "expected_chunk_ids": [
+        394
+      ],
+      "kb_type": "negative_case",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0394",
+      "query": "SIM0172 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        172
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0395",
+      "query": "SIM0324 话术要点 让步要换什么条件",
+      "expected_chunk_ids": [
+        324
+      ],
+      "kb_type": "skill",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0396",
+      "query": "SIM0086 这款支架最大承载多少千克 认证情况",
+      "expected_chunk_ids": [
+        86
+      ],
+      "kb_type": "product",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0397",
+      "query": "SIM0354 这个节点操作规程 价格取数",
+      "expected_chunk_ids": [
+        354
+      ],
+      "kb_type": "process",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0398",
+      "query": "SIM0238 这个客户是什么分级 月采购量",
+      "expected_chunk_ids": [
+        238
+      ],
+      "kb_type": "customer",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0399",
+      "query": "SIM0363 这个节点操作规程 价格取数",
+      "expected_chunk_ids": [
+        363
+      ],
+      "kb_type": "process",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    },
+    {
+      "case_id": "sim-0400",
+      "query": "SIM0231 这个客户是什么分级 月采购量",
+      "expected_chunk_ids": [
+        231
+      ],
+      "kb_type": "customer",
+      "dimensions": {
+        "语料": "sim_corpus"
+      }
+    }
+  ]
+}
