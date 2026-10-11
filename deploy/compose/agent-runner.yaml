@@ -1,0 +1,51 @@
+# 知识产权归甲方所有（COM-IP-01）——AI 外贸销售智能体系统交付物。
+# 许可与再分发须依据双方合同约定执行（COM-IP-02 乙方零使用权）。
+# agent-runner 执行器编排片段（FR-AG-001/002，SR-AG-001 §6.1 + SR-NFR-REL-03 §6.2；
+# 迭代 2.1 demo）。与既有 deploy/compose/compose.yaml 并列生效，不修改既有文件：
+#   docker compose -f deploy/compose/compose.yaml -f deploy/compose/agent-runner.yaml up -d
+# 出口绑定双重强制：network_mode 共享 proxy-egress-01 命名空间（透明代理，应用层
+# 无法绕过）+ HTTP(S)_PROXY 显式代理（双保险）；一账号一容器 + 独立 Cookie 卷。
+# 凭证口径：代理接入串/账号凭证一律 Docker Secrets 注入（不落环境变量，NFR-SEC-04）；
+# 本文件仅存非凭证占位（${...} 形态，.env 注入）。
+services:
+  proxy-egress-01:                          # 出口专用容器：agent-runner-01 唯一网络出口
+    restart: always
+    image: ai-sale/proxy-egress:0.1.0       # glider 转发 + iptables 透明强制（FR-AG-001 §6.2）
+    cap_add: [NET_ADMIN]                    # 仅为本命名空间配置 NAT 规则（最小权限）
+    environment:
+      - EXPECTED_EGRESS_IP=${PROXY_IP_01}   # 期望出口 IP（<PROXY-IP-01> 占位，非凭证）
+    secrets: [proxy_url_01]                 # 代理接入串：secrets 内存注入，不落盘不入 Git
+    healthcheck:
+      test: ["CMD-SHELL", "sh /app/check-egress-ip.sh"]   # 出口 IP 自检（漂移即告警暂停）
+      interval: 30s
+      timeout: 10s
+      retries: 3
+  agent-runner-01:                          # OpenClaw 实例容器（业务面 FR-AG-002）
+    restart: always                         # 崩溃退出自动拉起（NFR-REL-03 防线②）
+    image: ai-sale/openclaw-runner:0.1.0
+    network_mode: "service:proxy-egress-01" # 共享出口命名空间：全部流量强制走住宅 IP
+    environment:
+      - HTTP_PROXY=http://127.0.0.1:6152    # 应用层显式代理（与透明代理构成双保险）
+      - HTTPS_PROXY=http://127.0.0.1:6152
+      - NO_PROXY=localhost,127.0.0.1,app,postgres,redis,milvus,tei,nginx  # 内网直连
+      - KB_OPENCLAW_ENDPOINT=http://127.0.0.1:9223  # OpenClaw 端点（demo 环境变量口径）
+      - KB_AGENT_MASTER_KEY_FILE=/run/secrets/vault_master_key  # 主密钥经 secrets 注入
+    volumes:
+      - runner01_cookies:/data/cookies      # 独立 Cookie 卷（一账号一卷，P4 横向复制沿用）
+      - runner01_spool:/data/spool          # 崩溃上下文卷（错误栈落盘，重启不丢）
+    depends_on: [proxy-egress-01]
+    healthcheck:                            # 业务探针（L2 僵死检测，autoheal 消费）
+      test: ["CMD", "curl", "-fsS", "http://127.0.0.1:9223/healthz"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 90s                     # 恢复协议预算（RTO <2min 覆盖，期间失败不计数）
+    labels: ["autoheal=true"]               # unhealthy → autoheal 旁路 restart（僵死重启）
+volumes:
+  runner01_cookies: {}
+  runner01_spool: {}
+secrets:
+  proxy_url_01:
+    file: ./secrets/proxy_url_01.txt        # 不入 Git；轮换走配置变更流程（CD/CR）
+  vault_master_key:
+    file: ./secrets/vault_master_key.txt    # 凭证保险库主密钥（NFR-SEC-04，demo 占位）
