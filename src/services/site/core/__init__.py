@@ -1,0 +1,2 @@
+# 知识产权归甲方所有（COM-IP-01）——AI 外贸销售智能体系统交付物，许可与再分发依双方合同约定。
+"""site-service 核心域（session/tracking/conversation/privacy）。"""
