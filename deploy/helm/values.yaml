@@ -1,0 +1,65 @@
+# 知识产权归甲方所有（COM-IP-01）——AI 外贸销售智能体系统交付物。
+# Helm 全参数化默认值（FR-SAAS-004，SR-SAAS-004 §6.4；FR-SAAS-001 租户级 namespace/配额）。
+# 租户差异全部由 gen_config.py 覆写（values-<tenant>.yaml），本文件仅模板默认值；
+# 镜像 tag 版本化不可变（禁 latest）；brand 段为白标冷启动初值（运行时读取免发版）。
+global:
+  imageRegistry: registry.example.com
+  storageClass: ""            # 留空 = 集群默认 StorageClass（PVC 动态供给）
+image:
+  repository: aisale-app
+  tag: "1.0.0"                # 由 CI 注入 {chart-version}-{git-sha}，禁 latest
+ingress:
+  domain: sale.example.com
+  tls:
+    enabled: true             # NFR-SEC-05：唯一入口 TLS 终止
+  className: nginx
+saasTenant:
+  id: "t001"
+  namespace: aisale-t001      # 租户级 namespace 隔离（FR-SAAS-001）
+  quota:                      # 套餐配额（FR-SAAS-003 联动）
+    storageGb: 1
+    kbMaxChunks: 50000
+    maxAccounts: 4
+apps:                         # 12 服务逐个参数化（此处关键项，其余见模板目录）
+  kbService:
+    replicas: 2
+    resources:
+      requests: { cpu: 500m, memory: 1Gi }
+      limits: { cpu: "2", memory: 4Gi }
+    hpa: { min: 2, max: 6 }   # P0 流水线弹性（SR-KB-010~013）
+  agentCore:
+    replicas: 2
+    resources:
+      requests: { cpu: 500m, memory: 1Gi }
+  agentRunner:
+    replicas: 4               # 按账号扩副本（4 主 + 24 子，FR-SC-001）
+    resources:
+      requests: { cpu: "1", memory: 2Gi }
+    cookieVolume: runner-cookies   # 独立 Cookie 空间
+  saasService:
+    replicas: 2
+    resources:
+      requests: { cpu: 250m, memory: 512Mi }
+brand:                        # 白标参数（FR-SAAS-006；运行时生效无需发版）
+  logoUrl: ""                 # 留空 = 内置默认品牌
+  primaryColor: "#1E63E9"
+postgresql:                   # subchart：bitnami/postgresql
+  auth:
+    username: aisale
+    database: aisale
+  primary:
+    persistence:
+      size: 100Gi
+milvus:                       # subchart：zilliztech/milvus（BGE-M3 本地向量库）
+  persistence:
+    size: 200Gi
+redis:                        # subchart：bitnami/redis
+  master:
+    persistence:
+      size: 20Gi
+migrate:                      # pre-install Job 跑 alembic upgrade head（迁移前置快照）
+  enabled: true
+  backoffLimit: 3
+monitoring:                   # 监控栈可选（与运维方案 §2.1 一致）
+  enabled: false
+  prometheusRetention: 15d

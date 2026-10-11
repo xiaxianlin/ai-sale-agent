@@ -1,0 +1,99 @@
+================================ TDD 阶段② 红（RED）证据 —— P5 第一批 FR-SAAS-001/003/007 + NFR-SEC-07/SCA-02
+日期：2026-10-11 20:03:54
+命令：python3 -m pytest src/services/saas/tests/test_{tenant_context,quota_engine,tenant_registry,ops_service,saas_api,separation_guard,isolation_suite,saas_tools}.py（8 个新测试文件，89 条用例）
+基线：2507 passed / 1 skipped（全绿）
+预期：全部因实现缺失而失败（ModuleNotFoundError，红）；测试与实现分离可见。
+
+
+==================================== ERRORS ====================================
+_______ ERROR collecting src/services/saas/tests/test_tenant_context.py ________
+ImportError while importing test module '/Users/xiaxianlin/workspace/ai-sale-agent/repo/src/services/saas/tests/test_tenant_context.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/services/saas/tests/test_tenant_context.py:26: in <module>
+    from starlette.routing import APIRoute
+E   ImportError: cannot import name 'APIRoute' from 'starlette.routing' (/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/starlette/routing.py)
+________ ERROR collecting src/services/saas/tests/test_quota_engine.py _________
+ImportError while importing test module '/Users/xiaxianlin/workspace/ai-sale-agent/repo/src/services/saas/tests/test_quota_engine.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/services/saas/tests/test_quota_engine.py:20: in <module>
+    from services.saas.core.quota.engine import (
+E   ModuleNotFoundError: No module named 'services.saas.core.quota.engine'
+_______ ERROR collecting src/services/saas/tests/test_tenant_registry.py _______
+ImportError while importing test module '/Users/xiaxianlin/workspace/ai-sale-agent/repo/src/services/saas/tests/test_tenant_registry.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/services/saas/tests/test_tenant_registry.py:20: in <module>
+    from services.saas.core.tenant.registry import (
+E   ModuleNotFoundError: No module named 'services.saas.core.tenant.registry'
+_________ ERROR collecting src/services/saas/tests/test_ops_service.py _________
+ImportError while importing test module '/Users/xiaxianlin/workspace/ai-sale-agent/repo/src/services/saas/tests/test_ops_service.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/services/saas/tests/test_ops_service.py:18: in <module>
+    from services.saas.core.ops.service import (
+E   ModuleNotFoundError: No module named 'services.saas.core.ops.service'
+__________ ERROR collecting src/services/saas/tests/test_saas_api.py ___________
+ImportError while importing test module '/Users/xiaxianlin/workspace/ai-sale-agent/repo/src/services/saas/tests/test_saas_api.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/services/saas/tests/test_saas_api.py:18: in <module>
+    from services.saas.api.saas_api import SAAS_PLATFORM_PREFIX, SAAS_TENANT_PREFIX, create_saas_app
+E   ModuleNotFoundError: No module named 'services.saas.api.saas_api'
+______ ERROR collecting src/services/saas/tests/test_separation_guard.py _______
+ImportError while importing test module '/Users/xiaxianlin/workspace/ai-sale-agent/repo/src/services/saas/tests/test_separation_guard.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/services/saas/tests/test_separation_guard.py:20: in <module>
+    from services.saas.core.separation.guard import (
+E   ModuleNotFoundError: No module named 'services.saas.core.separation.guard'
+_______ ERROR collecting src/services/saas/tests/test_isolation_suite.py _______
+ImportError while importing test module '/Users/xiaxianlin/workspace/ai-sale-agent/repo/src/services/saas/tests/test_isolation_suite.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/services/saas/tests/test_isolation_suite.py:17: in <module>
+    from tools.saas.isolation_suite import (
+E   ModuleNotFoundError: No module named 'tools.saas.isolation_suite'
+_________ ERROR collecting src/services/saas/tests/test_saas_tools.py __________
+ImportError while importing test module '/Users/xiaxianlin/workspace/ai-sale-agent/repo/src/services/saas/tests/test_saas_tools.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/services/saas/tests/test_saas_tools.py:16: in <module>
+    from tools.saas.isolation_suite import main as isolation_main
+E   ModuleNotFoundError: No module named 'tools.saas.isolation_suite'
+=========================== short test summary info ============================
+ERROR src/services/saas/tests/test_tenant_context.py
+ERROR src/services/saas/tests/test_quota_engine.py
+ERROR src/services/saas/tests/test_tenant_registry.py
+ERROR src/services/saas/tests/test_ops_service.py
+ERROR src/services/saas/tests/test_saas_api.py
+ERROR src/services/saas/tests/test_separation_guard.py
+ERROR src/services/saas/tests/test_isolation_suite.py
+ERROR src/services/saas/tests/test_saas_tools.py
+!!!!!!!!!!!!!!!!!!! Interrupted: 8 errors during collection !!!!!!!!!!!!!!!!!!!!
+8 errors in 0.17s

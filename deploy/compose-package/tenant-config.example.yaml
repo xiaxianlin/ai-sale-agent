@@ -1,0 +1,29 @@
+# 知识产权归甲方所有（COM-IP-01）——AI 外贸销售智能体系统交付物。
+# 租户配置单一源示例（FR-SAAS-002/004，SR-SAAS-004 §3/§6.5）。
+# 接入新租户 = 复制本文件改名 tenants/<tenant-id>.yaml（零代码变更，FR-SAAS-002）；
+# 生成物：--target compose → .env；--target helm → values-<tenant>.yaml；
+# 二者携带同一指纹（gen_config.fingerprint），部署前 --target check 强制对账。
+meta:
+  tenant_id: t001            # 租户标识（OSS 前缀 / namespace / 隔离键）
+  plan: standard             # 套餐（FR-SAAS-003；配额联动 SR-SAAS-002 §6.4）
+images:
+  registry: registry.example.com
+  tag: 1.0.0-3f9c2ab         # 版本化不可变（Chart version + git SHA），禁 latest
+ingress:
+  domain: sale.example.com   # 平台分配入口域名（租户自定义域名走 FR-SAAS-006 白标流程）
+  tls_enabled: true          # nginx 唯一入口 TLS 终止（NFR-SEC-05）
+dependencies:                 # 数据层依赖清单（SBOM 源，COM-IP-05）
+  postgresql:
+    size_gb: 100             # 10-2000
+  milvus:
+    size_gb: 200             # 20-4000（向量库，BGE-M3 本地部署配套）
+  redis:
+    size_gb: 20              # 5-1000
+apps:                        # 服务级参数（12 服务全参数化，此处列关键项）
+  kbService:
+    replicas: 2              # 1-20（kb-service P0 流水线）
+  agentRunner:
+    replicas: 4              # 1-28（对应 4 主 + 24 子账号，FR-SC-001）
+brand:                       # 白标初值（FR-SAAS-006；运行时读取免发版，此处仅为冷启动）
+  primaryColor: "#1E63E9"
+  logoUrl: ""                # 留空=内置默认品牌；正式 Logo 经品牌后台上传本租户 OSS 目录

@@ -1,0 +1,19 @@
+# 知识产权归甲方所有（COM-IP-01）——AI 外贸销售智能体系统交付物。
+# Helm Chart 元清单（FR-SAAS-004，SR-SAAS-004 §6.4）。
+# version = 发布版本（CI 注入 git SHA 后缀，禁 latest）；依赖清单与运维方案 §7 一致。
+apiVersion: v2
+name: aisale
+description: AI 外贸销售智能体系统（P5 多租户 Helm 形态，12 服务 + 数据层 + 监控栈）
+type: application
+version: 1.0.0
+appVersion: "1.0.0"
+dependencies:
+  - name: postgresql
+    version: 16.4.5
+    repository: https://charts.bitnami.com/bitnami   # Apache-2.0
+  - name: milvus
+    version: 4.2.21
+    repository: https://zilliztech.github.io/milvus-helm  # Apache-2.0（Milvus 官方）
+  - name: redis
+    version: 20.6.2
+    repository: https://charts.bitnami.com/bitnami   # RSALv2/SSPL——未修改镜像使用合规

@@ -1,0 +1,2190 @@
+# TDD 阶段②红证据（FR-SAAS-002/004/005/006，任务 52）— 2026-10-11
+# 范围：src/services/saas/tests/test_onboarding_{wizard,kbinit,api}.py + test_branding_{service,api}.py
+#       + test_deploy_pkg.py + test_product_docs.py（阶段①用例，五类齐备）
+# 结果：90 collected / 90 failed（F×90，0 passed）——80×NotImplementedError（阶段②骨架），
+#       其余为部署包/产品文档交付物尚未落盘（阶段③产物）。
+# 命令：python3 -m pytest <七个测试文件> -q
+================================================================================
+
+FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF [ 80%]
+FFFFFFFFFFFFFFFFFF                                                       [100%]
+=================================== FAILURES ===================================
+______ TestEquivalence.test_create_predistributes_tenant_and_configuring _______
+
+self = <services.saas.tests.test_onboarding_wizard.TestEquivalence object at 0x102ebb530>
+
+    def test_create_predistributes_tenant_and_configuring(self) -> None:
+        """创建向导：预分配 tenant_id（OSS 前缀/隔离键需稳定 id），初始 configuring。"""
+>       wizard = OnboardingWizard()
+                 ^^^^^^^^^^^^^^^^^^
+
+src/services/saas/tests/test_onboarding_wizard.py:83: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.saas.core.onboarding.wizard.OnboardingWizard object at 0x1055c3e60>
+args = (), kwargs = {}
+
+    def __init__(self, *args: object, **kwargs: object) -> None:
+>       raise NotImplementedError("TDD 红：阶段③未实现")
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/saas/core/onboarding/wizard.py:47: NotImplementedError
+________________ TestEquivalence.test_four_legal_steps_complete ________________
+
+self = <services.saas.tests.test_onboarding_wizard.TestEquivalence object at 0x1043bfd70>
+
+    def test_four_legal_steps_complete(self) -> None:
+        """合法四步依次提交 → 全部完成（all_done + steps_done 齐全）。"""
+>       wizard = OnboardingWizard()
+                 ^^^^^^^^^^^^^^^^^^
+
+src/services/saas/tests/test_onboarding_wizard.py:89: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.saas.core.onboarding.wizard.OnboardingWizard object at 0x1043bd3a0>
+args = (), kwargs = {}
+
+    def __init__(self, *args: object, **kwargs: object) -> None:
+>       raise NotImplementedError("TDD 红：阶段③未实现")
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/saas/core/onboarding/wizard.py:47: NotImplementedError
+____________ TestEquivalence.test_company_info_legal_value_domains _____________
+
+self = <services.saas.tests.test_onboarding_wizard.TestEquivalence object at 0x1043f3080>
+
+    def test_company_info_legal_value_domains(self) -> None:
+        """合法时区×语言组合等价类全部接受（Asia/Shanghai×zh-CN 与 UTC×en）。"""
+>       wizard = OnboardingWizard()
+                 ^^^^^^^^^^^^^^^^^^
+
+src/services/saas/tests/test_onboarding_wizard.py:101: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.saas.core.onboarding.wizard.OnboardingWizard object at 0x1043bd640>
+args = (), kwargs = {}
+
+    def __init__(self, *args: object, **kwargs: object) -> None:
+>       raise NotImplementedError("TDD 红：阶段③未实现")
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/saas/core/onboarding/wizard.py:47: NotImplementedError
+_______ TestEquivalence.test_activate_materializes_and_triggers_kb_task ________
+
+self = <services.saas.tests.test_onboarding_wizard.TestEquivalence object at 0x1043f3320>
+
+    def test_activate_materializes_and_triggers_kb_task(self) -> None:
+        """激活：物化模板复制（覆盖值生效）+ 触发初始化任务 + 状态 initializing。"""
+>       wizard = OnboardingWizard()
+                 ^^^^^^^^^^^^^^^^^^
+
+src/services/saas/tests/test_onboarding_wizard.py:110: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.saas.core.onboarding.wizard.OnboardingWizard object at 0x105a65460>
+args = (), kwargs = {}
+
+    def __init__(self, *args: object, **kwargs: object) -> None:
+>       raise NotImplementedError("TDD 红：阶段③未实现")
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/saas/core/onboarding/wizard.py:47: NotImplementedError
+_________ TestEquivalence.test_activate_idempotent_replay_same_result __________
+
+self = <services.saas.tests.test_onboarding_wizard.TestEquivalence object at 0x1043f3620>
+
+    def test_activate_idempotent_replay_same_result(self) -> None:
+        """同 Idempotency-Key 重放：返回首次结果且不重复建任务。"""
+>       wizard = OnboardingWizard()
+                 ^^^^^^^^^^^^^^^^^^
+
+src/services/saas/tests/test_onboarding_wizard.py:124: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.saas.core.onboarding.wizard.OnboardingWizard object at 0x10355daf0>
+args = (), kwargs = {}
+
+    def __init__(self, *args: object, **kwargs: object) -> None:
+>       raise NotImplementedError("TDD 红：阶段③未实现")
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/saas/core/onboarding/wizard.py:47: NotImplementedError
+_________ TestBoundary.test_company_name_length_edge_64_ok_65_rejected _________
+
+self = <services.saas.tests.test_onboarding_wizard.TestBoundary object at 0x1043f3d70>
+
+    def test_company_name_length_edge_64_ok_65_rejected(self) -> None:
+        """企业名 64 字符合法、65 字符拒绝（40001）。"""
+>       wizard = OnboardingWizard()
+                 ^^^^^^^^^^^^^^^^^^
+
+src/services/saas/tests/test_onboarding_wizard.py:140: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.saas.core.onboarding.wizard.OnboardingWizard object at 0x1043bc9e0>
+args = (), kwargs = {}
+
+    def __init__(self, *args: object, **kwargs: object) -> None:
+>       raise NotImplementedError("TDD 红：阶段③未实现")
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/saas/core/onboarding/wizard.py:47: NotImplementedError
+__________ TestBoundary.test_accounts_edge_at_quota_ok_over_rejected ___________
+
+self = <services.saas.tests.test_onboarding_wizard.TestBoundary object at 0x10441c050>
+
+    def test_accounts_edge_at_quota_ok_over_rejected(self) -> None:
+        """账号数恰等套餐上限（4）合法，超一（5）拒绝。"""
+>       wizard = OnboardingWizard()
+                 ^^^^^^^^^^^^^^^^^^
+
+src/services/saas/tests/test_onboarding_wizard.py:151: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.saas.core.onboarding.wizard.OnboardingWizard object at 0x105a659d0>
+args = (), kwargs = {}
+
+    def __init__(self, *args: object, **kwargs: object) -> None:
+>       raise NotImplementedError("TDD 红：阶段③未实现")
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/saas/core/onboarding/wizard.py:47: NotImplementedError
+________ TestBoundary.test_materials_empty_and_foreign_prefix_rejected _________
+
+self = <services.saas.tests.test_onboarding_wizard.TestBoundary object at 0x10441c290>
+
+    def test_materials_empty_and_foreign_prefix_rejected(self) -> None:
+        """素材边界：空列表拒绝；他租户 oss 前缀（t:999/…）拒绝（NFR-SEC-07 隔离）。"""
+>       wizard = OnboardingWizard()
+                 ^^^^^^^^^^^^^^^^^^
+
+src/services/saas/tests/test_onboarding_wizard.py:163: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.saas.core.onboarding.wizard.OnboardingWizard object at 0x105a64890>
+args = (), kwargs = {}
+
+    def __init__(self, *args: object, **kwargs: object) -> None:
+>       raise NotImplementedError("TDD 红：阶段③未实现")
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/saas/core/onboarding/wizard.py:47: NotImplementedError
+______________ TestBoundary.test_estimate_exactly_at_quota_passes ______________
+
+self = <services.saas.tests.test_onboarding_wizard.TestBoundary object at 0x10441c500>
+
+    def test_estimate_exactly_at_quota_passes(self) -> None:
+        """预估恰等配额边界不阻断（oss 恰 1GB == storage_gb）。"""
+>       wizard = OnboardingWizard()
+                 ^^^^^^^^^^^^^^^^^^
+
+src/services/saas/tests/test_onboarding_wizard.py:175: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.saas.core.onboarding.wizard.OnboardingWizard object at 0x105a04500>
+args = (), kwargs = {}
+
+    def __init__(self, *args: object, **kwargs: object) -> None:
+>       raise NotImplementedError("TDD 红：阶段③未实现")
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/saas/core/onboarding/wizard.py:47: NotImplementedError
+________ TestExceptions.test_step_state_guard_initializing_rejects_edit ________
+
+self = <services.saas.tests.test_onboarding_wizard.TestExceptions object at 0x10441c770>
+
+    def test_step_state_guard_initializing_rejects_edit(self) -> None:
+        """initializing 态提交 company-info → 40001 拒绝修改（仅 configuring 可编辑）。"""
+>       wizard = OnboardingWizard()
+                 ^^^^^^^^^^^^^^^^^^
+
+src/services/saas/tests/test_onboarding_wizard.py:192: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.saas.core.onboarding.wizard.OnboardingWizard object at 0x105a050d0>
+args = (), kwargs = {}
+
+    def __init__(self, *args: object, **kwargs: object) -> None:
+>       raise NotImplementedError("TDD 红：阶段③未实现")
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/saas/core/onboarding/wizard.py:47: NotImplementedError
+____________ TestExceptions.test_activate_incomplete_lists_missing _____________
+
+self = <services.saas.tests.test_onboarding_wizard.TestExceptions object at 0x10441c9e0>
+
+    def test_activate_incomplete_lists_missing(self) -> None:
+        """缺步骤激活 → 40001 并列缺失步骤。"""
+>       wizard = OnboardingWizard()
+                 ^^^^^^^^^^^^^^^^^^
+
+src/services/saas/tests/test_onboarding_wizard.py:203: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.saas.core.onboarding.wizard.OnboardingWizard object at 0x105a05c40>
+args = (), kwargs = {}
+
+    def __init__(self, *args: object, **kwargs: object) -> None:
+>       raise NotImplementedError("TDD 红：阶段③未实现")
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/saas/core/onboarding/wizard.py:47: NotImplementedError
+_____________ TestExceptions.test_required_diff_missing_lists_keys _____________
+
+self = <services.saas.tests.test_onboarding_wizard.TestExceptions object at 0x10441cc50>
+
+    def test_required_diff_missing_lists_keys(self) -> None:
+        """strategy 缺差异项必填键 → 40001，提示完整差异项清单。"""
+>       wizard = OnboardingWizard()
+                 ^^^^^^^^^^^^^^^^^^
+
+src/services/saas/tests/test_onboarding_wizard.py:213: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.saas.core.onboarding.wizard.OnboardingWizard object at 0x105a066c0>
+args = (), kwargs = {}
+
+    def __init__(self, *args: object, **kwargs: object) -> None:
+>       raise NotImplementedError("TDD 红：阶段③未实现")
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/saas/core/onboarding/wizard.py:47: NotImplementedError
+_____ TestExceptions.test_illegal_transition_and_double_activate_rejected ______
+
+self = <services.saas.tests.test_onboarding_wizard.TestExceptions object at 0x10441cef0>
+
+    def test_illegal_transition_and_double_activate_rejected(self) -> None:
+        """非法迁移（configuring→active / active→configuring）与重复激活一律 40001，历史不变。"""
+>       wizard = OnboardingWizard()
+                 ^^^^^^^^^^^^^^^^^^
+
+src/services/saas/tests/test_onboarding_wizard.py:223: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.saas.core.onboarding.wizard.OnboardingWizard object at 0x105a075c0>
+args = (), kwargs = {}
+
+    def __init__(self, *args: object, **kwargs: object) -> None:
+>       raise NotImplementedError("TDD 红：阶段③未实现")
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/saas/core/onboarding/wizard.py:47: NotImplementedError
+__________ TestExceptions.test_credential_encrypted_no_plaintext_echo __________
+
+self = <services.saas.tests.test_onboarding_wizard.TestExceptions object at 0x10441d1c0>
+
+    def test_credential_encrypted_no_plaintext_echo(self) -> None:
+        """账号凭证提交即加密：快照与掩码回显均无明文（NFR-SEC-04）。"""
+>       wizard = OnboardingWizard()
+                 ^^^^^^^^^^^^^^^^^^
+
+src/services/saas/tests/test_onboarding_wizard.py:237: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.saas.core.onboarding.wizard.OnboardingWizard object at 0x105a07d70>
+args = (), kwargs = {}
+
+    def __init__(self, *args: object, **kwargs: object) -> None:
+>       raise NotImplementedError("TDD 红：阶段③未实现")
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/saas/core/onboarding/wizard.py:47: NotImplementedError
+______ TestConcurrency.test_concurrent_same_company_name_exactly_one_wins ______
+
+self = <services.saas.tests.test_onboarding_wizard.TestConcurrency object at 0x1043f3410>
+
+    def test_concurrent_same_company_name_exactly_one_wins(self) -> None:
+        """并发同企业名注册：恰一个向导成功，其余 40001（唯一性约束）。"""
+>       wizard = OnboardingWizard()
+                 ^^^^^^^^^^^^^^^^^^
+
+src/services/saas/tests/test_onboarding_wizard.py:253: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.saas.core.onboarding.wizard.OnboardingWizard object at 0x105a07830>
+args = (), kwargs = {}
+
+    def __init__(self, *args: object, **kwargs: object) -> None:
+>       raise NotImplementedError("TDD 红：阶段③未实现")
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/saas/core/onboarding/wizard.py:47: NotImplementedError
+______ TestConcurrency.test_concurrent_activate_same_idem_key_single_task ______
+
+self = <services.saas.tests.test_onboarding_wizard.TestConcurrency object at 0x1043f30e0>
+
+    def test_concurrent_activate_same_idem_key_single_task(self) -> None:
+        """并发同幂等键激活：恰创建一个初始化任务、结果一致。"""
+>       wizard = OnboardingWizard()
+                 ^^^^^^^^^^^^^^^^^^
+
+src/services/saas/tests/test_onboarding_wizard.py:270: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.saas.core.onboarding.wizard.OnboardingWizard object at 0x105a98dd0>
+args = (), kwargs = {}
+
+    def __init__(self, *args: object, **kwargs: object) -> None:
+>       raise NotImplementedError("TDD 红：阶段③未实现")
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/saas/core/onboarding/wizard.py:47: NotImplementedError
+_________ TestDegradation.test_estimate_over_quota_blocks_before_task __________
+
+self = <services.saas.tests.test_onboarding_wizard.TestDegradation object at 0x1043bfe00>
+
+    def test_estimate_over_quota_blocks_before_task(self) -> None:
+        """预估 1.5GB 超配额 1GB → 42901 阻断：不产生任务、状态不前进、提示升配额。"""
+>       wizard = OnboardingWizard()
+                 ^^^^^^^^^^^^^^^^^^
+
+src/services/saas/tests/test_onboarding_wizard.py:286: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.saas.core.onboarding.wizard.OnboardingWizard object at 0x105a07f50>
+args = (), kwargs = {}
+
+    def __init__(self, *args: object, **kwargs: object) -> None:
+>       raise NotImplementedError("TDD 红：阶段③未实现")
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/saas/core/onboarding/wizard.py:47: NotImplementedError
+_______ TestDegradation.test_failed_state_retry_path_recovers_to_active ________
+
+self = <services.saas.tests.test_onboarding_wizard.TestDegradation object at 0x1043bff50>
+
+    def test_failed_state_retry_path_recovers_to_active(self) -> None:
+        """failed 回退态：重试仅补跑 failed 文件重回 initializing，修复后 active。"""
+        from services.saas.core.onboarding.kb_init import DeterministicError
+    
+>       wizard = OnboardingWizard()
+                 ^^^^^^^^^^^^^^^^^^
+
+src/services/saas/tests/test_onboarding_wizard.py:304: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.saas.core.onboarding.wizard.OnboardingWizard object at 0x105a07a40>
+args = (), kwargs = {}
+
+    def __init__(self, *args: object, **kwargs: object) -> None:
+>       raise NotImplementedError("TDD 红：阶段③未实现")
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/saas/core/onboarding/wizard.py:47: NotImplementedError
+___________ TestEquivalence.test_all_done_transits_wizard_to_active ____________
+
+self = <services.saas.tests.test_onboarding_kbinit.TestEquivalence object at 0x10441d370>
+
+    def test_all_done_transits_wizard_to_active(self) -> None:
+        """全部文件成功 → 任务 done、向导 initializing→active（租户可用门打开）。"""
+>       wizard, uid = make_ready_wizard()
+                      ^^^^^^^^^^^^^^^^^^^
+
+src/services/saas/tests/test_onboarding_kbinit.py:52: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/saas/tests/test_onboarding_kbinit.py:30: in make_ready_wizard
+    wizard = OnboardingWizard()
+             ^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.saas.core.onboarding.wizard.OnboardingWizard object at 0x105a04380>
+args = (), kwargs = {}
+
+    def __init__(self, *args: object, **kwargs: object) -> None:
+>       raise NotImplementedError("TDD 红：阶段③未实现")
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/saas/core/onboarding/wizard.py:47: NotImplementedError
+________________ TestEquivalence.test_progress_percent_partial _________________
+
+self = <services.saas.tests.test_onboarding_kbinit.TestEquivalence object at 0x10441d640>
+
+    def test_progress_percent_partial(self) -> None:
+        """进度可查：done 2/3 → percent 66.7（保留 1 位）。"""
+>       wizard, uid = make_ready_wizard()
+                      ^^^^^^^^^^^^^^^^^^^
+
+src/services/saas/tests/test_onboarding_kbinit.py:63: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/saas/tests/test_onboarding_kbinit.py:30: in make_ready_wizard
+    wizard = OnboardingWizard()
+             ^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.saas.core.onboarding.wizard.OnboardingWizard object at 0x105a04740>
+args = (), kwargs = {}
+
+    def __init__(self, *args: object, **kwargs: object) -> None:
+>       raise NotImplementedError("TDD 红：阶段③未实现")
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/saas/core/onboarding/wizard.py:47: NotImplementedError
+______________ TestEquivalence.test_transient_retry_then_success _______________
+
+self = <services.saas.tests.test_onboarding_kbinit.TestEquivalence object at 0x10441d910>
+
+    def test_transient_retry_then_success(self) -> None:
+        """连续 2 次 TransientError 后成功 → attempts=3 且最终 done（退避 30/60）。"""
+>       wizard, uid = make_ready_wizard(materials=1)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+src/services/saas/tests/test_onboarding_kbinit.py:77: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/saas/tests/test_onboarding_kbinit.py:30: in make_ready_wizard
+    wizard = OnboardingWizard()
+             ^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.saas.core.onboarding.wizard.OnboardingWizard object at 0x1043f3f80>
+args = (), kwargs = {}
+
+    def __init__(self, *args: object, **kwargs: object) -> None:
+>       raise NotImplementedError("TDD 红：阶段③未实现")
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/saas/core/onboarding/wizard.py:47: NotImplementedError
+_______________ TestBoundary.test_fail_at_retry_max_goes_failed ________________
+
+self = <services.saas.tests.test_onboarding_kbinit.TestBoundary object at 0x10441dbe0>
+
+    def test_fail_at_retry_max_goes_failed(self) -> None:
+        """连续 3 次（恰等 kb_retry_max=3）TransientError → 该文件 failed。"""
+>       wizard, uid = make_ready_wizard(materials=1)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+src/services/saas/tests/test_onboarding_kbinit.py:100: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/saas/tests/test_onboarding_kbinit.py:30: in make_ready_wizard
+    wizard = OnboardingWizard()
+             ^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.saas.core.onboarding.wizard.OnboardingWizard object at 0x105a656d0>
+args = (), kwargs = {}
+
+    def __init__(self, *args: object, **kwargs: object) -> None:
+>       raise NotImplementedError("TDD 红：阶段③未实现")
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/saas/core/onboarding/wizard.py:47: NotImplementedError
+______________ TestBoundary.test_empty_materials_rejected_no_task ______________
+
+self = <services.saas.tests.test_onboarding_kbinit.TestBoundary object at 0x10441deb0>
+
+    def test_empty_materials_rejected_no_task(self) -> None:
+        """零素材边界：第②步即拒绝（空列表 40001），不产生初始化任务。"""
+>       wizard = OnboardingWizard()
+                 ^^^^^^^^^^^^^^^^^^
+
+src/services/saas/tests/test_onboarding_kbinit.py:115: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.saas.core.onboarding.wizard.OnboardingWizard object at 0x1043bd2e0>
+args = (), kwargs = {}
+
+    def __init__(self, *args: object, **kwargs: object) -> None:
+>       raise NotImplementedError("TDD 红：阶段③未实现")
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/saas/core/onboarding/wizard.py:47: NotImplementedError
+_______________ TestBoundary.test_retry_resets_only_failed_files _______________
+
+self = <services.saas.tests.test_onboarding_kbinit.TestBoundary object at 0x10441e180>
+
+    def test_retry_resets_only_failed_files(self) -> None:
+        """重试恰重置 failed 文件：done 文件不重跑（不重复入队）。"""
+>       wizard, uid = make_ready_wizard(materials=2)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+src/services/saas/tests/test_onboarding_kbinit.py:125: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/saas/tests/test_onboarding_kbinit.py:30: in make_ready_wizard
+    wizard = OnboardingWizard()
+             ^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.saas.core.onboarding.wizard.OnboardingWizard object at 0x105a98200>
+args = (), kwargs = {}
+
+    def __init__(self, *args: object, **kwargs: object) -> None:
+>       raise NotImplementedError("TDD 红：阶段③未实现")
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/saas/core/onboarding/wizard.py:47: NotImplementedError
+_______________ TestExceptions.test_deterministic_error_no_retry _______________
+
+self = <services.saas.tests.test_onboarding_kbinit.TestExceptions object at 0x10441e480>
+
+    def test_deterministic_error_no_retry(self) -> None:
+        """确定性故障（格式不支持）：不重试直落 failed（attempts=1 无退避记录）。"""
+>       wizard, uid = make_ready_wizard(materials=1)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+src/services/saas/tests/test_onboarding_kbinit.py:150: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/saas/tests/test_onboarding_kbinit.py:30: in make_ready_wizard
+    wizard = OnboardingWizard()
+             ^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.saas.core.onboarding.wizard.OnboardingWizard object at 0x105a99160>
+args = (), kwargs = {}
+
+    def __init__(self, *args: object, **kwargs: object) -> None:
+>       raise NotImplementedError("TDD 红：阶段③未实现")
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/saas/core/onboarding/wizard.py:47: NotImplementedError
+_______ TestExceptions.test_retry_kb_rejected_and_unknown_task_not_found _______
+
+self = <services.saas.tests.test_onboarding_kbinit.TestExceptions object at 0x10441e750>
+
+    def test_retry_kb_rejected_and_unknown_task_not_found(self) -> None:
+        """异常入口：非 failed 态调 retry_kb → 40001；未知 uid 查任务 → 40401。"""
+>       wizard = OnboardingWizard()
+                 ^^^^^^^^^^^^^^^^^^
+
+src/services/saas/tests/test_onboarding_kbinit.py:165: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.saas.core.onboarding.wizard.OnboardingWizard object at 0x105a99fa0>
+args = (), kwargs = {}
+
+    def __init__(self, *args: object, **kwargs: object) -> None:
+>       raise NotImplementedError("TDD 红：阶段③未实现")
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/saas/core/onboarding/wizard.py:47: NotImplementedError
+____ TestConcurrencyAndDegrade.test_enqueue_idempotent_unique_task_oss_key _____
+
+self = <services.saas.tests.test_onboarding_kbinit.TestConcurrencyAndDegrade object at 0x10441ea50>
+
+    def test_enqueue_idempotent_unique_task_oss_key(self) -> None:
+        """UNIQUE(task,oss_key)：同向导重复 start 文件不翻倍（入队幂等）。"""
+>       wizard, uid = make_ready_wizard(materials=2)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+src/services/saas/tests/test_onboarding_kbinit.py:181: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/saas/tests/test_onboarding_kbinit.py:30: in make_ready_wizard
+    wizard = OnboardingWizard()
+             ^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.saas.core.onboarding.wizard.OnboardingWizard object at 0x105a9aff0>
+args = (), kwargs = {}
+
+    def __init__(self, *args: object, **kwargs: object) -> None:
+>       raise NotImplementedError("TDD 红：阶段③未实现")
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/saas/core/onboarding/wizard.py:47: NotImplementedError
+______ TestConcurrencyAndDegrade.test_partial_failure_lands_failed_state _______
+
+self = <services.saas.tests.test_onboarding_kbinit.TestConcurrencyAndDegrade object at 0x1043bd9a0>
+
+    def test_partial_failure_lands_failed_state(self) -> None:
+        """部分失败：任务与向导齐落 failed（可重试回退态），告警语义字段留痕。"""
+>       wizard, uid = make_ready_wizard(materials=2)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+src/services/saas/tests/test_onboarding_kbinit.py:189: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/saas/tests/test_onboarding_kbinit.py:30: in make_ready_wizard
+    wizard = OnboardingWizard()
+             ^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.saas.core.onboarding.wizard.OnboardingWizard object at 0x105a9bf50>
+args = (), kwargs = {}
+
+    def __init__(self, *args: object, **kwargs: object) -> None:
+>       raise NotImplementedError("TDD 红：阶段③未实现")
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/saas/core/onboarding/wizard.py:47: NotImplementedError
+___ TestEquivalence.test_create_returns_configuring_with_envelope_and_trace ____
+
+self = <services.saas.tests.test_onboarding_api.TestEquivalence object at 0x105701a90>
+
+    def test_create_returns_configuring_with_envelope_and_trace(self) -> None:
+        """创建向导：信封四键齐全（code/message/data/trace_id），X-Trace-Id 透传。"""
+>       client, _ = make_client()
+                    ^^^^^^^^^^^^^
+
+src/services/saas/tests/test_onboarding_api.py:63: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/saas/tests/test_onboarding_api.py:29: in make_client
+    wizard = OnboardingWizard()
+             ^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.saas.core.onboarding.wizard.OnboardingWizard object at 0x1041188f0>
+args = (), kwargs = {}
+
+    def __init__(self, *args: object, **kwargs: object) -> None:
+>       raise NotImplementedError("TDD 红：阶段③未实现")
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/saas/core/onboarding/wizard.py:47: NotImplementedError
+________________ TestEquivalence.test_full_api_drill_to_active _________________
+
+self = <services.saas.tests.test_onboarding_api.TestEquivalence object at 0x105701b50>
+
+    def test_full_api_drill_to_active(self) -> None:
+        """七步演练：创建→四步→激活→进度轮询→active（§16.6 API 化口径）。"""
+>       client, wizard = make_client()
+                         ^^^^^^^^^^^^^
+
+src/services/saas/tests/test_onboarding_api.py:74: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/saas/tests/test_onboarding_api.py:29: in make_client
+    wizard = OnboardingWizard()
+             ^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.saas.core.onboarding.wizard.OnboardingWizard object at 0x1043f3e00>
+args = (), kwargs = {}
+
+    def __init__(self, *args: object, **kwargs: object) -> None:
+>       raise NotImplementedError("TDD 红：阶段③未实现")
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/saas/core/onboarding/wizard.py:47: NotImplementedError
+_________ TestEquivalence.test_materials_registration_returns_estimate _________
+
+self = <services.saas.tests.test_onboarding_api.TestEquivalence object at 0x105701e20>
+
+    def test_materials_registration_returns_estimate(self) -> None:
+        """素材登记同步回显资源预估（chunks/vec_gb/oss_gb/embed_minutes）。"""
+>       client, _ = make_client()
+                    ^^^^^^^^^^^^^
+
+src/services/saas/tests/test_onboarding_api.py:89: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/saas/tests/test_onboarding_api.py:29: in make_client
+    wizard = OnboardingWizard()
+             ^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.saas.core.onboarding.wizard.OnboardingWizard object at 0x105a05070>
+args = (), kwargs = {}
+
+    def __init__(self, *args: object, **kwargs: object) -> None:
+>       raise NotImplementedError("TDD 红：阶段③未实现")
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/saas/core/onboarding/wizard.py:47: NotImplementedError
+_______________ TestEquivalence.test_templates_defaults_prefill ________________
+
+self = <services.saas.tests.test_onboarding_api.TestEquivalence object at 0x1057020f0>
+
+    def test_templates_defaults_prefill(self) -> None:
+        """GET /templates/defaults：模板预填含全部差异项必填键。"""
+>       client, _ = make_client()
+                    ^^^^^^^^^^^^^
+
+src/services/saas/tests/test_onboarding_api.py:99: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/saas/tests/test_onboarding_api.py:29: in make_client
+    wizard = OnboardingWizard()
+             ^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.saas.core.onboarding.wizard.OnboardingWizard object at 0x105a07a40>
+args = (), kwargs = {}
+
+    def __init__(self, *args: object, **kwargs: object) -> None:
+>       raise NotImplementedError("TDD 红：阶段③未实现")
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/saas/core/onboarding/wizard.py:47: NotImplementedError
+_______________ TestEquivalence.test_drill_report_records_steps ________________
+
+self = <services.saas.tests.test_onboarding_api.TestEquivalence object at 0x1057023c0>
+
+    def test_drill_report_records_steps(self) -> None:
+        """演练报告（GET drill-report）：接入清单逐步留证（与录屏对齐口径）。"""
+>       client, _ = make_client()
+                    ^^^^^^^^^^^^^
+
+src/services/saas/tests/test_onboarding_api.py:108: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/saas/tests/test_onboarding_api.py:29: in make_client
+    wizard = OnboardingWizard()
+             ^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.saas.core.onboarding.wizard.OnboardingWizard object at 0x105a9a5a0>
+args = (), kwargs = {}
+
+    def __init__(self, *args: object, **kwargs: object) -> None:
+>       raise NotImplementedError("TDD 红：阶段③未实现")
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/saas/core/onboarding/wizard.py:47: NotImplementedError
+____________ TestExceptions.test_activate_requires_idempotency_key _____________
+
+self = <services.saas.tests.test_onboarding_api.TestExceptions object at 0x1057026f0>
+
+    def test_activate_requires_idempotency_key(self) -> None:
+        """激活缺 Idempotency-Key → 40001（幂等强制）。"""
+>       client, _ = make_client()
+                    ^^^^^^^^^^^^^
+
+src/services/saas/tests/test_onboarding_api.py:126: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/saas/tests/test_onboarding_api.py:29: in make_client
+    wizard = OnboardingWizard()
+             ^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.saas.core.onboarding.wizard.OnboardingWizard object at 0x105a98d40>
+args = (), kwargs = {}
+
+    def __init__(self, *args: object, **kwargs: object) -> None:
+>       raise NotImplementedError("TDD 红：阶段③未实现")
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/saas/core/onboarding/wizard.py:47: NotImplementedError
+_________________ TestExceptions.test_unknown_uid_envelope_404 _________________
+
+self = <services.saas.tests.test_onboarding_api.TestExceptions object at 0x1057029c0>
+
+    def test_unknown_uid_envelope_404(self) -> None:
+        """未知 uid → HTTP 404 + code 40401 信封。"""
+>       client, _ = make_client()
+                    ^^^^^^^^^^^^^
+
+src/services/saas/tests/test_onboarding_api.py:135: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/saas/tests/test_onboarding_api.py:29: in make_client
+    wizard = OnboardingWizard()
+             ^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.saas.core.onboarding.wizard.OnboardingWizard object at 0x105a996a0>
+args = (), kwargs = {}
+
+    def __init__(self, *args: object, **kwargs: object) -> None:
+>       raise NotImplementedError("TDD 红：阶段③未实现")
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/saas/core/onboarding/wizard.py:47: NotImplementedError
+_______________ TestExceptions.test_foreign_oss_prefix_rejected ________________
+
+self = <services.saas.tests.test_onboarding_api.TestExceptions object at 0x105702c90>
+
+    def test_foreign_oss_prefix_rejected(self) -> None:
+        """越权 oss 前缀（他租户目录）→ 40001（NFR-SEC-07 隔离）。"""
+>       client, _ = make_client()
+                    ^^^^^^^^^^^^^
+
+src/services/saas/tests/test_onboarding_api.py:142: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/saas/tests/test_onboarding_api.py:29: in make_client
+    wizard = OnboardingWizard()
+             ^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.saas.core.onboarding.wizard.OnboardingWizard object at 0x105a9b590>
+args = (), kwargs = {}
+
+    def __init__(self, *args: object, **kwargs: object) -> None:
+>       raise NotImplementedError("TDD 红：阶段③未实现")
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/saas/core/onboarding/wizard.py:47: NotImplementedError
+____________ TestExceptions.test_credentials_never_in_api_response _____________
+
+self = <services.saas.tests.test_onboarding_api.TestExceptions object at 0x105702f60>
+
+    def test_credentials_never_in_api_response(self) -> None:
+        """账号提交响应与后续响应均无凭证明文（仅掩码回显）。"""
+>       client, _ = make_client()
+                    ^^^^^^^^^^^^^
+
+src/services/saas/tests/test_onboarding_api.py:150: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/saas/tests/test_onboarding_api.py:29: in make_client
+    wizard = OnboardingWizard()
+             ^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.saas.core.onboarding.wizard.OnboardingWizard object at 0x1059d0cb0>
+args = (), kwargs = {}
+
+    def __init__(self, *args: object, **kwargs: object) -> None:
+>       raise NotImplementedError("TDD 红：阶段③未实现")
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/saas/core/onboarding/wizard.py:47: NotImplementedError
+___________________ TestDegrade.test_quota_exceeded_maps_429 ___________________
+
+self = <services.saas.tests.test_onboarding_api.TestDegrade object at 0x105703260>
+
+    def test_quota_exceeded_maps_429(self) -> None:
+        """预估超配额 → HTTP 429 + code 42901，提示升配额（FR-SAAS-003 联动）。"""
+>       client, _ = make_client()
+                    ^^^^^^^^^^^^^
+
+src/services/saas/tests/test_onboarding_api.py:164: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/saas/tests/test_onboarding_api.py:29: in make_client
+    wizard = OnboardingWizard()
+             ^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.saas.core.onboarding.wizard.OnboardingWizard object at 0x1059d11f0>
+args = (), kwargs = {}
+
+    def __init__(self, *args: object, **kwargs: object) -> None:
+>       raise NotImplementedError("TDD 红：阶段③未实现")
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/saas/core/onboarding/wizard.py:47: NotImplementedError
+__________ TestEquivalence.test_validate_and_put_full_brand_with_etag __________
+
+self = <services.saas.tests.test_branding_service.TestEquivalence object at 0x105703ec0>
+
+    def test_validate_and_put_full_brand_with_etag(self) -> None:
+        """合法全要素补丁：version 1、state approved、ETag 口径 "t7-brand-v1"。"""
+>       svc = make_service()
+              ^^^^^^^^^^^^^^
+
+src/services/saas/tests/test_branding_service.py:85: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/saas/tests/test_branding_service.py:76: in make_service
+    return BrandingService(dns=dns or FakeDns(), cert=cert or FakeCert())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.saas.core.branding.service.BrandingService object at 0x1059d1a30>
+args = ()
+kwargs = {'dns': <services.saas.tests.test_branding_service.FakeDns object at 0x1059d2420>, 'cert': <services.saas.tests.test_branding_service.FakeCert object at 0x1059d1af0>}
+
+    def __init__(self, *args: object, **kwargs: object) -> None:
+>       raise NotImplementedError("TDD 红：阶段③未实现")
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/saas/core/branding/service.py:33: NotImplementedError
+_______ TestEquivalence.test_version_increments_monotonically_with_merge _______
+
+self = <services.saas.tests.test_branding_service.TestEquivalence object at 0x1057034d0>
+
+    def test_version_increments_monotonically_with_merge(self) -> None:
+        """连续 PUT：version 严格递增，未触及键保留（合并语义）。"""
+>       svc = make_service()
+              ^^^^^^^^^^^^^^
+
+src/services/saas/tests/test_branding_service.py:91: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/saas/tests/test_branding_service.py:76: in make_service
+    return BrandingService(dns=dns or FakeDns(), cert=cert or FakeCert())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.saas.core.branding.service.BrandingService object at 0x1059d1ee0>
+args = ()
+kwargs = {'dns': <services.saas.tests.test_branding_service.FakeDns object at 0x1059d2150>, 'cert': <services.saas.tests.test_branding_service.FakeCert object at 0x1059d2000>}
+
+    def __init__(self, *args: object, **kwargs: object) -> None:
+>       raise NotImplementedError("TDD 红：阶段③未实现")
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/saas/core/branding/service.py:33: NotImplementedError
+______________ TestEquivalence.test_public_view_whitelist_fields _______________
+
+self = <services.saas.tests.test_branding_service.TestEquivalence object at 0x105702300>
+
+    def test_public_view_whitelist_fields(self) -> None:
+        """公开读取仅白名单字段：state/domains 服务端管理字段不出（防泄露）。"""
+>       svc = make_service()
+              ^^^^^^^^^^^^^^
+
+src/services/saas/tests/test_branding_service.py:99: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/saas/tests/test_branding_service.py:76: in make_service
+    return BrandingService(dns=dns or FakeDns(), cert=cert or FakeCert())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.saas.core.branding.service.BrandingService object at 0x105a98620>
+args = ()
+kwargs = {'dns': <services.saas.tests.test_branding_service.FakeDns object at 0x105a996a0>, 'cert': <services.saas.tests.test_branding_service.FakeCert object at 0x105a99f70>}
+
+    def __init__(self, *args: object, **kwargs: object) -> None:
+>       raise NotImplementedError("TDD 红：阶段③未实现")
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/saas/core/branding/service.py:33: NotImplementedError
+____ TestEquivalence.test_domain_full_chain_to_active_route_and_idempotent _____
+
+self = <services.saas.tests.test_branding_service.TestEquivalence object at 0x1057022a0>
+
+    def test_domain_full_chain_to_active_route_and_idempotent(self) -> None:
+        """域名全链：注册→DNS 指引→验证→签发→active→路由解析；重复 verify 幂等不重签。"""
+        cert = FakeCert(ok=True)
+>       svc = make_service(dns=FakeDns(True, True), cert=cert)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+src/services/saas/tests/test_branding_service.py:109: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/saas/tests/test_branding_service.py:76: in make_service
+    return BrandingService(dns=dns or FakeDns(), cert=cert or FakeCert())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.saas.core.branding.service.BrandingService object at 0x105a9a960>
+args = ()
+kwargs = {'dns': <services.saas.tests.test_branding_service.FakeDns object at 0x105a98470>, 'cert': <services.saas.tests.test_branding_service.FakeCert object at 0x105a99fa0>}
+
+    def __init__(self, *args: object, **kwargs: object) -> None:
+>       raise NotImplementedError("TDD 红：阶段③未实现")
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/saas/core/branding/service.py:33: NotImplementedError
+_________________ TestBoundary.test_product_name_length_edges __________________
+
+self = <services.saas.tests.test_branding_service.TestBoundary object at 0x105701d60>
+
+    def test_product_name_length_edges(self) -> None:
+        """产品名长度边界：1 与 30 合法，0 与 31 拒绝。"""
+        for name, ok in (("A", True), ("企" * 30, True), ("", False), ("企" * 31, False)):
+            if ok:
+>               assert validate_brand_patch({"product_name": name}, 7)["product_name"] == name
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+src/services/saas/tests/test_branding_service.py:129: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+patch = {'product_name': 'A'}, tenant_id = 7
+
+    def validate_brand_patch(patch: dict, tenant_id: int) -> dict:
+        """校验租户可写字段并规范化（非法即 BrandingError 40001）。"""
+>       raise NotImplementedError("TDD 红：阶段③未实现")
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/saas/core/branding/service.py:21: NotImplementedError
+_____________ TestBoundary.test_hex_color_and_font_whitelist_exact _____________
+
+self = <services.saas.tests.test_branding_service.TestBoundary object at 0x105702720>
+
+    def test_hex_color_and_font_whitelist_exact(self) -> None:
+        """色值恰 6 位 HEX；字体恰白名单键——"#12345"与自由字符串均拒绝。"""
+>       assert validate_brand_patch({"colors": dict(VALID_COLORS)}, 7)["colors"]
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+src/services/saas/tests/test_branding_service.py:136: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+patch = {'colors': {'primary': '#1A73E8', 'secondary': '#00A884', 'accent': '#FF7043', 'bg_page': '#F7F8FA', ...}}
+tenant_id = 7
+
+    def validate_brand_patch(patch: dict, tenant_id: int) -> dict:
+        """校验租户可写字段并规范化（非法即 BrandingError 40001）。"""
+>       raise NotImplementedError("TDD 红：阶段③未实现")
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/saas/core/branding/service.py:21: NotImplementedError
+_________________ TestBoundary.test_domain_normalized_conflict _________________
+
+self = <services.saas.tests.test_branding_service.TestBoundary object at 0x105702ae0>
+
+    def test_domain_normalized_conflict(self) -> None:
+        """大小写/端口/路径规范化后同一域名仍判冲突（UNIQUE(domain)）。"""
+>       svc = make_service()
+              ^^^^^^^^^^^^^^
+
+src/services/saas/tests/test_branding_service.py:145: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/saas/tests/test_branding_service.py:76: in make_service
+    return BrandingService(dns=dns or FakeDns(), cert=cert or FakeCert())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.saas.core.branding.service.BrandingService object at 0x105a65f70>
+args = ()
+kwargs = {'dns': <services.saas.tests.test_branding_service.FakeDns object at 0x105a659d0>, 'cert': <services.saas.tests.test_branding_service.FakeCert object at 0x105a67830>}
+
+    def __init__(self, *args: object, **kwargs: object) -> None:
+>       raise NotImplementedError("TDD 红：阶段③未实现")
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/saas/core/branding/service.py:33: NotImplementedError
+________ TestExceptions.test_illegal_color_values_rejected[rgb(1,2,3)] _________
+
+self = <services.saas.tests.test_branding_service.TestExceptions object at 0x1057302f0>
+bad = 'rgb(1,2,3)'
+
+    @pytest.mark.parametrize("bad", ["rgb(1,2,3)", "red", "url(#x)"])
+    def test_illegal_color_values_rejected(self, bad: str) -> None:
+        """非法色值（rgb()/关键字/url()）一律 40001 防 CSS 注入。"""
+        with pytest.raises(BrandingError) as ei:
+>           validate_brand_patch({"colors": dict(VALID_COLORS, primary=bad)}, 7)
+
+src/services/saas/tests/test_branding_service.py:161: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+patch = {'colors': {'primary': 'rgb(1,2,3)', 'secondary': '#00A884', 'accent': '#FF7043', 'bg_page': '#F7F8FA', ...}}
+tenant_id = 7
+
+    def validate_brand_patch(patch: dict, tenant_id: int) -> dict:
+        """校验租户可写字段并规范化（非法即 BrandingError 40001）。"""
+>       raise NotImplementedError("TDD 红：阶段③未实现")
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/saas/core/branding/service.py:21: NotImplementedError
+____________ TestExceptions.test_illegal_color_values_rejected[red] ____________
+
+self = <services.saas.tests.test_branding_service.TestExceptions object at 0x105731910>
+bad = 'red'
+
+    @pytest.mark.parametrize("bad", ["rgb(1,2,3)", "red", "url(#x)"])
+    def test_illegal_color_values_rejected(self, bad: str) -> None:
+        """非法色值（rgb()/关键字/url()）一律 40001 防 CSS 注入。"""
+        with pytest.raises(BrandingError) as ei:
+>           validate_brand_patch({"colors": dict(VALID_COLORS, primary=bad)}, 7)
+
+src/services/saas/tests/test_branding_service.py:161: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+patch = {'colors': {'primary': 'red', 'secondary': '#00A884', 'accent': '#FF7043', 'bg_page': '#F7F8FA', ...}}
+tenant_id = 7
+
+    def validate_brand_patch(patch: dict, tenant_id: int) -> dict:
+        """校验租户可写字段并规范化（非法即 BrandingError 40001）。"""
+>       raise NotImplementedError("TDD 红：阶段③未实现")
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/saas/core/branding/service.py:21: NotImplementedError
+__________ TestExceptions.test_illegal_color_values_rejected[url(#x)] __________
+
+self = <services.saas.tests.test_branding_service.TestExceptions object at 0x1057303b0>
+bad = 'url(#x)'
+
+    @pytest.mark.parametrize("bad", ["rgb(1,2,3)", "red", "url(#x)"])
+    def test_illegal_color_values_rejected(self, bad: str) -> None:
+        """非法色值（rgb()/关键字/url()）一律 40001 防 CSS 注入。"""
+        with pytest.raises(BrandingError) as ei:
+>           validate_brand_patch({"colors": dict(VALID_COLORS, primary=bad)}, 7)
+
+src/services/saas/tests/test_branding_service.py:161: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+patch = {'colors': {'primary': 'url(#x)', 'secondary': '#00A884', 'accent': '#FF7043', 'bg_page': '#F7F8FA', ...}}
+tenant_id = 7
+
+    def validate_brand_patch(patch: dict, tenant_id: int) -> dict:
+        """校验租户可写字段并规范化（非法即 BrandingError 40001）。"""
+>       raise NotImplementedError("TDD 红：阶段③未实现")
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/saas/core/branding/service.py:21: NotImplementedError
+______________ TestExceptions.test_colors_must_exactly_five_keys _______________
+
+self = <services.saas.tests.test_branding_service.TestExceptions object at 0x1057302c0>
+
+    def test_colors_must_exactly_five_keys(self) -> None:
+        """配色必须且仅含 5 键：缺一/多一均拒绝。"""
+        with pytest.raises(BrandingError):
+>           validate_brand_patch({"colors": {k: v for k, v in VALID_COLORS.items()
+                                             if k != "accent"}}, 7)
+
+src/services/saas/tests/test_branding_service.py:167: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+patch = {'colors': {'primary': '#1A73E8', 'secondary': '#00A884', 'bg_page': '#F7F8FA', 'text_main': '#1F2329'}}
+tenant_id = 7
+
+    def validate_brand_patch(patch: dict, tenant_id: int) -> dict:
+        """校验租户可写字段并规范化（非法即 BrandingError 40001）。"""
+>       raise NotImplementedError("TDD 红：阶段③未实现")
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/saas/core/branding/service.py:21: NotImplementedError
+_______________ TestExceptions.test_asset_external_url_rejected ________________
+
+self = <services.saas.tests.test_branding_service.TestExceptions object at 0x105733bc0>
+
+    def test_asset_external_url_rejected(self) -> None:
+        """素材外链/他租户前缀/非 HTTPS 一律拒绝（防外链失效与换图攻击）。"""
+        with pytest.raises(BrandingError):
+>           validate_brand_patch({"logo_url": "https://evil.example.com/logo.png"}, 7)
+
+src/services/saas/tests/test_branding_service.py:175: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+patch = {'logo_url': 'https://evil.example.com/logo.png'}, tenant_id = 7
+
+    def validate_brand_patch(patch: dict, tenant_id: int) -> dict:
+        """校验租户可写字段并规范化（非法即 BrandingError 40001）。"""
+>       raise NotImplementedError("TDD 红：阶段③未实现")
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/saas/core/branding/service.py:21: NotImplementedError
+___________ TestExceptions.test_platform_and_invalid_domain_rejected ___________
+
+self = <services.saas.tests.test_branding_service.TestExceptions object at 0x105732f90>
+
+    def test_platform_and_invalid_domain_rejected(self) -> None:
+        """平台域名与非法域名注册 → 40001（防自绑入口）。"""
+>       svc = make_service()
+              ^^^^^^^^^^^^^^
+
+src/services/saas/tests/test_branding_service.py:185: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/saas/tests/test_branding_service.py:76: in make_service
+    return BrandingService(dns=dns or FakeDns(), cert=cert or FakeCert())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.saas.core.branding.service.BrandingService object at 0x1059c4740>
+args = ()
+kwargs = {'dns': <services.saas.tests.test_branding_service.FakeDns object at 0x1059c48c0>, 'cert': <services.saas.tests.test_branding_service.FakeCert object at 0x1059c4500>}
+
+    def __init__(self, *args: object, **kwargs: object) -> None:
+>       raise NotImplementedError("TDD 红：阶段③未实现")
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/saas/core/branding/service.py:33: NotImplementedError
+______ TestExceptions.test_txt_mismatch_and_cname_missing_hold_retryable _______
+
+self = <services.saas.tests.test_branding_service.TestExceptions object at 0x105733290>
+
+    def test_txt_mismatch_and_cname_missing_hold_retryable(self) -> None:
+        """TXT 不匹配→pending_verification 可重试；TXT 过但 CNAME 缺→停留 verified 不签发。"""
+>       svc = make_service(dns=FakeDns(txt_ok=False), cert=FakeCert(ok=True))
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+src/services/saas/tests/test_branding_service.py:193: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/saas/tests/test_branding_service.py:76: in make_service
+    return BrandingService(dns=dns or FakeDns(), cert=cert or FakeCert())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.saas.core.branding.service.BrandingService object at 0x1059c7fb0>
+args = ()
+kwargs = {'dns': <services.saas.tests.test_branding_service.FakeDns object at 0x1059c4c20>, 'cert': <services.saas.tests.test_branding_service.FakeCert object at 0x1059c4a70>}
+
+    def __init__(self, *args: object, **kwargs: object) -> None:
+>       raise NotImplementedError("TDD 红：阶段③未实现")
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/saas/core/branding/service.py:33: NotImplementedError
+________ TestExceptions.test_cert_issue_failure_lands_failed_retryable _________
+
+self = <services.saas.tests.test_branding_service.TestExceptions object at 0x105733560>
+
+    def test_cert_issue_failure_lands_failed_retryable(self) -> None:
+        """证书签发失败 → failed 可重试；修复后重新 verify 签发成功（pending→issued）。"""
+>       svc = make_service(cert=FakeCert(ok=False))
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+src/services/saas/tests/test_branding_service.py:212: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/saas/tests/test_branding_service.py:76: in make_service
+    return BrandingService(dns=dns or FakeDns(), cert=cert or FakeCert())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.saas.core.branding.service.BrandingService object at 0x1059d3500>
+args = ()
+kwargs = {'dns': <services.saas.tests.test_branding_service.FakeDns object at 0x1059d3e00>, 'cert': <services.saas.tests.test_branding_service.FakeCert object at 0x1059d2ae0>}
+
+    def __init__(self, *args: object, **kwargs: object) -> None:
+>       raise NotImplementedError("TDD 红：阶段③未实现")
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/saas/core/branding/service.py:33: NotImplementedError
+_____ TestConcurrencyAndDegrade.test_concurrent_puts_version_strict_plus_n _____
+
+self = <services.saas.tests.test_branding_service.TestConcurrencyAndDegrade object at 0x105703080>
+
+    def test_concurrent_puts_version_strict_plus_n(self) -> None:
+        """10 线程并发 PUT：version 严格 +10 无回退/重复（FOR UPDATE 语义，锁内递增）。"""
+>       svc = make_service()
+              ^^^^^^^^^^^^^^
+
+src/services/saas/tests/test_branding_service.py:227: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/saas/tests/test_branding_service.py:76: in make_service
+    return BrandingService(dns=dns or FakeDns(), cert=cert or FakeCert())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.saas.core.branding.service.BrandingService object at 0x1059d00e0>
+args = ()
+kwargs = {'dns': <services.saas.tests.test_branding_service.FakeDns object at 0x1059d2120>, 'cert': <services.saas.tests.test_branding_service.FakeCert object at 0x1059d1a30>}
+
+    def __init__(self, *args: object, **kwargs: object) -> None:
+>       raise NotImplementedError("TDD 红：阶段③未实现")
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/saas/core/branding/service.py:33: NotImplementedError
+_ TestConcurrencyAndDegrade.test_unconfigured_tenant_falls_back_to_default_brand _
+
+self = <services.saas.tests.test_branding_service.TestConcurrencyAndDegrade object at 0x105702ab0>
+
+    def test_unconfigured_tenant_falls_back_to_default_brand(self) -> None:
+        """未配置租户：回落内置默认品牌（version 0，三端不白屏）。"""
+>       view = make_service().public_view(42)
+               ^^^^^^^^^^^^^^
+
+src/services/saas/tests/test_branding_service.py:243: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/saas/tests/test_branding_service.py:76: in make_service
+    return BrandingService(dns=dns or FakeDns(), cert=cert or FakeCert())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.saas.core.branding.service.BrandingService object at 0x1059d1790>
+args = ()
+kwargs = {'dns': <services.saas.tests.test_branding_service.FakeDns object at 0x1059d07a0>, 'cert': <services.saas.tests.test_branding_service.FakeCert object at 0x1059d1c10>}
+
+    def __init__(self, *args: object, **kwargs: object) -> None:
+>       raise NotImplementedError("TDD 红：阶段③未实现")
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/saas/core/branding/service.py:33: NotImplementedError
+_______ TestConcurrencyAndDegrade.test_audit_switch_holds_pending_review _______
+
+self = <services.saas.tests.test_branding_service.TestConcurrencyAndDegrade object at 0x105701d30>
+
+    def test_audit_switch_holds_pending_review(self) -> None:
+        """审核开关（防滥用预留）：开启后新版本 pending_review 不可见，approve 后生效。"""
+>       svc = make_service()
+              ^^^^^^^^^^^^^^
+
+src/services/saas/tests/test_branding_service.py:249: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/saas/tests/test_branding_service.py:76: in make_service
+    return BrandingService(dns=dns or FakeDns(), cert=cert or FakeCert())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.saas.core.branding.service.BrandingService object at 0x105a07050>
+args = ()
+kwargs = {'dns': <services.saas.tests.test_branding_service.FakeDns object at 0x10441d400>, 'cert': <services.saas.tests.test_branding_service.FakeCert object at 0x105a04d70>}
+
+    def __init__(self, *args: object, **kwargs: object) -> None:
+>       raise NotImplementedError("TDD 红：阶段③未实现")
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/saas/core/branding/service.py:33: NotImplementedError
+_________________ TestEquivalence.test_put_then_get_roundtrip __________________
+
+self = <services.saas.tests.test_branding_api.TestEquivalence object at 0x1057332c0>
+
+    def test_put_then_get_roundtrip(self) -> None:
+        """PUT 品牌配置 → {version,state}；GET 全量一致（免发版：无构建动作）。"""
+>       client, _ = make_client()
+                    ^^^^^^^^^^^^^
+
+src/services/saas/tests/test_branding_api.py:62: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/saas/tests/test_branding_api.py:43: in make_client
+    svc = BrandingService(dns=AlwaysOkDns(), cert=AlwaysOkCert())
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.saas.core.branding.service.BrandingService object at 0x105a9b710>
+args = ()
+kwargs = {'dns': <services.saas.tests.test_branding_api.AlwaysOkDns object at 0x105a9bb90>, 'cert': <services.saas.tests.test_branding_api.AlwaysOkCert object at 0x105a98830>}
+
+    def __init__(self, *args: object, **kwargs: object) -> None:
+>       raise NotImplementedError("TDD 红：阶段③未实现")
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/saas/core/branding/service.py:33: NotImplementedError
+__________ TestEquivalence.test_public_read_carries_etag_and_no_cache __________
+
+self = <services.saas.tests.test_branding_api.TestEquivalence object at 0x105732ed0>
+
+    def test_public_read_carries_etag_and_no_cache(self) -> None:
+        """公开读取：ETag 头 + Cache-Control: no-cache（禁中间层长缓存）。"""
+>       client, _ = make_client()
+                    ^^^^^^^^^^^^^
+
+src/services/saas/tests/test_branding_api.py:71: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/saas/tests/test_branding_api.py:43: in make_client
+    svc = BrandingService(dns=AlwaysOkDns(), cert=AlwaysOkCert())
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.saas.core.branding.service.BrandingService object at 0x1059c7d40>
+args = ()
+kwargs = {'dns': <services.saas.tests.test_branding_api.AlwaysOkDns object at 0x105a9be90>, 'cert': <services.saas.tests.test_branding_api.AlwaysOkCert object at 0x105a9a150>}
+
+    def __init__(self, *args: object, **kwargs: object) -> None:
+>       raise NotImplementedError("TDD 红：阶段③未实现")
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/saas/core/branding/service.py:33: NotImplementedError
+_____________ TestEquivalence.test_if_none_match_returns_304_empty _____________
+
+self = <services.saas.tests.test_branding_api.TestEquivalence object at 0x105730320>
+
+    def test_if_none_match_returns_304_empty(self) -> None:
+        """If-None-Match 命中当前 ETag → 304 零载荷（未变更免传输）。"""
+>       client, _ = make_client()
+                    ^^^^^^^^^^^^^
+
+src/services/saas/tests/test_branding_api.py:81: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/saas/tests/test_branding_api.py:43: in make_client
+    svc = BrandingService(dns=AlwaysOkDns(), cert=AlwaysOkCert())
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.saas.core.branding.service.BrandingService object at 0x1059c6a50>
+args = ()
+kwargs = {'dns': <services.saas.tests.test_branding_api.AlwaysOkDns object at 0x1059c5ee0>, 'cert': <services.saas.tests.test_branding_api.AlwaysOkCert object at 0x1059c5610>}
+
+    def __init__(self, *args: object, **kwargs: object) -> None:
+>       raise NotImplementedError("TDD 红：阶段③未实现")
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/saas/core/branding/service.py:33: NotImplementedError
+___________ TestEquivalence.test_domain_register_and_verify_via_api ____________
+
+self = <services.saas.tests.test_branding_api.TestEquivalence object at 0x105733680>
+
+    def test_domain_register_and_verify_via_api(self) -> None:
+        """域名 API 全链：注册下发 DNS 指引 → 验证 active → 公开路由生效。"""
+>       client, svc = make_client()
+                      ^^^^^^^^^^^^^
+
+src/services/saas/tests/test_branding_api.py:92: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/saas/tests/test_branding_api.py:43: in make_client
+    svc = BrandingService(dns=AlwaysOkDns(), cert=AlwaysOkCert())
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.saas.core.branding.service.BrandingService object at 0x1059c44d0>
+args = ()
+kwargs = {'dns': <services.saas.tests.test_branding_api.AlwaysOkDns object at 0x1059c5e80>, 'cert': <services.saas.tests.test_branding_api.AlwaysOkCert object at 0x1059c5d60>}
+
+    def __init__(self, *args: object, **kwargs: object) -> None:
+>       raise NotImplementedError("TDD 红：阶段③未实现")
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/saas/core/branding/service.py:33: NotImplementedError
+_____________ TestExceptions.test_illegal_color_maps_400_envelope ______________
+
+self = <services.saas.tests.test_branding_api.TestExceptions object at 0x1057339b0>
+
+    def test_illegal_color_maps_400_envelope(self) -> None:
+        """非法色值 → HTTP 400 + code 40001 信封（指明字段与格式）。"""
+>       client, _ = make_client()
+                    ^^^^^^^^^^^^^
+
+src/services/saas/tests/test_branding_api.py:111: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/saas/tests/test_branding_api.py:43: in make_client
+    svc = BrandingService(dns=AlwaysOkDns(), cert=AlwaysOkCert())
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.saas.core.branding.service.BrandingService object at 0x1059c6390>
+args = ()
+kwargs = {'dns': <services.saas.tests.test_branding_api.AlwaysOkDns object at 0x1059c4740>, 'cert': <services.saas.tests.test_branding_api.AlwaysOkCert object at 0x1059c59a0>}
+
+    def __init__(self, *args: object, **kwargs: object) -> None:
+>       raise NotImplementedError("TDD 红：阶段③未实现")
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/saas/core/branding/service.py:33: NotImplementedError
+____________ TestExceptions.test_domain_conflict_maps_409_envelope _____________
+
+self = <services.saas.tests.test_branding_api.TestExceptions object at 0x105733d10>
+
+    def test_domain_conflict_maps_409_envelope(self) -> None:
+        """跨租户域名抢占 → HTTP 409 + code 40901（UNIQUE(domain)）。"""
+>       client, _ = make_client()
+                    ^^^^^^^^^^^^^
+
+src/services/saas/tests/test_branding_api.py:120: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/saas/tests/test_branding_api.py:43: in make_client
+    svc = BrandingService(dns=AlwaysOkDns(), cert=AlwaysOkCert())
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.saas.core.branding.service.BrandingService object at 0x1059c5550>
+args = ()
+kwargs = {'dns': <services.saas.tests.test_branding_api.AlwaysOkDns object at 0x1059c5730>, 'cert': <services.saas.tests.test_branding_api.AlwaysOkCert object at 0x1059c55b0>}
+
+    def __init__(self, *args: object, **kwargs: object) -> None:
+>       raise NotImplementedError("TDD 红：阶段③未实现")
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/saas/core/branding/service.py:33: NotImplementedError
+_ TestConcurrencyAndDegrade.test_etag_tracks_final_version_after_concurrent_puts _
+
+self = <services.saas.tests.test_branding_api.TestConcurrencyAndDegrade object at 0x1057402f0>
+
+    def test_etag_tracks_final_version_after_concurrent_puts(self) -> None:
+        """并发 PUT 后：公开读取 ETag 与最终 version 一致（版本号无回退）。"""
+        from concurrent.futures import ThreadPoolExecutor
+    
+>       client, svc = make_client()
+                      ^^^^^^^^^^^^^
+
+src/services/saas/tests/test_branding_api.py:137: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/saas/tests/test_branding_api.py:43: in make_client
+    svc = BrandingService(dns=AlwaysOkDns(), cert=AlwaysOkCert())
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.saas.core.branding.service.BrandingService object at 0x105ae4e60>
+args = ()
+kwargs = {'dns': <services.saas.tests.test_branding_api.AlwaysOkDns object at 0x105ae4680>, 'cert': <services.saas.tests.test_branding_api.AlwaysOkCert object at 0x105ae4590>}
+
+    def __init__(self, *args: object, **kwargs: object) -> None:
+>       raise NotImplementedError("TDD 红：阶段③未实现")
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/saas/core/branding/service.py:33: NotImplementedError
+_ TestConcurrencyAndDegrade.test_unconfigured_tenant_public_read_default_brand _
+
+self = <services.saas.tests.test_branding_api.TestConcurrencyAndDegrade object at 0x105742750>
+
+    def test_unconfigured_tenant_public_read_default_brand(self) -> None:
+        """未配置租户公开读取：默认品牌 version 0（降级不白屏，可用性优先）。"""
+>       client, _ = make_client()
+                    ^^^^^^^^^^^^^
+
+src/services/saas/tests/test_branding_api.py:151: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/saas/tests/test_branding_api.py:43: in make_client
+    svc = BrandingService(dns=AlwaysOkDns(), cert=AlwaysOkCert())
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.saas.core.branding.service.BrandingService object at 0x105ae4e30>
+args = ()
+kwargs = {'dns': <services.saas.tests.test_branding_api.AlwaysOkDns object at 0x105ae5610>, 'cert': <services.saas.tests.test_branding_api.AlwaysOkCert object at 0x105ae4b60>}
+
+    def __init__(self, *args: object, **kwargs: object) -> None:
+>       raise NotImplementedError("TDD 红：阶段③未实现")
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/saas/core/branding/service.py:33: NotImplementedError
+________________ TestEquivalence.test_compose_package_structure ________________
+
+self = <services.saas.tests.test_deploy_pkg.TestEquivalence object at 0x105a64a40>
+
+    def test_compose_package_structure(self) -> None:
+        """compose 包结构断言：install.sh/rollback.sh/.env.example/示例配置齐备。"""
+        for name in ("install.sh", "rollback.sh", ".env.example",
+                     "tenant-config.example.yaml"):
+>           assert (PKG_DIR / name).is_file(), f"部署包缺 {name}"
+E           AssertionError: 部署包缺 install.sh
+E           assert False
+E            +  where False = is_file()
+E            +    where is_file = (PosixPath('/Users/xiaxianlin/workspace/ai-sale-agent/repo/deploy/compose-package') / 'install.sh').is_file
+
+src/services/saas/tests/test_deploy_pkg.py:54: AssertionError
+____________ TestEquivalence.test_dual_generation_same_fingerprint _____________
+
+self = <services.saas.tests.test_deploy_pkg.TestEquivalence object at 0x105a64d10>
+
+    def test_dual_generation_same_fingerprint(self) -> None:
+        """双形态一套源：同源生成 .env 与 values 指纹一致（防双源漂移凭据）。"""
+        cfg = sample_cfg()
+>       env_text = gen_config.render(cfg, "compose")
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+src/services/saas/tests/test_deploy_pkg.py:59: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+cfg = {'meta': {'tenant_id': 't001', 'plan': 'standard'}, 'images': {'registry': 'registry.example.com', 'tag': '1.0.0-9abcd...d': True}, 'dependencies': {'postgresql': {'size_gb': 100}, 'milvus': {'size_gb': 200}, 'redis': {'size_gb': 20}}, ...}
+target = 'compose'
+
+    def render(cfg: dict, target: str) -> str:
+>       raise NotImplementedError("TDD 红：阶段③未实现")
+E       NotImplementedError: TDD 红：阶段③未实现
+
+tools/saas/gen_config.py:31: NotImplementedError
+__________________ TestEquivalence.test_env_key_value_mapping __________________
+
+self = <services.saas.tests.test_deploy_pkg.TestEquivalence object at 0x105a64fe0>
+
+    def test_env_key_value_mapping(self) -> None:
+        """ENV_MAP 逐键映射正确（SR §6.5：tenant_id/tag/domain/size_gb）。"""
+>       lines = gen_config.render_env(sample_cfg())
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+src/services/saas/tests/test_deploy_pkg.py:67: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+cfg = {'meta': {'tenant_id': 't001', 'plan': 'standard'}, 'images': {'registry': 'registry.example.com', 'tag': '1.0.0-9abcd...d': True}, 'dependencies': {'postgresql': {'size_gb': 100}, 'milvus': {'size_gb': 200}, 'redis': {'size_gb': 20}}, ...}
+
+    def render_env(cfg: dict) -> str:
+>       raise NotImplementedError("TDD 红：阶段③未实现")
+E       NotImplementedError: TDD 红：阶段③未实现
+
+tools/saas/gen_config.py:23: NotImplementedError
+___________ TestEquivalence.test_helm_chart_and_values_full_mapping ____________
+
+self = <services.saas.tests.test_deploy_pkg.TestEquivalence object at 0x105a652b0>
+
+    def test_helm_chart_and_values_full_mapping(self) -> None:
+        """helm 全参数：Chart v2+三依赖；values 全参数映射（VALUES_MAP 路径存在）、
+        版本化 tag 禁 latest、迁移 Job 开启、租户 namespace 隔离。"""
+>       chart = yaml.safe_load((HELM_DIR / "Chart.yaml").read_text(encoding="utf-8"))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+src/services/saas/tests/test_deploy_pkg.py:78: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/pathlib.py:1027: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/Users/xiaxianlin/workspace/ai-sale-agent/repo/deploy/helm/Chart.yaml')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/Users/xiaxianlin/workspace/ai-sale-agent/repo/deploy/helm/Chart.yaml'
+
+/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/pathlib.py:1013: FileNotFoundError
+___________ TestEquivalence.test_example_config_renders_both_targets ___________
+
+self = <services.saas.tests.test_deploy_pkg.TestEquivalence object at 0x105a65580>
+
+    def test_example_config_renders_both_targets(self) -> None:
+        """包内示例配置源：schema 通过、双目标可生成、指纹一致。"""
+        cfg = yaml.safe_load(
+>           (PKG_DIR / "tenant-config.example.yaml").read_text(encoding="utf-8"))
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+src/services/saas/tests/test_deploy_pkg.py:99: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/pathlib.py:1027: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/Users/xiaxianlin/workspace/ai-sale-agent/repo/deploy/compose-package/tenant-config.example.yaml')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/Users/xiaxianlin/workspace/ai-sale-agent/repo/deploy/compose-package/tenant-config.example.yaml'
+
+/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/pathlib.py:1013: FileNotFoundError
+__________ TestBoundary.test_fingerprint_fixed_and_render_idempotent ___________
+
+self = <services.saas.tests.test_deploy_pkg.TestBoundary object at 0x105a658e0>
+
+    def test_fingerprint_fixed_and_render_idempotent(self) -> None:
+        """指纹恒 16 位十六进制；重复渲染逐字节一致（无时钟噪声，并发安全前提）。"""
+        cfg = sample_cfg()
+>       fp = gen_config.fingerprint(cfg)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+src/services/saas/tests/test_deploy_pkg.py:113: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+cfg = {'meta': {'tenant_id': 't001', 'plan': 'standard'}, 'images': {'registry': 'registry.example.com', 'tag': '1.0.0-9abcd...d': True}, 'dependencies': {'postgresql': {'size_gb': 100}, 'milvus': {'size_gb': 200}, 'redis': {'size_gb': 20}}, ...}
+
+    def fingerprint(cfg: dict) -> str:
+        """规范化序列化取 SHA256 前 16 位（双源一致性对账凭据）。"""
+>       raise NotImplementedError("TDD 红：阶段③未实现")
+E       NotImplementedError: TDD 红：阶段③未实现
+
+tools/saas/gen_config.py:19: NotImplementedError
+_______________ TestExceptions.test_schema_missing_required_key ________________
+
+self = <services.saas.tests.test_deploy_pkg.TestExceptions object at 0x105a65bb0>
+
+    def test_schema_missing_required_key(self) -> None:
+        """缺必填键（ingress.domain）→ SchemaError。"""
+        cfg = sample_cfg()
+        del cfg["ingress"]["domain"]
+        with pytest.raises(gen_config.SchemaError):
+>           gen_config.render(cfg, "compose")
+
+src/services/saas/tests/test_deploy_pkg.py:129: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+cfg = {'meta': {'tenant_id': 't001', 'plan': 'standard'}, 'images': {'registry': 'registry.example.com', 'tag': '1.0.0-9abcd...d': True}, 'dependencies': {'postgresql': {'size_gb': 100}, 'milvus': {'size_gb': 200}, 'redis': {'size_gb': 20}}, ...}
+target = 'compose'
+
+    def render(cfg: dict, target: str) -> str:
+>       raise NotImplementedError("TDD 红：阶段③未实现")
+E       NotImplementedError: TDD 红：阶段③未实现
+
+tools/saas/gen_config.py:31: NotImplementedError
+______ TestExceptions.test_schema_type_and_range_errors[<lambda>-size_gb] ______
+
+self = <services.saas.tests.test_deploy_pkg.TestExceptions object at 0x105a66000>
+mutate = <function TestExceptions.<lambda> at 0x1057b3a60>, msg_part = 'size_gb'
+
+    @pytest.mark.parametrize("mutate,msg_part", [
+        (lambda c: c["dependencies"].update({"postgresql": {"size_gb": "大"}}), "size_gb"),
+        (lambda c: c["apps"].update({"kbService": {"replicas": 0}}), "replicas"),
+    ])
+    def test_schema_type_and_range_errors(self, mutate, msg_part: str) -> None:
+        """类型错/数值域外 → SchemaError 且指明字段。"""
+        cfg = sample_cfg()
+        mutate(cfg)
+        with pytest.raises(gen_config.SchemaError) as ei:
+>           gen_config.render(cfg, "helm")
+
+src/services/saas/tests/test_deploy_pkg.py:140: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+cfg = {'meta': {'tenant_id': 't001', 'plan': 'standard'}, 'images': {'registry': 'registry.example.com', 'tag': '1.0.0-9abcd...d': True}, 'dependencies': {'postgresql': {'size_gb': '大'}, 'milvus': {'size_gb': 200}, 'redis': {'size_gb': 20}}, ...}
+target = 'helm'
+
+    def render(cfg: dict, target: str) -> str:
+>       raise NotImplementedError("TDD 红：阶段③未实现")
+E       NotImplementedError: TDD 红：阶段③未实现
+
+tools/saas/gen_config.py:31: NotImplementedError
+_____ TestExceptions.test_schema_type_and_range_errors[<lambda>-replicas] ______
+
+self = <services.saas.tests.test_deploy_pkg.TestExceptions object at 0x105a65d30>
+mutate = <function TestExceptions.<lambda> at 0x1057b3b00>
+msg_part = 'replicas'
+
+    @pytest.mark.parametrize("mutate,msg_part", [
+        (lambda c: c["dependencies"].update({"postgresql": {"size_gb": "大"}}), "size_gb"),
+        (lambda c: c["apps"].update({"kbService": {"replicas": 0}}), "replicas"),
+    ])
+    def test_schema_type_and_range_errors(self, mutate, msg_part: str) -> None:
+        """类型错/数值域外 → SchemaError 且指明字段。"""
+        cfg = sample_cfg()
+        mutate(cfg)
+        with pytest.raises(gen_config.SchemaError) as ei:
+>           gen_config.render(cfg, "helm")
+
+src/services/saas/tests/test_deploy_pkg.py:140: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+cfg = {'meta': {'tenant_id': 't001', 'plan': 'standard'}, 'images': {'registry': 'registry.example.com', 'tag': '1.0.0-9abcd...d': True}, 'dependencies': {'postgresql': {'size_gb': 100}, 'milvus': {'size_gb': 200}, 'redis': {'size_gb': 20}}, ...}
+target = 'helm'
+
+    def render(cfg: dict, target: str) -> str:
+>       raise NotImplementedError("TDD 红：阶段③未实现")
+E       NotImplementedError: TDD 红：阶段③未实现
+
+tools/saas/gen_config.py:31: NotImplementedError
+___________________ TestExceptions.test_latest_tag_forbidden ___________________
+
+self = <services.saas.tests.test_deploy_pkg.TestExceptions object at 0x105a65850>
+
+    def test_latest_tag_forbidden(self) -> None:
+        """镜像 tag=latest → SchemaError（版本化不可变，禁 latest）。"""
+        cfg = sample_cfg()
+        cfg["images"]["tag"] = "latest"
+        with pytest.raises(gen_config.SchemaError) as ei:
+>           gen_config.render(cfg, "compose")
+
+src/services/saas/tests/test_deploy_pkg.py:148: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+cfg = {'meta': {'tenant_id': 't001', 'plan': 'standard'}, 'images': {'registry': 'registry.example.com', 'tag': 'latest'}, '...d': True}, 'dependencies': {'postgresql': {'size_gb': 100}, 'milvus': {'size_gb': 200}, 'redis': {'size_gb': 20}}, ...}
+target = 'compose'
+
+    def render(cfg: dict, target: str) -> str:
+>       raise NotImplementedError("TDD 红：阶段③未实现")
+E       NotImplementedError: TDD 红：阶段③未实现
+
+tools/saas/gen_config.py:31: NotImplementedError
+_____________ TestExceptions.test_drift_check_blocks_tampered_file _____________
+
+self = <services.saas.tests.test_deploy_pkg.TestExceptions object at 0x105a653d0>
+tmp_path = PosixPath('/private/var/folders/rl/2_pf_ylj5mq4dsvdqw2d49zr0000gn/T/pytest-of-xiaxianlin/pytest-279/test_drift_check_blocks_tamper0')
+
+    def test_drift_check_blocks_tampered_file(self, tmp_path: Path) -> None:
+        """手改生成物 → check_drift 抛 DriftError（退出码 2 语义，禁止部署）。"""
+        cfg = sample_cfg()
+        env_path = tmp_path / ".env"
+>       env_path.write_text(gen_config.render(cfg, "compose"), encoding="utf-8")
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+src/services/saas/tests/test_deploy_pkg.py:155: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+cfg = {'meta': {'tenant_id': 't001', 'plan': 'standard'}, 'images': {'registry': 'registry.example.com', 'tag': '1.0.0-9abcd...d': True}, 'dependencies': {'postgresql': {'size_gb': 100}, 'milvus': {'size_gb': 200}, 'redis': {'size_gb': 20}}, ...}
+target = 'compose'
+
+    def render(cfg: dict, target: str) -> str:
+>       raise NotImplementedError("TDD 红：阶段③未实现")
+E       NotImplementedError: TDD 红：阶段③未实现
+
+tools/saas/gen_config.py:31: NotImplementedError
+______________________ TestExceptions.test_cli_exit_codes ______________________
+
+self = <services.saas.tests.test_deploy_pkg.TestExceptions object at 0x105a64f20>
+tmp_path = PosixPath('/private/var/folders/rl/2_pf_ylj5mq4dsvdqw2d49zr0000gn/T/pytest-of-xiaxianlin/pytest-279/test_cli_exit_codes0')
+
+    def test_cli_exit_codes(self, tmp_path: Path) -> None:
+        """CLI 契约：生成 0；schema 失败 2；check 漂移 2。"""
+        cfg_path = tmp_path / "tenant.yaml"
+        cfg_path.write_text(yaml.safe_dump(sample_cfg(), allow_unicode=True),
+                            encoding="utf-8")
+        out = tmp_path / ".env"
+>       assert gen_config.main(["-c", str(cfg_path), "--target", "compose",
+                                "--out", str(out)]) == 0
+
+src/services/saas/tests/test_deploy_pkg.py:169: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+argv = ['-c', '/private/var/folders/rl/2_pf_ylj5mq4dsvdqw2d49zr0000gn/T/pytest-of-xiaxianlin/pytest-279/test_cli_exit_codes0/..., '/private/var/folders/rl/2_pf_ylj5mq4dsvdqw2d49zr0000gn/T/pytest-of-xiaxianlin/pytest-279/test_cli_exit_codes0/.env']
+
+    def main(argv: list[str] | None = None) -> int:
+>       raise NotImplementedError("TDD 红：阶段③未实现")
+E       NotImplementedError: TDD 红：阶段③未实现
+
+tools/saas/gen_config.py:39: NotImplementedError
+______________ TestScriptContract.test_shell_scripts_syntax_valid ______________
+
+self = <services.saas.tests.test_deploy_pkg.TestScriptContract object at 0x105a64ce0>
+
+    @pytest.mark.skipif(shutil.which("bash") is None, reason="无 bash 环境")
+    def test_shell_scripts_syntax_valid(self) -> None:
+        """bash -n 静态语法检查：install.sh / rollback.sh 均可解析。"""
+        for name in ("install.sh", "rollback.sh"):
+            proc = subprocess.run(["bash", "-n", str(PKG_DIR / name)],
+                                  capture_output=True, text=True)
+>           assert proc.returncode == 0, f"{name} 语法错误：{proc.stderr}"
+E           AssertionError: install.sh 语法错误：bash: /Users/xiaxianlin/workspace/ai-sale-agent/repo/deploy/compose-package/install.sh: No such file or directory
+E             
+E           assert 127 == 0
+E            +  where 127 = CompletedProcess(args=['bash', '-n', '/Users/xiaxianlin/workspace/ai-sale-agent/repo/deploy/compose-package/install.sh...='bash: /Users/xiaxianlin/workspace/ai-sale-agent/repo/deploy/compose-package/install.sh: No such file or directory\n').returncode
+
+src/services/saas/tests/test_deploy_pkg.py:193: AssertionError
+______ TestScriptContract.test_install_sh_bootstrap_steps_and_exit_codes _______
+
+self = <services.saas.tests.test_deploy_pkg.TestScriptContract object at 0x105a66120>
+
+    def test_install_sh_bootstrap_steps_and_exit_codes(self) -> None:
+        """bootstrap 步骤齐备（SR §6.2 七步）+ 退出码契约 10/11/12/13/14。"""
+>       text = (PKG_DIR / "install.sh").read_text(encoding="utf-8")
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+src/services/saas/tests/test_deploy_pkg.py:197: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/pathlib.py:1027: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/Users/xiaxianlin/workspace/ai-sale-agent/repo/deploy/compose-package/install.sh')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/Users/xiaxianlin/workspace/ai-sale-agent/repo/deploy/compose-package/install.sh'
+
+/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/pathlib.py:1013: FileNotFoundError
+_________________ TestScriptContract.test_rollback_sh_contract _________________
+
+self = <services.saas.tests.test_deploy_pkg.TestScriptContract object at 0x105a663f0>
+
+    def test_rollback_sh_contract(self) -> None:
+        """回滚契约：--to 目标版本、20 目标不存在、21 未备份拒绝、--skip-db、留痕。"""
+>       text = (PKG_DIR / "rollback.sh").read_text(encoding="utf-8")
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+src/services/saas/tests/test_deploy_pkg.py:207: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/pathlib.py:1027: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/Users/xiaxianlin/workspace/ai-sale-agent/repo/deploy/compose-package/rollback.sh')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/Users/xiaxianlin/workspace/ai-sale-agent/repo/deploy/compose-package/rollback.sh'
+
+/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/pathlib.py:1013: FileNotFoundError
+_____________ TestScriptContract.test_env_example_dependency_pins ______________
+
+self = <services.saas.tests.test_deploy_pkg.TestScriptContract object at 0x105a666c0>
+
+    def test_env_example_dependency_pins(self) -> None:
+        """.env.example：依赖清单钉版（无 latest）+ 密钥占位（NFR-SEC-04）。"""
+>       text = (PKG_DIR / ".env.example").read_text(encoding="utf-8")
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+src/services/saas/tests/test_deploy_pkg.py:214: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/pathlib.py:1027: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/Users/xiaxianlin/workspace/ai-sale-agent/repo/deploy/compose-package/.env.example')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/Users/xiaxianlin/workspace/ai-sale-agent/repo/deploy/compose-package/.env.example'
+
+/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/pathlib.py:1013: FileNotFoundError
+____________________ TestEquivalence.test_three_docs_exist _____________________
+
+self = <services.saas.tests.test_product_docs.TestEquivalence object at 0x105a67320>
+
+    def test_three_docs_exist(self) -> None:
+        """三件套齐备：用户手册 / API 文档 / 部署指南（SRS §10.2 FR-SAAS-005）。"""
+        for name in gen_docs.DOCS_FILES:
+>           assert (DOCS_DIR / name).is_file(), f"缺产品文档 {name}"
+E           AssertionError: 缺产品文档 user-manual.md
+E           assert False
+E            +  where False = is_file()
+E            +    where is_file = (PosixPath('/Users/xiaxianlin/workspace/ai-sale-agent/repo/docs-product') / 'user-manual.md').is_file
+
+src/services/saas/tests/test_product_docs.py:33: AssertionError
+________________ TestEquivalence.test_required_sections_present ________________
+
+self = <services.saas.tests.test_product_docs.TestEquivalence object at 0x105a675f0>
+
+    def test_required_sections_present(self) -> None:
+        """章节完整性：三件套各含必备章节（受众×章节矩阵，SR §6.1）。"""
+>       assert gen_docs.check_sections(str(DOCS_DIR)) == []
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+src/services/saas/tests/test_product_docs.py:37: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+docs_dir = '/Users/xiaxianlin/workspace/ai-sale-agent/repo/docs-product'
+
+    def check_sections(docs_dir: str) -> list[str]:
+>       raise NotImplementedError("TDD 红：阶段③未实现")
+E       NotImplementedError: TDD 红：阶段③未实现
+
+tools/saas/gen_docs.py:29: NotImplementedError
+_______________ TestEquivalence.test_internal_links_zero_broken ________________
+
+self = <services.saas.tests.test_product_docs.TestEquivalence object at 0x105a678c0>
+
+    def test_internal_links_zero_broken(self) -> None:
+        """内部链接零断链（门禁①：站内目标必须存在，SR §6.3 check_links）。"""
+>       assert gen_docs.check_links(str(DOCS_DIR)) == []
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+src/services/saas/tests/test_product_docs.py:41: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+docs_dir = '/Users/xiaxianlin/workspace/ai-sale-agent/repo/docs-product'
+
+    def check_links(docs_dir: str) -> list[str]:
+>       raise NotImplementedError("TDD 红：阶段③未实现")
+E       NotImplementedError: TDD 红：阶段③未实现
+
+tools/saas/gen_docs.py:25: NotImplementedError
+___________________ TestEquivalence.test_docs_gate_all_green ___________________
+
+self = <services.saas.tests.test_product_docs.TestEquivalence object at 0x105a67b90>
+
+    def test_docs_gate_all_green(self) -> None:
+        """整体门禁 check_docs：真实三件套零违例。"""
+>       assert gen_docs.check_docs(str(DOCS_DIR)) == []
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+src/services/saas/tests/test_product_docs.py:45: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+docs_dir = '/Users/xiaxianlin/workspace/ai-sale-agent/repo/docs-product'
+
+    def check_docs(docs_dir: str) -> list[str]:
+>       raise NotImplementedError("TDD 红：阶段③未实现")
+E       NotImplementedError: TDD 红：阶段③未实现
+
+tools/saas/gen_docs.py:37: NotImplementedError
+_________ TestEquivalence.test_deploy_guide_references_package_scripts _________
+
+self = <services.saas.tests.test_product_docs.TestEquivalence object at 0x105a67e60>
+
+    def test_deploy_guide_references_package_scripts(self) -> None:
+        """部署指南单一来源约定：引用部署包脚本与退出码，只解释不复制。"""
+>       text = (DOCS_DIR / "deploy-guide.md").read_text(encoding="utf-8")
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+src/services/saas/tests/test_product_docs.py:49: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/pathlib.py:1027: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/Users/xiaxianlin/workspace/ai-sale-agent/repo/docs-product/deploy-guide.md')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/Users/xiaxianlin/workspace/ai-sale-agent/repo/docs-product/deploy-guide.md'
+
+/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/pathlib.py:1013: FileNotFoundError
+_______ TestVersionTag.test_all_docs_share_same_release_tag_with_record ________
+
+self = <services.saas.tests.test_product_docs.TestVersionTag object at 0x105a04200>
+
+    def test_all_docs_share_same_release_tag_with_record(self) -> None:
+        """版本联动：三件套「产品 Tag」一致且匹配 phase<N>-v<X.Y>；文档属性表齐备
+        （文档版本/变更记录，docs 管理规范）。"""
+        tags = []
+        for name in gen_docs.DOCS_FILES:
+>           text = (DOCS_DIR / name).read_text(encoding="utf-8")
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+src/services/saas/tests/test_product_docs.py:63: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/pathlib.py:1027: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/Users/xiaxianlin/workspace/ai-sale-agent/repo/docs-product/user-manual.md')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/Users/xiaxianlin/workspace/ai-sale-agent/repo/docs-product/user-manual.md'
+
+/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/pathlib.py:1013: FileNotFoundError
+_______________ TestViolationsDetected.test_broken_link_detected _______________
+
+self = <services.saas.tests.test_product_docs.TestViolationsDetected object at 0x105a67c80>
+tmp_path = PosixPath('/private/var/folders/rl/2_pf_ylj5mq4dsvdqw2d49zr0000gn/T/pytest-of-xiaxianlin/pytest-279/test_broken_link_detected0')
+
+    def test_broken_link_detected(self, tmp_path: Path) -> None:
+        """断链样例：check_links 检出并指明文件与目标。"""
+        docs = self.make_broken_docs(tmp_path, link=True)
+>       violations = gen_docs.check_links(docs)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+src/services/saas/tests/test_product_docs.py:98: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+docs_dir = '/private/var/folders/rl/2_pf_ylj5mq4dsvdqw2d49zr0000gn/T/pytest-of-xiaxianlin/pytest-279/test_broken_link_detected0'
+
+    def check_links(docs_dir: str) -> list[str]:
+>       raise NotImplementedError("TDD 红：阶段③未实现")
+E       NotImplementedError: TDD 红：阶段③未实现
+
+tools/saas/gen_docs.py:25: NotImplementedError
+_____________ TestViolationsDetected.test_missing_section_detected _____________
+
+self = <services.saas.tests.test_product_docs.TestViolationsDetected object at 0x105a67710>
+tmp_path = PosixPath('/private/var/folders/rl/2_pf_ylj5mq4dsvdqw2d49zr0000gn/T/pytest-of-xiaxianlin/pytest-279/test_missing_section_detected0')
+
+    def test_missing_section_detected(self, tmp_path: Path) -> None:
+        """缺章节样例：check_sections 检出缺失章节名。"""
+        docs = self.make_broken_docs(tmp_path, section=True)
+>       violations = gen_docs.check_sections(docs)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+src/services/saas/tests/test_product_docs.py:105: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+docs_dir = '/private/var/folders/rl/2_pf_ylj5mq4dsvdqw2d49zr0000gn/T/pytest-of-xiaxianlin/pytest-279/test_missing_section_detected0'
+
+    def check_sections(docs_dir: str) -> list[str]:
+>       raise NotImplementedError("TDD 红：阶段③未实现")
+E       NotImplementedError: TDD 红：阶段③未实现
+
+tools/saas/gen_docs.py:29: NotImplementedError
+________________ TestViolationsDetected.test_tag_drift_detected ________________
+
+self = <services.saas.tests.test_product_docs.TestViolationsDetected object at 0x105a67260>
+tmp_path = PosixPath('/private/var/folders/rl/2_pf_ylj5mq4dsvdqw2d49zr0000gn/T/pytest-of-xiaxianlin/pytest-279/test_tag_drift_detected0')
+
+    def test_tag_drift_detected(self, tmp_path: Path) -> None:
+        """版本漂移样例：deploy-guide 换 tag → check_version_tag 检出不一致。"""
+        docs = self.make_broken_docs(tmp_path, tag=True)
+>       violations = gen_docs.check_version_tag(docs)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+src/services/saas/tests/test_product_docs.py:111: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+docs_dir = '/private/var/folders/rl/2_pf_ylj5mq4dsvdqw2d49zr0000gn/T/pytest-of-xiaxianlin/pytest-279/test_tag_drift_detected0'
+
+    def check_version_tag(docs_dir: str) -> list[str]:
+>       raise NotImplementedError("TDD 红：阶段③未实现")
+E       NotImplementedError: TDD 红：阶段③未实现
+
+tools/saas/gen_docs.py:33: NotImplementedError
+__________ TestViolationsDetected.test_gate_exit_code_blocks_pipeline __________
+
+self = <services.saas.tests.test_product_docs.TestViolationsDetected object at 0x105a66660>
+tmp_path = PosixPath('/private/var/folders/rl/2_pf_ylj5mq4dsvdqw2d49zr0000gn/T/pytest-of-xiaxianlin/pytest-279/test_gate_exit_code_blocks_pip0')
+
+    def test_gate_exit_code_blocks_pipeline(self, tmp_path: Path) -> None:
+        """CI 阻断语义：违例目录 main→1，真实三件套 main→0（降级可作门禁）。"""
+>       assert gen_docs.main(["--docs", str(DOCS_DIR)]) == 0
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+src/services/saas/tests/test_product_docs.py:116: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+argv = ['--docs', '/Users/xiaxianlin/workspace/ai-sale-agent/repo/docs-product']
+
+    def main(argv: list[str] | None = None) -> int:
+>       raise NotImplementedError("TDD 红：阶段③未实现")
+E       NotImplementedError: TDD 红：阶段③未实现
+
+tools/saas/gen_docs.py:41: NotImplementedError
+=========================== short test summary info ============================
+FAILED src/services/saas/tests/test_onboarding_wizard.py::TestEquivalence::test_create_predistributes_tenant_and_configuring
+FAILED src/services/saas/tests/test_onboarding_wizard.py::TestEquivalence::test_four_legal_steps_complete
+FAILED src/services/saas/tests/test_onboarding_wizard.py::TestEquivalence::test_company_info_legal_value_domains
+FAILED src/services/saas/tests/test_onboarding_wizard.py::TestEquivalence::test_activate_materializes_and_triggers_kb_task
+FAILED src/services/saas/tests/test_onboarding_wizard.py::TestEquivalence::test_activate_idempotent_replay_same_result
+FAILED src/services/saas/tests/test_onboarding_wizard.py::TestBoundary::test_company_name_length_edge_64_ok_65_rejected
+FAILED src/services/saas/tests/test_onboarding_wizard.py::TestBoundary::test_accounts_edge_at_quota_ok_over_rejected
+FAILED src/services/saas/tests/test_onboarding_wizard.py::TestBoundary::test_materials_empty_and_foreign_prefix_rejected
+FAILED src/services/saas/tests/test_onboarding_wizard.py::TestBoundary::test_estimate_exactly_at_quota_passes
+FAILED src/services/saas/tests/test_onboarding_wizard.py::TestExceptions::test_step_state_guard_initializing_rejects_edit
+FAILED src/services/saas/tests/test_onboarding_wizard.py::TestExceptions::test_activate_incomplete_lists_missing
+FAILED src/services/saas/tests/test_onboarding_wizard.py::TestExceptions::test_required_diff_missing_lists_keys
+FAILED src/services/saas/tests/test_onboarding_wizard.py::TestExceptions::test_illegal_transition_and_double_activate_rejected
+FAILED src/services/saas/tests/test_onboarding_wizard.py::TestExceptions::test_credential_encrypted_no_plaintext_echo
+FAILED src/services/saas/tests/test_onboarding_wizard.py::TestConcurrency::test_concurrent_same_company_name_exactly_one_wins
+FAILED src/services/saas/tests/test_onboarding_wizard.py::TestConcurrency::test_concurrent_activate_same_idem_key_single_task
+FAILED src/services/saas/tests/test_onboarding_wizard.py::TestDegradation::test_estimate_over_quota_blocks_before_task
+FAILED src/services/saas/tests/test_onboarding_wizard.py::TestDegradation::test_failed_state_retry_path_recovers_to_active
+FAILED src/services/saas/tests/test_onboarding_kbinit.py::TestEquivalence::test_all_done_transits_wizard_to_active
+FAILED src/services/saas/tests/test_onboarding_kbinit.py::TestEquivalence::test_progress_percent_partial
+FAILED src/services/saas/tests/test_onboarding_kbinit.py::TestEquivalence::test_transient_retry_then_success
+FAILED src/services/saas/tests/test_onboarding_kbinit.py::TestBoundary::test_fail_at_retry_max_goes_failed
+FAILED src/services/saas/tests/test_onboarding_kbinit.py::TestBoundary::test_empty_materials_rejected_no_task
+FAILED src/services/saas/tests/test_onboarding_kbinit.py::TestBoundary::test_retry_resets_only_failed_files
+FAILED src/services/saas/tests/test_onboarding_kbinit.py::TestExceptions::test_deterministic_error_no_retry
+FAILED src/services/saas/tests/test_onboarding_kbinit.py::TestExceptions::test_retry_kb_rejected_and_unknown_task_not_found
+FAILED src/services/saas/tests/test_onboarding_kbinit.py::TestConcurrencyAndDegrade::test_enqueue_idempotent_unique_task_oss_key
+FAILED src/services/saas/tests/test_onboarding_kbinit.py::TestConcurrencyAndDegrade::test_partial_failure_lands_failed_state
+FAILED src/services/saas/tests/test_onboarding_api.py::TestEquivalence::test_create_returns_configuring_with_envelope_and_trace
+FAILED src/services/saas/tests/test_onboarding_api.py::TestEquivalence::test_full_api_drill_to_active
+FAILED src/services/saas/tests/test_onboarding_api.py::TestEquivalence::test_materials_registration_returns_estimate
+FAILED src/services/saas/tests/test_onboarding_api.py::TestEquivalence::test_templates_defaults_prefill
+FAILED src/services/saas/tests/test_onboarding_api.py::TestEquivalence::test_drill_report_records_steps
+FAILED src/services/saas/tests/test_onboarding_api.py::TestExceptions::test_activate_requires_idempotency_key
+FAILED src/services/saas/tests/test_onboarding_api.py::TestExceptions::test_unknown_uid_envelope_404
+FAILED src/services/saas/tests/test_onboarding_api.py::TestExceptions::test_foreign_oss_prefix_rejected
+FAILED src/services/saas/tests/test_onboarding_api.py::TestExceptions::test_credentials_never_in_api_response
+FAILED src/services/saas/tests/test_onboarding_api.py::TestDegrade::test_quota_exceeded_maps_429
+FAILED src/services/saas/tests/test_branding_service.py::TestEquivalence::test_validate_and_put_full_brand_with_etag
+FAILED src/services/saas/tests/test_branding_service.py::TestEquivalence::test_version_increments_monotonically_with_merge
+FAILED src/services/saas/tests/test_branding_service.py::TestEquivalence::test_public_view_whitelist_fields
+FAILED src/services/saas/tests/test_branding_service.py::TestEquivalence::test_domain_full_chain_to_active_route_and_idempotent
+FAILED src/services/saas/tests/test_branding_service.py::TestBoundary::test_product_name_length_edges
+FAILED src/services/saas/tests/test_branding_service.py::TestBoundary::test_hex_color_and_font_whitelist_exact
+FAILED src/services/saas/tests/test_branding_service.py::TestBoundary::test_domain_normalized_conflict
+FAILED src/services/saas/tests/test_branding_service.py::TestExceptions::test_illegal_color_values_rejected[rgb(1,2,3)]
+FAILED src/services/saas/tests/test_branding_service.py::TestExceptions::test_illegal_color_values_rejected[red]
+FAILED src/services/saas/tests/test_branding_service.py::TestExceptions::test_illegal_color_values_rejected[url(#x)]
+FAILED src/services/saas/tests/test_branding_service.py::TestExceptions::test_colors_must_exactly_five_keys
+FAILED src/services/saas/tests/test_branding_service.py::TestExceptions::test_asset_external_url_rejected
+FAILED src/services/saas/tests/test_branding_service.py::TestExceptions::test_platform_and_invalid_domain_rejected
+FAILED src/services/saas/tests/test_branding_service.py::TestExceptions::test_txt_mismatch_and_cname_missing_hold_retryable
+FAILED src/services/saas/tests/test_branding_service.py::TestExceptions::test_cert_issue_failure_lands_failed_retryable
+FAILED src/services/saas/tests/test_branding_service.py::TestConcurrencyAndDegrade::test_concurrent_puts_version_strict_plus_n
+FAILED src/services/saas/tests/test_branding_service.py::TestConcurrencyAndDegrade::test_unconfigured_tenant_falls_back_to_default_brand
+FAILED src/services/saas/tests/test_branding_service.py::TestConcurrencyAndDegrade::test_audit_switch_holds_pending_review
+FAILED src/services/saas/tests/test_branding_api.py::TestEquivalence::test_put_then_get_roundtrip
+FAILED src/services/saas/tests/test_branding_api.py::TestEquivalence::test_public_read_carries_etag_and_no_cache
+FAILED src/services/saas/tests/test_branding_api.py::TestEquivalence::test_if_none_match_returns_304_empty
+FAILED src/services/saas/tests/test_branding_api.py::TestEquivalence::test_domain_register_and_verify_via_api
+FAILED src/services/saas/tests/test_branding_api.py::TestExceptions::test_illegal_color_maps_400_envelope
+FAILED src/services/saas/tests/test_branding_api.py::TestExceptions::test_domain_conflict_maps_409_envelope
+FAILED src/services/saas/tests/test_branding_api.py::TestConcurrencyAndDegrade::test_etag_tracks_final_version_after_concurrent_puts
+FAILED src/services/saas/tests/test_branding_api.py::TestConcurrencyAndDegrade::test_unconfigured_tenant_public_read_default_brand
+FAILED src/services/saas/tests/test_deploy_pkg.py::TestEquivalence::test_compose_package_structure
+FAILED src/services/saas/tests/test_deploy_pkg.py::TestEquivalence::test_dual_generation_same_fingerprint
+FAILED src/services/saas/tests/test_deploy_pkg.py::TestEquivalence::test_env_key_value_mapping
+FAILED src/services/saas/tests/test_deploy_pkg.py::TestEquivalence::test_helm_chart_and_values_full_mapping
+FAILED src/services/saas/tests/test_deploy_pkg.py::TestEquivalence::test_example_config_renders_both_targets
+FAILED src/services/saas/tests/test_deploy_pkg.py::TestBoundary::test_fingerprint_fixed_and_render_idempotent
+FAILED src/services/saas/tests/test_deploy_pkg.py::TestExceptions::test_schema_missing_required_key
+FAILED src/services/saas/tests/test_deploy_pkg.py::TestExceptions::test_schema_type_and_range_errors[<lambda>-size_gb]
+FAILED src/services/saas/tests/test_deploy_pkg.py::TestExceptions::test_schema_type_and_range_errors[<lambda>-replicas]
+FAILED src/services/saas/tests/test_deploy_pkg.py::TestExceptions::test_latest_tag_forbidden
+FAILED src/services/saas/tests/test_deploy_pkg.py::TestExceptions::test_drift_check_blocks_tampered_file
+FAILED src/services/saas/tests/test_deploy_pkg.py::TestExceptions::test_cli_exit_codes
+FAILED src/services/saas/tests/test_deploy_pkg.py::TestScriptContract::test_shell_scripts_syntax_valid
+FAILED src/services/saas/tests/test_deploy_pkg.py::TestScriptContract::test_install_sh_bootstrap_steps_and_exit_codes
+FAILED src/services/saas/tests/test_deploy_pkg.py::TestScriptContract::test_rollback_sh_contract
+FAILED src/services/saas/tests/test_deploy_pkg.py::TestScriptContract::test_env_example_dependency_pins
+FAILED src/services/saas/tests/test_product_docs.py::TestEquivalence::test_three_docs_exist
+FAILED src/services/saas/tests/test_product_docs.py::TestEquivalence::test_required_sections_present
+FAILED src/services/saas/tests/test_product_docs.py::TestEquivalence::test_internal_links_zero_broken
+FAILED src/services/saas/tests/test_product_docs.py::TestEquivalence::test_docs_gate_all_green
+FAILED src/services/saas/tests/test_product_docs.py::TestEquivalence::test_deploy_guide_references_package_scripts
+FAILED src/services/saas/tests/test_product_docs.py::TestVersionTag::test_all_docs_share_same_release_tag_with_record
+FAILED src/services/saas/tests/test_product_docs.py::TestViolationsDetected::test_broken_link_detected
+FAILED src/services/saas/tests/test_product_docs.py::TestViolationsDetected::test_missing_section_detected
+FAILED src/services/saas/tests/test_product_docs.py::TestViolationsDetected::test_tag_drift_detected
+FAILED src/services/saas/tests/test_product_docs.py::TestViolationsDetected::test_gate_exit_code_blocks_pipeline
