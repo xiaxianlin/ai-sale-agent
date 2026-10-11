@@ -1,0 +1,82 @@
+
+==================================== ERRORS ====================================
+_______ ERROR collecting src/services/training/tests/test_exam_paper.py ________
+ImportError while importing test module '/Users/xiaxianlin/workspace/ai-sale-agent/repo/src/services/training/tests/test_exam_paper.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/services/training/tests/test_exam_paper.py:14: in <module>
+    from services.training.core.exam.paper import (
+E   ModuleNotFoundError: No module named 'services.training.core.exam'
+______ ERROR collecting src/services/training/tests/test_exam_proctor.py _______
+ImportError while importing test module '/Users/xiaxianlin/workspace/ai-sale-agent/repo/src/services/training/tests/test_exam_proctor.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/services/training/tests/test_exam_proctor.py:12: in <module>
+    from services.training.core.exam.proctor import (
+E   ModuleNotFoundError: No module named 'services.training.core.exam'
+______ ERROR collecting src/services/training/tests/test_exam_service.py _______
+ImportError while importing test module '/Users/xiaxianlin/workspace/ai-sale-agent/repo/src/services/training/tests/test_exam_service.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/services/training/tests/test_exam_service.py:21: in <module>
+    from services.training.core.exam.paper import (
+E   ModuleNotFoundError: No module named 'services.training.core.exam'
+_____ ERROR collecting src/services/training/tests/test_exam_cert_gate.py ______
+ImportError while importing test module '/Users/xiaxianlin/workspace/ai-sale-agent/repo/src/services/training/tests/test_exam_cert_gate.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/services/training/tests/test_exam_cert_gate.py:17: in <module>
+    from services.training.api.exam_api import PROTECTED_DEMO_PATH, create_exam_app
+E   ModuleNotFoundError: No module named 'services.training.api.exam_api'
+________ ERROR collecting src/services/training/tests/test_exam_api.py _________
+ImportError while importing test module '/Users/xiaxianlin/workspace/ai-sale-agent/repo/src/services/training/tests/test_exam_api.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/services/training/tests/test_exam_api.py:19: in <module>
+    from services.training.api.exam_api import (
+E   ModuleNotFoundError: No module named 'services.training.api.exam_api'
+______ ERROR collecting src/services/training/tests/test_loop_closure.py _______
+ImportError while importing test module '/Users/xiaxianlin/workspace/ai-sale-agent/repo/src/services/training/tests/test_loop_closure.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/services/training/tests/test_loop_closure.py:17: in <module>
+    from services.training.core.loop.closure import (
+E   ModuleNotFoundError: No module named 'services.training.core.loop'
+________ ERROR collecting src/services/training/tests/test_loop_api.py _________
+ImportError while importing test module '/Users/xiaxianlin/workspace/ai-sale-agent/repo/src/services/training/tests/test_loop_api.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/services/training/tests/test_loop_api.py:18: in <module>
+    from services.training.api.exam_api import (
+E   ModuleNotFoundError: No module named 'services.training.api.exam_api'
+=========================== short test summary info ============================
+ERROR src/services/training/tests/test_exam_paper.py
+ERROR src/services/training/tests/test_exam_proctor.py
+ERROR src/services/training/tests/test_exam_service.py
+ERROR src/services/training/tests/test_exam_cert_gate.py
+ERROR src/services/training/tests/test_exam_api.py
+ERROR src/services/training/tests/test_loop_closure.py
+ERROR src/services/training/tests/test_loop_api.py
+!!!!!!!!!!!!!!!!!!! Interrupted: 7 errors during collection !!!!!!!!!!!!!!!!!!!!
+7 errors in 0.19s

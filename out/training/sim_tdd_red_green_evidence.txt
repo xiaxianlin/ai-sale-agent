@@ -1,0 +1,22 @@
+# FR-TR-002 模拟客户系统 TDD 红→绿证据（迭代 1.2）
+
+## 红（实现缺失，先写测试后运行）
+
+```
+____ ERROR collecting src/services/training/tests/test_simulator_persona.py ____
+____ ERROR collecting src/services/training/tests/test_simulator_engine.py _____
+____ ERROR collecting src/services/training/tests/test_simulator_debrief.py ____
+_____ ERROR collecting src/services/training/tests/test_simulator_store.py _____
+______ ERROR collecting src/services/training/tests/test_simulator_api.py ______
+!!!!!!!!!!!!!!!!!!! Interrupted: 5 errors during collection !!!!!!!!!!!!!!!!!!!!
+5 errors in 0.17s
+（原文：5 errors in 0.17s —— test_simulator_{persona,engine,debrief,store,api}.py 全部因 services.training.core.simulator 模块缺失收集失败）
+```
+
+## 绿（最小实现后）
+
+```
+77 passed in 0.15s
+```
+
+重构后保持绿：77 passed in 0.16s（sim_smoke 收口 exit 0）

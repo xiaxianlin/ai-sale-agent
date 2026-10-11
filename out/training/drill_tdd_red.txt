@@ -1,0 +1,60 @@
+
+==================================== ERRORS ====================================
+_____ ERROR collecting src/services/training/tests/test_drill_casebank.py ______
+ImportError while importing test module '/Users/xiaxianlin/workspace/ai-sale-agent/repo/src/services/training/tests/test_drill_casebank.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/services/training/tests/test_drill_casebank.py:20: in <module>
+    from services.training.core.drill.casebank import (
+E   ModuleNotFoundError: No module named 'services.training.core.drill'
+______ ERROR collecting src/services/training/tests/test_drill_scoring.py ______
+ImportError while importing test module '/Users/xiaxianlin/workspace/ai-sale-agent/repo/src/services/training/tests/test_drill_scoring.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/services/training/tests/test_drill_scoring.py:16: in <module>
+    from services.training.core.drill.casebank import (
+E   ModuleNotFoundError: No module named 'services.training.core.drill'
+_______ ERROR collecting src/services/training/tests/test_drill_store.py _______
+ImportError while importing test module '/Users/xiaxianlin/workspace/ai-sale-agent/repo/src/services/training/tests/test_drill_store.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/services/training/tests/test_drill_store.py:13: in <module>
+    from services.training.core.drill.casebank import build_demo_cases
+E   ModuleNotFoundError: No module named 'services.training.core.drill'
+______ ERROR collecting src/services/training/tests/test_drill_service.py ______
+ImportError while importing test module '/Users/xiaxianlin/workspace/ai-sale-agent/repo/src/services/training/tests/test_drill_service.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/services/training/tests/test_drill_service.py:21: in <module>
+    from services.training.core.drill.casebank import (
+E   ModuleNotFoundError: No module named 'services.training.core.drill'
+________ ERROR collecting src/services/training/tests/test_drill_api.py ________
+ImportError while importing test module '/Users/xiaxianlin/workspace/ai-sale-agent/repo/src/services/training/tests/test_drill_api.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/services/training/tests/test_drill_api.py:24: in <module>
+    from services.training.api.drill_api import (
+E   ModuleNotFoundError: No module named 'services.training.api.drill_api'
+=========================== short test summary info ============================
+ERROR src/services/training/tests/test_drill_casebank.py
+ERROR src/services/training/tests/test_drill_scoring.py
+ERROR src/services/training/tests/test_drill_store.py
+ERROR src/services/training/tests/test_drill_service.py
+ERROR src/services/training/tests/test_drill_api.py
+!!!!!!!!!!!!!!!!!!! Interrupted: 5 errors during collection !!!!!!!!!!!!!!!!!!!!
+5 errors in 0.17s
