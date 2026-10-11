@@ -565,7 +565,14 @@ class ImportService:
             raise ImportValidationError("导入模式必须是 skip（跳过重复）或 overwrite（覆盖重复）")
         if target not in ("draft", "published"):
             raise ImportValidationError("入库状态必须是 draft（存为草稿）或 published（直接发布）")
-        total_rows = count_data_rows(file_bytes, file_format)
+        try:
+            total_rows = count_data_rows(file_bytes, file_format)
+        except ImportValidationError:
+            raise
+        except Exception as exc:  # noqa: BLE001  损坏文件（如伪 zip 的 xlsx）统一收敛为人话 40001
+            raise ImportValidationError(
+                f"文件解析失败，请用模板另存后重新上传（{type(exc).__name__}）"
+            ) from exc
         if total_rows == 0:
             raise ImportValidationError("上传文件没有数据行（仅有表头），请按模板填写后再上传")
         if total_rows > self.config.max_rows:

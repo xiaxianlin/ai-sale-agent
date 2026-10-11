@@ -233,6 +233,9 @@ class SemanticChunker:
         self.heading_stack = HeadingStack()
         self._chunks = []
         self._next_start_reason = None
+        # 降级留痕按次清理：只保留持久模式标记（bge_unavailable->struct_only，BGE 恢复前
+        # 每次调用都应上报）；单次降级事件（如 table_row_group_split）不得跨 chunk() 泄漏
+        self._degrade = [d for d in self._degrade if d == "bge_unavailable->struct_only"]
         buffer = _Buffer()
         for index, block in enumerate(blocks):
             context = BoundaryContext(

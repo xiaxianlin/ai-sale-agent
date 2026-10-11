@@ -234,8 +234,13 @@ def from_localstorage_payload(
     """
     if "major" not in payload:
         raise ValueError(f"localStorage 载荷缺少 major 字段：{dict(payload)!r}")
-    major = int(payload["major"])
-    minor = int(payload.get("minor", 0))
+    try:
+        major = int(payload["major"])
+        minor = int(payload.get("minor", 0))
+    except (TypeError, ValueError) as exc:
+        # 损坏载荷（major=null/"abc" 等）统一收敛为 ValueError：与缺失 major 同口径，
+        # guidance_api 的 ValueError 捕获族才可拦截（避免 500 漏出）
+        raise ValueError(f"localStorage 载荷的 major 版本号不可解析：{payload.get('major')!r}") from exc
     return TraineeGuidanceState(
         trainee_id=trainee_id,
         tour_id=tour_id,

@@ -28,6 +28,7 @@ RPO 说明（SR §6.2，重点）：
 from __future__ import annotations
 
 import hashlib
+import threading
 from collections.abc import Callable, Mapping, Sequence
 from dataclasses import dataclass, field
 from datetime import date, datetime, time
@@ -428,6 +429,10 @@ class BackupManifest:
         }
 
 
+class BackupReentryError(RuntimeError):
+    """备份流水线并发防重入拒绝（2026-10-10 TDD 审计缺陷修复：check-then-act 窗口收口）。"""
+
+
 class BackupRunner:
     """每日备份流水线编排器（executor 注入；命令只构造不执行）。
 
@@ -476,7 +481,22 @@ class BackupRunner:
     # ── 主流程 ────────────────────────────────────────────────────────────
 
     def run(self, run_date: date, *, now: datetime | None = None, force: bool = False) -> BackupManifest:
-        """执行当日流水线（now 提供且在低峰窗口外时跳过；force 用于人工补跑绕过窗口）。"""
+        """执行当日流水线（进程内防重入锁：并发双触发恰一执行，其余拒绝）。"""
+        lock = getattr(self, "_run_lock", None)
+        if lock is None:  # 惰性初始化：兼容未走 __init__ 的既有测试桩
+            lock = threading.Lock()
+            self._run_lock = lock
+        if not lock.acquire(blocking=False):
+            raise BackupReentryError(
+                f"备份任务已在执行中（run_date={run_date}），请勿并发触发；如需人工补跑请等待当前任务结束"
+            )
+        try:
+            return self._run_unlocked(run_date, now=now, force=force)
+        finally:
+            lock.release()
+
+    def _run_unlocked(self, run_date: date, *, now: datetime | None = None, force: bool = False) -> BackupManifest:
+        """执行当日流水线原逻辑（run 持锁后进入；now 提供且在低峰窗口外时跳过；force 用于人工补跑绕过窗口）。"""
         window_label = f"低峰窗口 {self.window.start}-{self.window.end}（Asia/Shanghai）"
         if now is not None and not force and not self.window.contains(now.time()):
             skipped = BackupManifest(

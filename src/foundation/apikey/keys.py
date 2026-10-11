@@ -226,6 +226,16 @@ class KeyStore(ABC):
     def iter_records(self) -> Iterator[ConsumerRecord]:
         """全量迭代（管理端列表/测试；生产为分页查询）。"""
 
+    @abstractmethod
+    def touch_last_used(self, consumer: str, ts: datetime) -> None:
+        """定点更新 last_used_at（鉴权热路径专用，2026-10-10 并发修复）。
+
+        与整行 save 的区别：写入时刻重读当前行、仅改 last_used_at 单字段，
+        不携带调用方持有的旧快照——避免 verify 与并发 rotate/revoke 的
+        check-then-act 丢失更新（轮换/吊销结果被旧哈希整行回写滚回）。
+        生产 PG 形态映射 UPDATE api_consumer SET last_used_at=... WHERE consumer=...。
+        """
+
 
 class InMemoryKeyStore(KeyStore):
     """内存存储实现（单元测试与本地开发用；线程安全）。
@@ -241,6 +251,13 @@ class InMemoryKeyStore(KeyStore):
     def save(self, record: ConsumerRecord) -> None:
         with self._lock:
             self._records[record.consumer] = record
+
+    def touch_last_used(self, consumer: str, ts: datetime) -> None:
+        with self._lock:
+            record = self._records.get(consumer)
+            if record is None:
+                return  # 行已被并发删除（吊销清理）：静默忽略，鉴权侧下一请求自然 401
+            self._records[consumer] = record.model_copy(update={"last_used_at": ts})
 
     def find_by_key_hash(self, key_hash: str) -> ConsumerRecord | None:
         with self._lock:
@@ -370,8 +387,10 @@ class KeyRegistry:
             if client_ip is None or client_ip not in record.ip_whitelist:
                 raise IpWhitelistDeniedError(f"来源 IP 不在白名单: consumer={record.consumer}, ip={client_ip!r}")
 
-        # last_used_at 更新（管理端展示）：整行替换，鉴权失败路径不更新
-        self._store.save(record.model_copy(update={"last_used_at": self.now()}))
+        # last_used_at 更新（管理端展示）：定点单字段更新（鉴权失败路径不更新）。
+        # 不得整行 save：调用方持有的 record 可能是轮换/吊销落地前的旧快照，
+        # 整行回写会丢失并发更新（2026-10-10 TDD 审计缺陷修复）
+        self._store.touch_last_used(record.consumer, self.now())
         return ConsumerContext(
             consumer=record.consumer,
             tenant_id=record.tenant_id,
