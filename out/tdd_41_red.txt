@@ -1,0 +1,2972 @@
+FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF [ 60%]
+FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF                         [100%]
+=================================== FAILURES ===================================
+_____ TestBindingInvariants.test_register_28_instances_binding_consistent ______
+
+self = <tests.test_cluster_registry.TestBindingInvariants object at 0x1059de000>
+
+    def test_register_28_instances_binding_consistent(self) -> None:
+        """28 实例注册：容器名/卷名与序号一致，proxy_ip 一实例一 IP。"""
+>       registry = make_registry(28)
+                   ^^^^^^^^^^^^^^^^^
+
+src/services/agent/tests/test_cluster_registry.py:55: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/agent/tests/test_cluster_registry.py:39: in make_registry
+    registry = InstanceRegistry()
+               ^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.cluster.registry.InstanceRegistry object at 0x10550cce0>
+args = (), kwargs = {}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/cluster/registry.py:16: NotImplementedError
+_____ TestStateMachine.test_legal_lifecycle_offline_running_paused_running _____
+
+self = <tests.test_cluster_registry.TestStateMachine object at 0x104b0faa0>
+
+    def test_legal_lifecycle_offline_running_paused_running(self) -> None:
+        """合法生命周期：offline→running→paused→running。"""
+>       registry = make_registry(3)
+                   ^^^^^^^^^^^^^^^^
+
+src/services/agent/tests/test_cluster_registry.py:69: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/agent/tests/test_cluster_registry.py:39: in make_registry
+    registry = InstanceRegistry()
+               ^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.cluster.registry.InstanceRegistry object at 0x106664140>
+args = (), kwargs = {}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/cluster/registry.py:16: NotImplementedError
+________ TestStateMachine.test_legal_paths_to_error_and_manual_recovery ________
+
+self = <tests.test_cluster_registry.TestStateMachine object at 0x1066f6510>
+
+    def test_legal_paths_to_error_and_manual_recovery(self) -> None:
+        """error 转人工：running→error→paused / error→running 均合法（人工处置）。"""
+>       registry = make_registry(2)
+                   ^^^^^^^^^^^^^^^^
+
+src/services/agent/tests/test_cluster_registry.py:77: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/agent/tests/test_cluster_registry.py:39: in make_registry
+    registry = InstanceRegistry()
+               ^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.cluster.registry.InstanceRegistry object at 0x1066f6750>
+args = (), kwargs = {}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/cluster/registry.py:16: NotImplementedError
+_______________ TestStateMachine.test_state_change_writes_audit ________________
+
+self = <tests.test_cluster_registry.TestStateMachine object at 0x1066f7f80>
+
+    def test_state_change_writes_audit(self) -> None:
+        """状态迁移全量留审计（NFR-SEC-03）：含迁移前后与原因。"""
+>       registry = make_registry(1)
+                   ^^^^^^^^^^^^^^^^
+
+src/services/agent/tests/test_cluster_registry.py:89: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/agent/tests/test_cluster_registry.py:39: in make_registry
+    registry = InstanceRegistry()
+               ^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.cluster.registry.InstanceRegistry object at 0x106665ac0>
+args = (), kwargs = {}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/cluster/registry.py:16: NotImplementedError
+_______________ TestBoundaries.test_seq_out_of_range_rejected[0] _______________
+
+self = <tests.test_cluster_registry.TestBoundaries object at 0x1066f4d70>
+bad_seq = 0
+
+    @pytest.mark.parametrize("bad_seq", [0, 29, -1])
+    def test_seq_out_of_range_rejected(self, bad_seq: int) -> None:
+        """seq=0/29/负数拒绝（容器名命名域 agent-runner-01…28 之外；1/28 两端内含合法）。"""
+>       registry = InstanceRegistry()
+                   ^^^^^^^^^^^^^^^^^^
+
+src/services/agent/tests/test_cluster_registry.py:106: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.cluster.registry.InstanceRegistry object at 0x110251970>
+args = (), kwargs = {}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/cluster/registry.py:16: NotImplementedError
+______________ TestBoundaries.test_seq_out_of_range_rejected[29] _______________
+
+self = <tests.test_cluster_registry.TestBoundaries object at 0x1066f4e60>
+bad_seq = 29
+
+    @pytest.mark.parametrize("bad_seq", [0, 29, -1])
+    def test_seq_out_of_range_rejected(self, bad_seq: int) -> None:
+        """seq=0/29/负数拒绝（容器名命名域 agent-runner-01…28 之外；1/28 两端内含合法）。"""
+>       registry = InstanceRegistry()
+                   ^^^^^^^^^^^^^^^^^^
+
+src/services/agent/tests/test_cluster_registry.py:106: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.cluster.registry.InstanceRegistry object at 0x110231bb0>
+args = (), kwargs = {}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/cluster/registry.py:16: NotImplementedError
+______________ TestBoundaries.test_seq_out_of_range_rejected[-1] _______________
+
+self = <tests.test_cluster_registry.TestBoundaries object at 0x1066f4dd0>
+bad_seq = -1
+
+    @pytest.mark.parametrize("bad_seq", [0, 29, -1])
+    def test_seq_out_of_range_rejected(self, bad_seq: int) -> None:
+        """seq=0/29/负数拒绝（容器名命名域 agent-runner-01…28 之外；1/28 两端内含合法）。"""
+>       registry = InstanceRegistry()
+                   ^^^^^^^^^^^^^^^^^^
+
+src/services/agent/tests/test_cluster_registry.py:106: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.cluster.registry.InstanceRegistry object at 0x11020cc50>
+args = (), kwargs = {}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/cluster/registry.py:16: NotImplementedError
+_______________ TestBoundaries.test_duplicate_proxy_ip_rejected ________________
+
+self = <tests.test_cluster_registry.TestBoundaries object at 0x1066f4a10>
+
+    def test_duplicate_proxy_ip_rejected(self) -> None:
+        """恰等冲突：第二个实例绑定同一 proxy_ip → InvariantViolation（DB UNIQUE 的应用层双保险）。"""
+>       registry = InstanceRegistry()
+                   ^^^^^^^^^^^^^^^^^^
+
+src/services/agent/tests/test_cluster_registry.py:113: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.cluster.registry.InstanceRegistry object at 0x11020d970>
+args = (), kwargs = {}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/cluster/registry.py:16: NotImplementedError
+___________ TestBoundaries.test_restart_window_expiry_resets_counter ___________
+
+self = <tests.test_cluster_registry.TestBoundaries object at 0x1066f4920>
+
+    def test_restart_window_expiry_resets_counter(self) -> None:
+        """故障窗口恰过期：超过 window_sec 后计数清零重计（非无限累积）。"""
+>       registry = make_registry(1)
+                   ^^^^^^^^^^^^^^^^
+
+src/services/agent/tests/test_cluster_registry.py:120: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/agent/tests/test_cluster_registry.py:39: in make_registry
+    registry = InstanceRegistry()
+               ^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.cluster.registry.InstanceRegistry object at 0x11020e9f0>
+args = (), kwargs = {}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/cluster/registry.py:16: NotImplementedError
+_______ TestIllegalTransitions.test_offline_to_error_rejected_state_kept _______
+
+self = <tests.test_cluster_registry.TestIllegalTransitions object at 0x1066f43e0>
+
+    def test_offline_to_error_rejected_state_kept(self) -> None:
+        """offline→error 非法（未运行实例无故障语义）；拒绝后状态不变。"""
+>       registry = make_registry(1)
+                   ^^^^^^^^^^^^^^^^
+
+src/services/agent/tests/test_cluster_registry.py:136: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/agent/tests/test_cluster_registry.py:39: in make_registry
+    registry = InstanceRegistry()
+               ^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.cluster.registry.InstanceRegistry object at 0x11020fc50>
+args = (), kwargs = {}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/cluster/registry.py:16: NotImplementedError
+____________ TestIllegalTransitions.test_error_to_offline_rejected _____________
+
+self = <tests.test_cluster_registry.TestIllegalTransitions object at 0x1066f40b0>
+
+    def test_error_to_offline_rejected(self) -> None:
+        """error→offline 非法（error 保留容器与卷待人工，不可直接销毁）。"""
+>       registry = make_registry(1)
+                   ^^^^^^^^^^^^^^^^
+
+src/services/agent/tests/test_cluster_registry.py:143: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/agent/tests/test_cluster_registry.py:39: in make_registry
+    registry = InstanceRegistry()
+               ^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.cluster.registry.InstanceRegistry object at 0x11020d400>
+args = (), kwargs = {}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/cluster/registry.py:16: NotImplementedError
+___________ TestIllegalTransitions.test_get_unknown_instance_raises ____________
+
+self = <tests.test_cluster_registry.TestIllegalTransitions object at 0x1066c1cd0>
+
+    def test_get_unknown_instance_raises(self) -> None:
+        """查询不存在实例 → InstanceNotFound（404 语义）。"""
+>       registry = make_registry(2)
+                   ^^^^^^^^^^^^^^^^
+
+src/services/agent/tests/test_cluster_registry.py:151: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/agent/tests/test_cluster_registry.py:39: in make_registry
+    registry = InstanceRegistry()
+               ^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.cluster.registry.InstanceRegistry object at 0x11020e270>
+args = (), kwargs = {}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/cluster/registry.py:16: NotImplementedError
+________________ TestDriftDetection.test_matching_ip_no_action _________________
+
+self = <tests.test_cluster_registry.TestDriftDetection object at 0x1066f44d0>
+
+    def test_matching_ip_no_action(self) -> None:
+        """等价类：观测 IP 与绑定一致 → 无动作（running 保持）。"""
+>       registry = make_registry(1)
+                   ^^^^^^^^^^^^^^^^
+
+src/services/agent/tests/test_cluster_registry.py:161: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/agent/tests/test_cluster_registry.py:39: in make_registry
+    registry = InstanceRegistry()
+               ^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.cluster.registry.InstanceRegistry object at 0x1103b0140>
+args = (), kwargs = {}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/cluster/registry.py:16: NotImplementedError
+______________ TestDriftDetection.test_ip_drift_pauses_and_alerts ______________
+
+self = <tests.test_cluster_registry.TestDriftDetection object at 0x1066f4800>
+
+    def test_ip_drift_pauses_and_alerts(self) -> None:
+        """异常：观测 IP≠绑定 IP → 立即 paused + 告警回调 + 审计，不自动换绑。"""
+        alerts: list[dict] = []
+>       registry = make_registry(1)
+                   ^^^^^^^^^^^^^^^^
+
+src/services/agent/tests/test_cluster_registry.py:170: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/agent/tests/test_cluster_registry.py:39: in make_registry
+    registry = InstanceRegistry()
+               ^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.cluster.registry.InstanceRegistry object at 0x1103b2390>
+args = (), kwargs = {}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/cluster/registry.py:16: NotImplementedError
+________ TestDriftDetection.test_drift_keeps_binding_for_manual_rebind _________
+
+self = <tests.test_cluster_registry.TestDriftDetection object at 0x1066f44a0>
+
+    def test_drift_keeps_binding_for_manual_rebind(self) -> None:
+        """降级：漂移后绑定关系不变（proxy_ip 仍为原值），待人工走配置变更流程重绑。"""
+>       registry = make_registry(1)
+                   ^^^^^^^^^^^^^^^^
+
+src/services/agent/tests/test_cluster_registry.py:182: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/agent/tests/test_cluster_registry.py:39: in make_registry
+    registry = InstanceRegistry()
+               ^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.cluster.registry.InstanceRegistry object at 0x11020e1e0>
+args = (), kwargs = {}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/cluster/registry.py:16: NotImplementedError
+____________ TestConcurrency.test_concurrent_registration_all_land _____________
+
+self = <tests.test_cluster_registry.TestConcurrency object at 0x1066f6690>
+
+    def test_concurrent_registration_all_land(self) -> None:
+        """28 线程并发注册：28 条全部落表、绑定互不冲突。"""
+>       registry = InstanceRegistry()
+                   ^^^^^^^^^^^^^^^^^^
+
+src/services/agent/tests/test_cluster_registry.py:196: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.cluster.registry.InstanceRegistry object at 0x11020f470>
+args = (), kwargs = {}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/cluster/registry.py:16: NotImplementedError
+_______ TestOverrideRendering.test_render_contains_container_and_volume ________
+
+self = <tests.test_cluster_orchestrator.TestOverrideRendering object at 0x10734daf0>
+
+    def test_render_contains_container_and_volume(self) -> None:
+        """seq=07 渲染：服务名/容器名 agent-runner-07、独立卷 cookie-07 挂载。"""
+>       orch, registry, _, _ = make_orchestrator(7)
+                               ^^^^^^^^^^^^^^^^^^^^
+
+src/services/agent/tests/test_cluster_orchestrator.py:60: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/agent/tests/test_cluster_orchestrator.py:41: in make_orchestrator
+    registry = InstanceRegistry()
+               ^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.cluster.registry.InstanceRegistry object at 0x11020cc80>
+args = (), kwargs = {}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/cluster/registry.py:16: NotImplementedError
+_________ TestOverrideRendering.test_render_proxy_env_with_placeholder _________
+
+self = <tests.test_cluster_orchestrator.TestOverrideRendering object at 0x10734c740>
+
+    def test_render_proxy_env_with_placeholder(self) -> None:
+        """代理 env 注入绑定 IP，凭证一律占位（NFR-SEC-04 零明文）。"""
+>       orch, registry, _, _ = make_orchestrator(7)
+                               ^^^^^^^^^^^^^^^^^^^^
+
+src/services/agent/tests/test_cluster_orchestrator.py:70: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/agent/tests/test_cluster_orchestrator.py:41: in make_orchestrator
+    registry = InstanceRegistry()
+               ^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.cluster.registry.InstanceRegistry object at 0x11020cef0>
+args = (), kwargs = {}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/cluster/registry.py:16: NotImplementedError
+__________ TestBatchProvision.test_provision_28_instances_all_running __________
+
+self = <tests.test_cluster_orchestrator.TestBatchProvision object at 0x10734de80>
+
+    def test_provision_28_instances_all_running(self) -> None:
+        """批量供给 28 实例：全部 running、ops 全部 start、批次数 = ceil(28/5)=6。"""
+>       orch, registry, ops, _ = make_orchestrator(28, batch_max_per_round=5)
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+src/services/agent/tests/test_cluster_orchestrator.py:83: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/agent/tests/test_cluster_orchestrator.py:41: in make_orchestrator
+    registry = InstanceRegistry()
+               ^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.cluster.registry.InstanceRegistry object at 0x1102325d0>
+args = (), kwargs = {}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/cluster/registry.py:16: NotImplementedError
+_________ TestBatchProvision.test_provision_respects_gray_batch_scope __________
+
+self = <tests.test_cluster_orchestrator.TestBatchProvision object at 0x10734e270>
+
+    def test_provision_respects_gray_batch_scope(self) -> None:
+        """供给按 gray_batch 圈定范围：batch=1 只供给批次 1 的实例（灰度顺序内建）。"""
+>       orch, registry, ops, _ = make_orchestrator(28, batch_max_per_round=5)
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+src/services/agent/tests/test_cluster_orchestrator.py:92: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/agent/tests/test_cluster_orchestrator.py:41: in make_orchestrator
+    registry = InstanceRegistry()
+               ^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.cluster.registry.InstanceRegistry object at 0x106664fb0>
+args = (), kwargs = {}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/cluster/registry.py:16: NotImplementedError
+____________ TestBatchProvision.test_provision_waits_between_rounds ____________
+
+self = <tests.test_cluster_orchestrator.TestBatchProvision object at 0x10734e540>
+
+    def test_provision_waits_between_rounds(self) -> None:
+        """轮间观察窗：轮与轮之间等待 rollout_gap（分轮错峰，联动 FR-SC-007）。"""
+>       orch, registry, ops, _ = make_orchestrator(6, batch_max_per_round=2, rollout_gap_s=7.5)
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+src/services/agent/tests/test_cluster_orchestrator.py:102: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/agent/tests/test_cluster_orchestrator.py:41: in make_orchestrator
+    registry = InstanceRegistry()
+               ^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.cluster.registry.InstanceRegistry object at 0x1058cc8c0>
+args = (), kwargs = {}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/cluster/registry.py:16: NotImplementedError
+_______________ TestInstanceLifecycle.test_restart_keeps_running _______________
+
+self = <tests.test_cluster_orchestrator.TestInstanceLifecycle object at 0x10734e840>
+
+    def test_restart_keeps_running(self) -> None:
+        """restart：running → running（重启后状态恢复）。"""
+>       orch, registry, ops, _ = make_orchestrator(1)
+                                 ^^^^^^^^^^^^^^^^^^^^
+
+src/services/agent/tests/test_cluster_orchestrator.py:116: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/agent/tests/test_cluster_orchestrator.py:41: in make_orchestrator
+    registry = InstanceRegistry()
+               ^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.cluster.registry.InstanceRegistry object at 0x1103b3620>
+args = (), kwargs = {}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/cluster/registry.py:16: NotImplementedError
+_________ TestKillDrill.test_kill_one_other_27_untouched_and_recovered _________
+
+self = <tests.test_cluster_orchestrator.TestKillDrill object at 0x10734eb40>
+
+    def test_kill_one_other_27_untouched_and_recovered(self) -> None:
+        """kill agent-runner-07 → 调谐仅触碰 07 并自动恢复：其余 27 实例 running 零操作。"""
+>       orch, registry, ops, _ = make_orchestrator(28)
+                                 ^^^^^^^^^^^^^^^^^^^^^
+
+src/services/agent/tests/test_cluster_orchestrator.py:131: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/agent/tests/test_cluster_orchestrator.py:41: in make_orchestrator
+    registry = InstanceRegistry()
+               ^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.cluster.registry.InstanceRegistry object at 0x1103b36e0>
+args = (), kwargs = {}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/cluster/registry.py:16: NotImplementedError
+___________ TestKillDrill.test_kill_drill_backoff_sequence_recorded ____________
+
+self = <tests.test_cluster_orchestrator.TestKillDrill object at 0x10734ee10>
+
+    def test_kill_drill_backoff_sequence_recorded(self) -> None:
+        """退避序列：连续 3 次故障退避 30/60/120s（base×2^(n-1)，SR §6.5）。"""
+>       orch, registry, ops, _ = make_orchestrator(1, backoff_base_s=30)
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+src/services/agent/tests/test_cluster_orchestrator.py:143: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/agent/tests/test_cluster_orchestrator.py:41: in make_orchestrator
+    registry = InstanceRegistry()
+               ^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.cluster.registry.InstanceRegistry object at 0x1103b0140>
+args = (), kwargs = {}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/cluster/registry.py:16: NotImplementedError
+__ TestFailureEscalation.test_restart_exhausted_transfers_to_error_with_alert __
+
+self = <tests.test_cluster_orchestrator.TestFailureEscalation object at 0x10734f0b0>
+
+    def test_restart_exhausted_transfers_to_error_with_alert(self) -> None:
+        """第 4 次故障（max=3）→ 不再重启，转 error + high 告警（人工接管）。"""
+>       orch, registry, ops, alerts = make_orchestrator(1, restart_max_attempts=3)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+src/services/agent/tests/test_cluster_orchestrator.py:160: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/agent/tests/test_cluster_orchestrator.py:41: in make_orchestrator
+    registry = InstanceRegistry()
+               ^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.cluster.registry.InstanceRegistry object at 0x1103b1ac0>
+args = (), kwargs = {}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/cluster/registry.py:16: NotImplementedError
+_________ TestFailureEscalation.test_ip_drift_isolates_without_restart _________
+
+self = <tests.test_cluster_orchestrator.TestFailureEscalation object at 0x1066c34a0>
+
+    def test_ip_drift_isolates_without_restart(self) -> None:
+        """IP 漂移：立即隔离转 error，零 start 调用（严禁自动换 IP 硬切，NFR-SEC-10）。"""
+>       orch, registry, ops, alerts = make_orchestrator(1)
+                                      ^^^^^^^^^^^^^^^^^^^^
+
+src/services/agent/tests/test_cluster_orchestrator.py:172: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/agent/tests/test_cluster_orchestrator.py:41: in make_orchestrator
+    registry = InstanceRegistry()
+               ^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.cluster.registry.InstanceRegistry object at 0x1103b3170>
+args = (), kwargs = {}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/cluster/registry.py:16: NotImplementedError
+______ TestFailureEscalation.test_login_expired_isolates_without_restart _______
+
+self = <tests.test_cluster_orchestrator.TestFailureEscalation object at 0x10734f230>
+
+    def test_login_expired_isolates_without_restart(self) -> None:
+        """进程在但登录失效：不暴力重登，隔离转 error（§6.5 决策②）。"""
+>       orch, registry, ops, _ = make_orchestrator(1)
+                                 ^^^^^^^^^^^^^^^^^^^^
+
+src/services/agent/tests/test_cluster_orchestrator.py:182: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/agent/tests/test_cluster_orchestrator.py:41: in make_orchestrator
+    registry = InstanceRegistry()
+               ^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.cluster.registry.InstanceRegistry object at 0x104e060c0>
+args = (), kwargs = {}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/cluster/registry.py:16: NotImplementedError
+____________ TestFailureEscalation.test_desired_not_running_skipped ____________
+
+self = <tests.test_cluster_orchestrator.TestFailureEscalation object at 0x10734ed20>
+
+    def test_desired_not_running_skipped(self) -> None:
+        """期望非 running（人工暂停）实例：调谐跳过不干预（期望态优先）。"""
+>       orch, registry, ops, _ = make_orchestrator(1)
+                                 ^^^^^^^^^^^^^^^^^^^^
+
+src/services/agent/tests/test_cluster_orchestrator.py:191: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/agent/tests/test_cluster_orchestrator.py:41: in make_orchestrator
+    registry = InstanceRegistry()
+               ^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.cluster.registry.InstanceRegistry object at 0x10734e8d0>
+args = (), kwargs = {}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/cluster/registry.py:16: NotImplementedError
+____ TestConcurrencyAndDegradation.test_concurrent_restart_mutual_exclusion ____
+
+self = <tests.test_cluster_orchestrator.TestConcurrencyAndDegradation object at 0x10734e960>
+
+    def test_concurrent_restart_mutual_exclusion(self) -> None:
+        """并发：同实例互斥锁——第二次操作被拒 INST_BUSY（管理操作互斥）。"""
+>       orch, _, _, _ = make_orchestrator(1)
+                        ^^^^^^^^^^^^^^^^^^^^
+
+src/services/agent/tests/test_cluster_orchestrator.py:207: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/agent/tests/test_cluster_orchestrator.py:41: in make_orchestrator
+    registry = InstanceRegistry()
+               ^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.cluster.registry.InstanceRegistry object at 0x11020eb40>
+args = (), kwargs = {}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/cluster/registry.py:16: NotImplementedError
+_ TestConcurrencyAndDegradation.test_reconcile_all_swallows_single_instance_error _
+
+self = <tests.test_cluster_orchestrator.TestConcurrencyAndDegradation object at 0x10734e3f0>
+
+    def test_reconcile_all_swallows_single_instance_error(self) -> None:
+        """降级：单实例调谐抛错（探针/容器接口异常）就地捕获，其余 27 实例照常。"""
+>       orch, registry, ops, _ = make_orchestrator(28)
+                                 ^^^^^^^^^^^^^^^^^^^^^
+
+src/services/agent/tests/test_cluster_orchestrator.py:217: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/agent/tests/test_cluster_orchestrator.py:41: in make_orchestrator
+    registry = InstanceRegistry()
+               ^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.cluster.registry.InstanceRegistry object at 0x11020efc0>
+args = (), kwargs = {}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/cluster/registry.py:16: NotImplementedError
+___ TestQueryFingerprint.test_normalized_equivalent_queries_same_fingerprint ___
+
+self = <tests.test_cluster_callpool.TestQueryFingerprint object at 0x10734f590>
+
+    def test_normalized_equivalent_queries_same_fingerprint(self) -> None:
+        """「ST-3200 支架 价格」与「st3200支架，价格」同指纹（空白/标点/大小写归一）。"""
+>       a = query_fingerprint({"query": "ST-3200 支架 价格", "kb_types": ["product"], "top_k": 5})
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+src/services/agent/tests/test_cluster_callpool.py:83: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = ({'query': 'ST-3200 支架 价格', 'kb_types': ['product'], 'top_k': 5},)
+kwargs = {}
+
+    def query_fingerprint(*args, **kwargs):
+        """查询指纹"""
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/cluster/callpool.py:31: NotImplementedError
+_______ TestQueryFingerprint.test_different_params_different_fingerprint _______
+
+self = <tests.test_cluster_callpool.TestQueryFingerprint object at 0x10734d820>
+
+    def test_different_params_different_fingerprint(self) -> None:
+        """边界：kb_types 顺序不敏感、top_k/kb_types 差异改变指纹（互不误合并）。"""
+        base = {"query": "价格", "kb_types": ["product", "process"], "top_k": 5}
+        swapped = {"query": "价格", "kb_types": ["process", "product"], "top_k": 5}
+        other_topk = {"query": "价格", "kb_types": ["product", "process"], "top_k": 3}
+>       assert query_fingerprint(base) == query_fingerprint(swapped)
+               ^^^^^^^^^^^^^^^^^^^^^^^
+
+src/services/agent/tests/test_cluster_callpool.py:93: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = ({'query': '价格', 'kb_types': ['product', 'process'], 'top_k': 5},)
+kwargs = {}
+
+    def query_fingerprint(*args, **kwargs):
+        """查询指纹"""
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/cluster/callpool.py:31: NotImplementedError
+_____________ TestMerge.test_same_fingerprint_merged_single_source _____________
+
+self = <tests.test_cluster_callpool.TestMerge object at 0x10734ca10>
+
+    def test_same_fingerprint_merged_single_source(self) -> None:
+        """等价类：同指纹串行两查 → 第二次 L1 命中，回源 1 次。"""
+>       pool, backend = make_pool()
+                        ^^^^^^^^^^^
+
+src/services/agent/tests/test_cluster_callpool.py:102: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/agent/tests/test_cluster_callpool.py:68: in make_pool
+    config=PoolConfig(l1_ttl_s=l1_ttl, l2_ttl_s=l2_ttl, hot_threshold=hot_threshold),
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.cluster.callpool.PoolConfig object at 0x1103b3d70>
+args = (), kwargs = {'l1_ttl_s': 60.0, 'l2_ttl_s': 600.0, 'hot_threshold': 3}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/cluster/callpool.py:13: NotImplementedError
+_____________ TestMerge.test_different_fingerprint_no_cross_merge ______________
+
+self = <tests.test_cluster_callpool.TestMerge object at 0x10734e150>
+
+    def test_different_fingerprint_no_cross_merge(self) -> None:
+        """边界：不同指纹（top_k 不同）互不合并，各自回源。"""
+>       pool, backend = make_pool()
+                        ^^^^^^^^^^^
+
+src/services/agent/tests/test_cluster_callpool.py:111: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/agent/tests/test_cluster_callpool.py:68: in make_pool
+    config=PoolConfig(l1_ttl_s=l1_ttl, l2_ttl_s=l2_ttl, hot_threshold=hot_threshold),
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.cluster.callpool.PoolConfig object at 0x110305970>
+args = (), kwargs = {'l1_ttl_s': 60.0, 'l2_ttl_s': 600.0, 'hot_threshold': 3}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/cluster/callpool.py:13: NotImplementedError
+_________________ TestTwoLevelCache.test_l1_expired_cold_again _________________
+
+self = <tests.test_cluster_callpool.TestTwoLevelCache object at 0x10734f260>
+
+    def test_l1_expired_cold_again(self) -> None:
+        """边界（TTL 右侧外）：超过 l1_ttl → L1 失效，重新回源（FR-KB-017 增量可见上限）。"""
+>       pool, backend = make_pool(l1_ttl=60.0, l2_ttl=600.0, hot_threshold=99)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+src/services/agent/tests/test_cluster_callpool.py:125: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/agent/tests/test_cluster_callpool.py:68: in make_pool
+    config=PoolConfig(l1_ttl_s=l1_ttl, l2_ttl_s=l2_ttl, hot_threshold=hot_threshold),
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.cluster.callpool.PoolConfig object at 0x110306120>
+args = (), kwargs = {'l1_ttl_s': 60.0, 'l2_ttl_s': 600.0, 'hot_threshold': 99}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/cluster/callpool.py:13: NotImplementedError
+_______________ TestTwoLevelCache.test_hot_query_promoted_to_l2 ________________
+
+self = <tests.test_cluster_callpool.TestTwoLevelCache object at 0x10734e690>
+
+    def test_hot_query_promoted_to_l2(self) -> None:
+        """热点晋升：热度恰达阈值后，L1 过期仍可由 L2 服务（热点 L2）。"""
+>       pool, backend = make_pool(l1_ttl=60.0, l2_ttl=600.0, hot_threshold=3)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+src/services/agent/tests/test_cluster_callpool.py:134: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/agent/tests/test_cluster_callpool.py:68: in make_pool
+    config=PoolConfig(l1_ttl_s=l1_ttl, l2_ttl_s=l2_ttl, hot_threshold=hot_threshold),
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.cluster.callpool.PoolConfig object at 0x110306b40>
+args = (), kwargs = {'l1_ttl_s': 60.0, 'l2_ttl_s': 600.0, 'hot_threshold': 3}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/cluster/callpool.py:13: NotImplementedError
+__________ TestTwoLevelCache.test_non_hot_expired_not_served_from_l2 ___________
+
+self = <tests.test_cluster_callpool.TestTwoLevelCache object at 0x107374da0>
+
+    def test_non_hot_expired_not_served_from_l2(self) -> None:
+        """边界（非热点）：低频查询 L1 过期后不得吃 L2（热度门槛隔离）。"""
+>       pool, backend = make_pool(l1_ttl=60.0, l2_ttl=600.0, hot_threshold=5)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+src/services/agent/tests/test_cluster_callpool.py:145: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/agent/tests/test_cluster_callpool.py:68: in make_pool
+    config=PoolConfig(l1_ttl_s=l1_ttl, l2_ttl_s=l2_ttl, hot_threshold=hot_threshold),
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.cluster.callpool.PoolConfig object at 0x110307680>
+args = (), kwargs = {'l1_ttl_s': 60.0, 'l2_ttl_s': 600.0, 'hot_threshold': 5}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/cluster/callpool.py:13: NotImplementedError
+___________ TestDegradationChain.test_milvus_down_serves_stale_cache ___________
+
+self = <tests.test_cluster_callpool.TestDegradationChain object at 0x107375f40>
+
+    def test_milvus_down_serves_stale_cache(self) -> None:
+        """降级①：Milvus 不可用 → L2 缓存顶上，degraded=[stale_cache]。"""
+>       pool, backend = make_pool(l1_ttl=60.0, l2_ttl=600.0, hot_threshold=2)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+src/services/agent/tests/test_cluster_callpool.py:160: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/agent/tests/test_cluster_callpool.py:68: in make_pool
+    config=PoolConfig(l1_ttl_s=l1_ttl, l2_ttl_s=l2_ttl, hot_threshold=hot_threshold),
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.cluster.callpool.PoolConfig object at 0x110305a90>
+args = (), kwargs = {'l1_ttl_s': 60.0, 'l2_ttl_s': 600.0, 'hot_threshold': 2}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/cluster/callpool.py:13: NotImplementedError
+______ TestDegradationChain.test_milvus_down_no_cache_falls_to_bm25_stub _______
+
+self = <tests.test_cluster_callpool.TestDegradationChain object at 0x107374350>
+
+    def test_milvus_down_no_cache_falls_to_bm25_stub(self) -> None:
+        """降级②：无缓存可吃 → BM25 桩兜底，degraded=[bm25_stub]。"""
+>       pool, backend = make_pool()
+                        ^^^^^^^^^^^
+
+src/services/agent/tests/test_cluster_callpool.py:171: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/agent/tests/test_cluster_callpool.py:68: in make_pool
+    config=PoolConfig(l1_ttl_s=l1_ttl, l2_ttl_s=l2_ttl, hot_threshold=hot_threshold),
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.cluster.callpool.PoolConfig object at 0x1103b1b80>
+args = (), kwargs = {'l1_ttl_s': 60.0, 'l2_ttl_s': 600.0, 'hot_threshold': 3}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/cluster/callpool.py:13: NotImplementedError
+___________ TestDegradationChain.test_chain_order_cache_before_stub ____________
+
+self = <tests.test_cluster_callpool.TestDegradationChain object at 0x107375c40>
+
+    def test_chain_order_cache_before_stub(self) -> None:
+        """降级次序：缓存与桩同时可用 → 先缓存（桩仅作最后兜底）。"""
+>       pool, backend = make_pool(hot_threshold=2)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+src/services/agent/tests/test_cluster_callpool.py:180: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/agent/tests/test_cluster_callpool.py:68: in make_pool
+    config=PoolConfig(l1_ttl_s=l1_ttl, l2_ttl_s=l2_ttl, hot_threshold=hot_threshold),
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.cluster.callpool.PoolConfig object at 0x1103b1a30>
+args = (), kwargs = {'l1_ttl_s': 60.0, 'l2_ttl_s': 600.0, 'hot_threshold': 2}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/cluster/callpool.py:13: NotImplementedError
+_______ TestDegradationChain.test_all_levels_down_raises_kb_unavailable ________
+
+self = <tests.test_cluster_callpool.TestDegradationChain object at 0x107375f10>
+
+    def test_all_levels_down_raises_kb_unavailable(self) -> None:
+        """异常：Milvus + 无缓存 + 无桩 → KbUnavailable（fail-safe 上抛，不装成功）。"""
+>       pool, backend = make_pool()
+                        ^^^^^^^^^^^
+
+src/services/agent/tests/test_cluster_callpool.py:191: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/agent/tests/test_cluster_callpool.py:68: in make_pool
+    config=PoolConfig(l1_ttl_s=l1_ttl, l2_ttl_s=l2_ttl, hot_threshold=hot_threshold),
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.cluster.callpool.PoolConfig object at 0x11020ed80>
+args = (), kwargs = {'l1_ttl_s': 60.0, 'l2_ttl_s': 600.0, 'hot_threshold': 3}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/cluster/callpool.py:13: NotImplementedError
+__ TestConcurrentLoad.test_50_threads_same_fingerprint_single_source_no_race ___
+
+self = <tests.test_cluster_callpool.TestConcurrentLoad object at 0x107376240>
+
+    def test_50_threads_same_fingerprint_single_source_no_race(self) -> None:
+        """50 线程同指纹：回源恰 1 次、50 份结果全一致（零竞态）。"""
+>       pool, backend = make_pool()
+                        ^^^^^^^^^^^
+
+src/services/agent/tests/test_cluster_callpool.py:205: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/agent/tests/test_cluster_callpool.py:68: in make_pool
+    config=PoolConfig(l1_ttl_s=l1_ttl, l2_ttl_s=l2_ttl, hot_threshold=hot_threshold),
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.cluster.callpool.PoolConfig object at 0x1066f6330>
+args = (), kwargs = {'l1_ttl_s': 60.0, 'l2_ttl_s': 600.0, 'hot_threshold': 3}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/cluster/callpool.py:13: NotImplementedError
+_____________ TestConcurrentLoad.test_50_threads_p95_within_budget _____________
+
+self = <tests.test_cluster_callpool.TestConcurrentLoad object at 0x107376510>
+
+    def test_50_threads_p95_within_budget(self) -> None:
+        """P95 压测断言：50 线程 × 4 轮同指纹查询，P95 ≤ 500ms（NFR-PER-02 契约线）。"""
+>       pool, backend = make_pool()
+                        ^^^^^^^^^^^
+
+src/services/agent/tests/test_cluster_callpool.py:229: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/agent/tests/test_cluster_callpool.py:68: in make_pool
+    config=PoolConfig(l1_ttl_s=l1_ttl, l2_ttl_s=l2_ttl, hot_threshold=hot_threshold),
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.cluster.callpool.PoolConfig object at 0x1103065a0>
+args = (), kwargs = {'l1_ttl_s': 60.0, 'l2_ttl_s': 600.0, 'hot_threshold': 3}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/cluster/callpool.py:13: NotImplementedError
+_____ TestConcurrentLoad.test_concurrent_distinct_fingerprints_all_served ______
+
+self = <tests.test_cluster_callpool.TestConcurrentLoad object at 0x107376870>
+
+    def test_concurrent_distinct_fingerprints_all_served(self) -> None:
+        """并发：28 线程各查不同指纹 → 28 次回源、28 份正确结果（无串扰）。"""
+>       pool, backend = make_pool()
+                        ^^^^^^^^^^^
+
+src/services/agent/tests/test_cluster_callpool.py:256: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/agent/tests/test_cluster_callpool.py:68: in make_pool
+    config=PoolConfig(l1_ttl_s=l1_ttl, l2_ttl_s=l2_ttl, hot_threshold=hot_threshold),
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.cluster.callpool.PoolConfig object at 0x110307b90>
+args = (), kwargs = {'l1_ttl_s': 60.0, 'l2_ttl_s': 600.0, 'hot_threshold': 3}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/cluster/callpool.py:13: NotImplementedError
+___________________ TestGrouping.test_group_config_isolation ___________________
+
+self = <tests.test_cluster_gray.TestGrouping object at 0x107376d50>
+
+    def test_group_config_isolation(self) -> None:
+        """配置隔离：试点组解析到覆盖键（新版本），对照组回落全局键（基线版本）。"""
+>       manager, registry, _ = make_world()
+                               ^^^^^^^^^^^^
+
+src/services/agent/tests/test_cluster_gray.py:85: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/agent/tests/test_cluster_gray.py:41: in make_world
+    registry = InstanceRegistry()
+               ^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.cluster.registry.InstanceRegistry object at 0x110305400>
+args = (), kwargs = {}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/cluster/registry.py:16: NotImplementedError
+_________________________ TestGate.test_gate_all_pass __________________________
+
+self = <tests.test_cluster_gray.TestGate object at 0x107374a70>
+
+    def test_gate_all_pass(self) -> None:
+        """等价类：三指标全达标 → passed、状态 gate_passed、决策 gate_pass 落账。"""
+>       manager, registry, _ = make_world()
+                               ^^^^^^^^^^^^
+
+src/services/agent/tests/test_cluster_gray.py:102: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/agent/tests/test_cluster_gray.py:41: in make_world
+    registry = InstanceRegistry()
+               ^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.cluster.registry.InstanceRegistry object at 0x1103068d0>
+args = (), kwargs = {}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/cluster/registry.py:16: NotImplementedError
+_______ TestGate.test_gate_any_failure_pauses_pilot[ban_or_restricted-1] _______
+
+self = <tests.test_cluster_gray.TestGate object at 0x107375a00>
+field = 'ban_or_restricted', value = 1
+
+    @pytest.mark.parametrize(
+        ("field", "value"), [
+            ("ban_or_restricted", 1),            # 封号信号出现 → 一票否决
+            ("reply_usable_rate", 0.79),         # 可用率差 0.01
+            ("sessions_per_account_day", 14.9),  # 会话量未达标
+        ])
+    def test_gate_any_failure_pauses_pilot(self, field: str, value) -> None:
+        """异常：任一硬指标失败 → passed=False、试点组实例暂停、告警、gate_failed。"""
+>       manager, registry, alerts = make_world()
+                                    ^^^^^^^^^^^^
+
+src/services/agent/tests/test_cluster_gray.py:120: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/agent/tests/test_cluster_gray.py:41: in make_world
+    registry = InstanceRegistry()
+               ^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.cluster.registry.InstanceRegistry object at 0x1103030b0>
+args = (), kwargs = {}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/cluster/registry.py:16: NotImplementedError
+_____ TestGate.test_gate_any_failure_pauses_pilot[reply_usable_rate-0.79] ______
+
+self = <tests.test_cluster_gray.TestGate object at 0x107375eb0>
+field = 'reply_usable_rate', value = 0.79
+
+    @pytest.mark.parametrize(
+        ("field", "value"), [
+            ("ban_or_restricted", 1),            # 封号信号出现 → 一票否决
+            ("reply_usable_rate", 0.79),         # 可用率差 0.01
+            ("sessions_per_account_day", 14.9),  # 会话量未达标
+        ])
+    def test_gate_any_failure_pauses_pilot(self, field: str, value) -> None:
+        """异常：任一硬指标失败 → passed=False、试点组实例暂停、告警、gate_failed。"""
+>       manager, registry, alerts = make_world()
+                                    ^^^^^^^^^^^^
+
+src/services/agent/tests/test_cluster_gray.py:120: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/agent/tests/test_cluster_gray.py:41: in make_world
+    registry = InstanceRegistry()
+               ^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.cluster.registry.InstanceRegistry object at 0x110303290>
+args = (), kwargs = {}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/cluster/registry.py:16: NotImplementedError
+__ TestGate.test_gate_any_failure_pauses_pilot[sessions_per_account_day-14.9] __
+
+self = <tests.test_cluster_gray.TestGate object at 0x107375af0>
+field = 'sessions_per_account_day', value = 14.9
+
+    @pytest.mark.parametrize(
+        ("field", "value"), [
+            ("ban_or_restricted", 1),            # 封号信号出现 → 一票否决
+            ("reply_usable_rate", 0.79),         # 可用率差 0.01
+            ("sessions_per_account_day", 14.9),  # 会话量未达标
+        ])
+    def test_gate_any_failure_pauses_pilot(self, field: str, value) -> None:
+        """异常：任一硬指标失败 → passed=False、试点组实例暂停、告警、gate_failed。"""
+>       manager, registry, alerts = make_world()
+                                    ^^^^^^^^^^^^
+
+src/services/agent/tests/test_cluster_gray.py:120: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/agent/tests/test_cluster_gray.py:41: in make_world
+    registry = InstanceRegistry()
+               ^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.cluster.registry.InstanceRegistry object at 0x110303d40>
+args = (), kwargs = {}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/cluster/registry.py:16: NotImplementedError
+_________________ TestGate.test_gate_alive_rate_precheck_fail __________________
+
+self = <tests.test_cluster_gray.TestGate object at 0x107376060>
+
+    def test_gate_alive_rate_precheck_fail(self) -> None:
+        """前置门禁：实例存活率 <1.0 直接判失败（extra_fail=instance_alive_rate）。"""
+>       manager, registry, _ = make_world()
+                               ^^^^^^^^^^^^
+
+src/services/agent/tests/test_cluster_gray.py:134: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/agent/tests/test_cluster_gray.py:41: in make_world
+    registry = InstanceRegistry()
+               ^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.cluster.registry.InstanceRegistry object at 0x110302630>
+args = (), kwargs = {}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/cluster/registry.py:16: NotImplementedError
+________________ TestGate.test_gate_before_window_ends_rejected ________________
+
+self = <tests.test_cluster_gray.TestGate object at 0x1073761b0>
+
+    def test_gate_before_window_ends_rejected(self) -> None:
+        """边界/异常：观察窗未满（第 13 天）抢跑判定 → OBSERVE_NOT_FINISHED。"""
+>       manager, _, _ = make_world()
+                        ^^^^^^^^^^^^
+
+src/services/agent/tests/test_cluster_gray.py:144: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/agent/tests/test_cluster_gray.py:41: in make_world
+    registry = InstanceRegistry()
+               ^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.cluster.registry.InstanceRegistry object at 0x110307350>
+args = (), kwargs = {}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/cluster/registry.py:16: NotImplementedError
+__________ TestGate.test_gate_window_boundary_exact_and_short_window ___________
+
+self = <tests.test_cluster_gray.TestGate object at 0x1073774a0>
+
+    def test_gate_window_boundary_exact_and_short_window(self) -> None:
+        """边界：观察窗恰满（=start+N 天）允许判定；窗长可配（7 天档，SR §7 配置外置）。"""
+>       manager, _, _ = make_world()
+                        ^^^^^^^^^^^^
+
+src/services/agent/tests/test_cluster_gray.py:152: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/agent/tests/test_cluster_gray.py:41: in make_world
+    registry = InstanceRegistry()
+               ^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.cluster.registry.InstanceRegistry object at 0x110307710>
+args = (), kwargs = {}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/cluster/registry.py:16: NotImplementedError
+______________ TestGate.test_gate_boundary_thresholds_equal_pass _______________
+
+self = <tests.test_cluster_gray.TestGate object at 0x10734f3b0>
+
+    def test_gate_boundary_thresholds_equal_pass(self) -> None:
+        """边界：可用率恰 0.80、会话量恰 15.0 → 均 PASS（≥ 达标口径，§16.3）。"""
+>       manager, _, _ = make_world()
+                        ^^^^^^^^^^^^
+
+src/services/agent/tests/test_cluster_gray.py:163: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/agent/tests/test_cluster_gray.py:41: in make_world
+    registry = InstanceRegistry()
+               ^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.cluster.registry.InstanceRegistry object at 0x110252090>
+args = (), kwargs = {}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/cluster/registry.py:16: NotImplementedError
+___________________ TestRollout.test_rollout_pilot_to_wave2 ____________________
+
+self = <tests.test_cluster_gray.TestRollout object at 0x10734cfe0>
+
+    def test_rollout_pilot_to_wave2(self) -> None:
+        """放量第一批：pilot → wave2（余 18 账号）、分批重启 ≤5、进入新观察窗。"""
+>       manager, registry, _ = make_world()
+                               ^^^^^^^^^^^^
+
+src/services/agent/tests/test_cluster_gray.py:180: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/agent/tests/test_cluster_gray.py:41: in make_world
+    registry = InstanceRegistry()
+               ^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.cluster.registry.InstanceRegistry object at 0x11020f6b0>
+args = (), kwargs = {}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/cluster/registry.py:16: NotImplementedError
+____________________ TestRollout.test_rollout_wave2_to_full ____________________
+
+self = <tests.test_cluster_gray.TestRollout object at 0x10734f6b0>
+
+    def test_rollout_wave2_to_full(self) -> None:
+        """放量第二批：wave2 门禁再过 → full（28 账号全量）。"""
+>       manager, registry, _ = make_world()
+                               ^^^^^^^^^^^^
+
+src/services/agent/tests/test_cluster_gray.py:194: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/agent/tests/test_cluster_gray.py:41: in make_world
+    registry = InstanceRegistry()
+               ^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.cluster.registry.InstanceRegistry object at 0x1103b3230>
+args = (), kwargs = {}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/cluster/registry.py:16: NotImplementedError
+________________ TestRollout.test_rollout_requires_gate_passed _________________
+
+self = <tests.test_cluster_gray.TestRollout object at 0x10734f710>
+
+    def test_rollout_requires_gate_passed(self) -> None:
+        """异常：未过门禁放量 → PLAN_STATE_INVALID（状态机拦截，兼防重复提交）。"""
+>       manager, _, _ = make_world()
+                        ^^^^^^^^^^^^
+
+src/services/agent/tests/test_cluster_gray.py:207: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/agent/tests/test_cluster_gray.py:41: in make_world
+    registry = InstanceRegistry()
+               ^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.cluster.registry.InstanceRegistry object at 0x110302810>
+args = (), kwargs = {}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/cluster/registry.py:16: NotImplementedError
+_____ TestDecisionLedger.test_decision_record_fields_complete_and_ordered ______
+
+self = <tests.test_cluster_gray.TestDecisionLedger object at 0x107389850>
+
+    def test_decision_record_fields_complete_and_ordered(self) -> None:
+        """等价类：决策记录含时间/动作/依据（门禁快照）/审批人；台账只追加时序单调。"""
+>       manager, _, _ = make_world()
+                        ^^^^^^^^^^^^
+
+src/services/agent/tests/test_cluster_gray.py:220: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/agent/tests/test_cluster_gray.py:41: in make_world
+    registry = InstanceRegistry()
+               ^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.cluster.registry.InstanceRegistry object at 0x110300c80>
+args = (), kwargs = {}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/cluster/registry.py:16: NotImplementedError
+_________ TestRollback.test_rollback_removes_overrides_and_pauses_gray _________
+
+self = <tests.test_cluster_gray.TestRollback object at 0x107388bc0>
+
+    def test_rollback_removes_overrides_and_pauses_gray(self) -> None:
+        """降级主路径：配置回落全局、灰度组实例暂停打回 control、对照组不动、告警+决策。"""
+>       manager, registry, alerts = make_world()
+                                    ^^^^^^^^^^^^
+
+src/services/agent/tests/test_cluster_gray.py:241: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/agent/tests/test_cluster_gray.py:41: in make_world
+    registry = InstanceRegistry()
+               ^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.cluster.registry.InstanceRegistry object at 0x1103017f0>
+args = (), kwargs = {}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/cluster/registry.py:16: NotImplementedError
+_______________ TestRollback.test_rollback_idempotent_intercept ________________
+
+self = <tests.test_cluster_gray.TestRollback object at 0x107388f50>
+
+    def test_rollback_idempotent_intercept(self) -> None:
+        """异常/幂等：已回滚计划再回滚 → PLAN_STATE_INVALID（不重复执行）。"""
+>       manager, _, _ = make_world()
+                        ^^^^^^^^^^^^
+
+src/services/agent/tests/test_cluster_gray.py:260: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/agent/tests/test_cluster_gray.py:41: in make_world
+    registry = InstanceRegistry()
+               ^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.cluster.registry.InstanceRegistry object at 0x1103027b0>
+args = (), kwargs = {}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/cluster/registry.py:16: NotImplementedError
+__________________________ test_instances_view_shape ___________________________
+
+    def test_instances_view_shape() -> None:
+        """集群视图：total/by_status/items 字段契约（SR-SC-001 §5 出参节选口径）。"""
+>       client, registry, orch, _, _ = build_client()
+                                       ^^^^^^^^^^^^^^
+
+src/services/agent/tests/test_cluster_api.py:69: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/agent/tests/test_cluster_api.py:35: in build_client
+    registry = InstanceRegistry()
+               ^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.cluster.registry.InstanceRegistry object at 0x110303e90>
+args = (), kwargs = {}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/cluster/registry.py:16: NotImplementedError
+______________________ test_instance_stop_start_roundtrip ______________________
+
+    def test_instance_stop_start_roundtrip() -> None:
+        """实例级启停：stop → paused、start → running（HTTP 200 语义）。"""
+>       client, _, orch, _, _ = build_client()
+                                ^^^^^^^^^^^^^^
+
+src/services/agent/tests/test_cluster_api.py:82: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/agent/tests/test_cluster_api.py:35: in build_client
+    registry = InstanceRegistry()
+               ^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.cluster.registry.InstanceRegistry object at 0x1103e7380>
+args = (), kwargs = {}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/cluster/registry.py:16: NotImplementedError
+__________________________ test_unknown_instance_404 ___________________________
+
+    def test_unknown_instance_404() -> None:
+        """错误契约：不存在实例 → 404 NOT_FOUND（中文消息）。"""
+>       client, *_ = build_client()
+                     ^^^^^^^^^^^^^^
+
+src/services/agent/tests/test_cluster_api.py:90: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/agent/tests/test_cluster_api.py:35: in build_client
+    registry = InstanceRegistry()
+               ^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.cluster.registry.InstanceRegistry object at 0x1103e7d40>
+args = (), kwargs = {}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/cluster/registry.py:16: NotImplementedError
+_________________________ test_illegal_transition_422 __________________________
+
+    def test_illegal_transition_422() -> None:
+        """错误契约：error 实例直接 start → 422 ILLEGAL_TRANSITION。"""
+>       client, registry, orch, _, _ = build_client()
+                                       ^^^^^^^^^^^^^^
+
+src/services/agent/tests/test_cluster_api.py:98: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/agent/tests/test_cluster_api.py:35: in build_client
+    registry = InstanceRegistry()
+               ^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.cluster.registry.InstanceRegistry object at 0x110302ff0>
+args = (), kwargs = {}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/cluster/registry.py:16: NotImplementedError
+_________________________ test_batch_operation_report __________________________
+
+    def test_batch_operation_report() -> None:
+        """批量操作：accepted/failed 对账 + report_id（SR-SC-005 消费通道）。"""
+>       client, _, orch, _, _ = build_client()
+                                ^^^^^^^^^^^^^^
+
+src/services/agent/tests/test_cluster_api.py:109: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/agent/tests/test_cluster_api.py:35: in build_client
+    registry = InstanceRegistry()
+               ^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.cluster.registry.InstanceRegistry object at 0x110302fc0>
+args = (), kwargs = {}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/cluster/registry.py:16: NotImplementedError
+___________________________ test_docker_failure_503 ____________________________
+
+    def test_docker_failure_503() -> None:
+        """错误契约：容器操作失败 → 503 DOCKER_UNREACHABLE。"""
+>       client, _, orch, _, ops = build_client()
+                                  ^^^^^^^^^^^^^^
+
+src/services/agent/tests/test_cluster_api.py:121: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/agent/tests/test_cluster_api.py:35: in build_client
+    registry = InstanceRegistry()
+               ^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.cluster.registry.InstanceRegistry object at 0x1103031d0>
+args = (), kwargs = {}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/cluster/registry.py:16: NotImplementedError
+____________________________ test_gray_status_view _____________________________
+
+    def test_gray_status_view() -> None:
+        """灰度状态：计划号/状态/分组计数/决策数（看板数据源契约）。"""
+>       client, _, _, gray, _ = build_client()
+                                ^^^^^^^^^^^^^^
+
+src/services/agent/tests/test_cluster_api.py:133: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/agent/tests/test_cluster_api.py:35: in build_client
+    registry = InstanceRegistry()
+               ^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.cluster.registry.InstanceRegistry object at 0x10734eab0>
+args = (), kwargs = {}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/cluster/registry.py:16: NotImplementedError
+_____________________ test_gray_promote_requires_gate_pass _____________________
+
+    def test_gray_promote_requires_gate_pass() -> None:
+        """放量门禁：观察窗未满直接 promote → 409（未过门禁/状态非法）。"""
+>       client, _, _, gray, _ = build_client()
+                                ^^^^^^^^^^^^^^
+
+src/services/agent/tests/test_cluster_api.py:144: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/agent/tests/test_cluster_api.py:35: in build_client
+    registry = InstanceRegistry()
+               ^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.cluster.registry.InstanceRegistry object at 0x11020e870>
+args = (), kwargs = {}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/cluster/registry.py:16: NotImplementedError
+___________________ test_gray_promote_and_rollback_roundtrip ___________________
+
+    def test_gray_promote_and_rollback_roundtrip() -> None:
+        """放量→回滚：promote 200 返回目标分组；rollback 200 返回耗时；重复回滚 409。"""
+>       client, registry, _, gray, _ = build_client()
+                                       ^^^^^^^^^^^^^^
+
+src/services/agent/tests/test_cluster_api.py:156: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/agent/tests/test_cluster_api.py:35: in build_client
+    registry = InstanceRegistry()
+               ^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.cluster.registry.InstanceRegistry object at 0x110307320>
+args = (), kwargs = {}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/cluster/registry.py:16: NotImplementedError
+_______________ TestGeneratorUnit.test_instance_plan_has_28_rows _______________
+
+self = <tests.test_cluster_compose_gen.TestGeneratorUnit object at 0x110250950>
+
+    def test_instance_plan_has_28_rows(self) -> None:
+        """绑定清单：28 行、序号 01-28、账号唯一、一账号一 IP。"""
+>       plan = instance_plan(DEFAULT_COUNT)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+src/services/agent/tests/test_cluster_compose_gen.py:39: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = (28,), kwargs = {}
+
+    def instance_plan(*args, **kwargs):
+        """绑定清单"""
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+tools/agent/gen_cluster_compose.py:7: NotImplementedError
+_____________ TestGeneratorUnit.test_instance_plan_main_sub_split ______________
+
+self = <tests.test_cluster_compose_gen.TestGeneratorUnit object at 0x110250c20>
+
+    def test_instance_plan_main_sub_split(self) -> None:
+        """账号形态：4 主账号 + 24 子账号（SRS §11.6 口径 4+24=28）。"""
+>       plan = instance_plan(DEFAULT_COUNT)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+src/services/agent/tests/test_cluster_compose_gen.py:47: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = (28,), kwargs = {}
+
+    def instance_plan(*args, **kwargs):
+        """绑定清单"""
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+tools/agent/gen_cluster_compose.py:7: NotImplementedError
+_____________ TestGeneratorUnit.test_render_service_triple_binding _____________
+
+self = <tests.test_cluster_compose_gen.TestGeneratorUnit object at 0x110250ef0>
+
+    def test_render_service_triple_binding(self) -> None:
+        """单实例渲染：容器名 agent-runner-NN、卷 cookie-NN、代理 env 占位注入（渲染即校验）。"""
+>       row = instance_plan(1)[0]
+              ^^^^^^^^^^^^^^^^
+
+src/services/agent/tests/test_cluster_compose_gen.py:54: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = (1,), kwargs = {}
+
+    def instance_plan(*args, **kwargs):
+        """绑定清单"""
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+tools/agent/gen_cluster_compose.py:7: NotImplementedError
+________________ TestGeneratorUnit.test_density_three_per_host _________________
+
+self = <tests.test_cluster_compose_gen.TestGeneratorUnit object at 0x1102511c0>
+
+    def test_density_three_per_host(self) -> None:
+        """密度规划：每宿主机 3 容器（4C8G×3，§6.7），10 台摊开 28 实例。"""
+>       plan = instance_plan(DEFAULT_COUNT)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+src/services/agent/tests/test_cluster_compose_gen.py:63: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = (28,), kwargs = {}
+
+    def instance_plan(*args, **kwargs):
+        """绑定清单"""
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+tools/agent/gen_cluster_compose.py:7: NotImplementedError
+_________ TestGeneratorUnit.test_build_compose_dumpable_with_metadata __________
+
+self = <tests.test_cluster_compose_gen.TestGeneratorUnit object at 0x110251490>
+
+    def test_build_compose_dumpable_with_metadata(self) -> None:
+        """整包构建：x-cluster 元数据 + services/volumes 三段齐备，可 safe_load。"""
+>       data = yaml.safe_load(build_compose(2))
+                              ^^^^^^^^^^^^^^^^
+
+src/services/agent/tests/test_cluster_compose_gen.py:71: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = (2,), kwargs = {}
+
+    def build_compose(*args, **kwargs):
+        """整包构建"""
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+tools/agent/gen_cluster_compose.py:15: NotImplementedError
+_____________ TestGeneratedArtifact.test_artifact_has_28_services ______________
+
+self = <tests.test_cluster_compose_gen.TestGeneratedArtifact object at 0x1102517c0>
+
+    def test_artifact_has_28_services(self) -> None:
+        """28 服务齐备且命名规范（agent-runner-01…28）。"""
+>       services = self.load()["services"]
+                   ^^^^^^^^^^^
+
+src/services/agent/tests/test_cluster_compose_gen.py:94: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <tests.test_cluster_compose_gen.TestGeneratedArtifact object at 0x1102517c0>
+
+    def load(self) -> dict:
+        """解析产物（缺失即失败——交付物必须由生成器产出后入库）。"""
+>       assert ARTIFACT.is_file(), f"缺少生成器产物：{ARTIFACT}（运行 tools/agent/gen_cluster_compose.py）"
+E       AssertionError: 缺少生成器产物：/Users/xiaxianlin/workspace/ai-sale-agent/repo/deploy/compose/cluster.yaml（运行 tools/agent/gen_cluster_compose.py）
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/Users/xiaxianlin/workspace/ai-sale-agent/repo/deploy/compose/cluster.yaml').is_file
+
+src/services/agent/tests/test_cluster_compose_gen.py:85: AssertionError
+_____ TestGeneratedArtifact.test_every_service_has_dedicated_cookie_volume _____
+
+self = <tests.test_cluster_compose_gen.TestGeneratedArtifact object at 0x110251a90>
+
+    def test_every_service_has_dedicated_cookie_volume(self) -> None:
+        """独立 Cookie 空间：每服务挂 cookie-NN 且顶层卷一一对应（禁共享）。"""
+>       data = self.load()
+               ^^^^^^^^^^^
+
+src/services/agent/tests/test_cluster_compose_gen.py:100: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <tests.test_cluster_compose_gen.TestGeneratedArtifact object at 0x110251a90>
+
+    def load(self) -> dict:
+        """解析产物（缺失即失败——交付物必须由生成器产出后入库）。"""
+>       assert ARTIFACT.is_file(), f"缺少生成器产物：{ARTIFACT}（运行 tools/agent/gen_cluster_compose.py）"
+E       AssertionError: 缺少生成器产物：/Users/xiaxianlin/workspace/ai-sale-agent/repo/deploy/compose/cluster.yaml（运行 tools/agent/gen_cluster_compose.py）
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/Users/xiaxianlin/workspace/ai-sale-agent/repo/deploy/compose/cluster.yaml').is_file
+
+src/services/agent/tests/test_cluster_compose_gen.py:85: AssertionError
+_____________ TestGeneratedArtifact.test_no_plaintext_credentials ______________
+
+self = <tests.test_cluster_compose_gen.TestGeneratedArtifact object at 0x1102518b0>
+
+    def test_no_plaintext_credentials(self) -> None:
+        """零凭证明文：代理接入串一律 <占位> 形态（scan_secrets 口径）。"""
+>       text = ARTIFACT.read_text(encoding="utf-8")
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+src/services/agent/tests/test_cluster_compose_gen.py:108: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/pathlib.py:1027: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/Users/xiaxianlin/workspace/ai-sale-agent/repo/deploy/compose/cluster.yaml')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/Users/xiaxianlin/workspace/ai-sale-agent/repo/deploy/compose/cluster.yaml'
+
+/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/pathlib.py:1013: FileNotFoundError
+________ TestGeneratedArtifact.test_resource_limits_and_restart_policy _________
+
+self = <tests.test_cluster_compose_gen.TestGeneratedArtifact object at 0x110251340>
+
+    def test_resource_limits_and_restart_policy(self) -> None:
+        """资源配额与自愈：单容器 1.0 CPU/2g、restart=unless-stopped（§6.2 模板）。"""
+>       services = self.load()["services"]
+                   ^^^^^^^^^^^
+
+src/services/agent/tests/test_cluster_compose_gen.py:114: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <tests.test_cluster_compose_gen.TestGeneratedArtifact object at 0x110251340>
+
+    def load(self) -> dict:
+        """解析产物（缺失即失败——交付物必须由生成器产出后入库）。"""
+>       assert ARTIFACT.is_file(), f"缺少生成器产物：{ARTIFACT}（运行 tools/agent/gen_cluster_compose.py）"
+E       AssertionError: 缺少生成器产物：/Users/xiaxianlin/workspace/ai-sale-agent/repo/deploy/compose/cluster.yaml（运行 tools/agent/gen_cluster_compose.py）
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/Users/xiaxianlin/workspace/ai-sale-agent/repo/deploy/compose/cluster.yaml').is_file
+
+src/services/agent/tests/test_cluster_compose_gen.py:85: AssertionError
+__________ TestColdStart.test_28_accounts_seed_distribution_balanced ___________
+
+self = <tests.test_riskv2_profiles.TestColdStart object at 0x110252210>
+
+    def test_28_accounts_seed_distribution_balanced(self) -> None:
+        """28 账号首次 get：5 类种子分散分配，各类计数差 ≤1。"""
+>       store = make_store()
+                ^^^^^^^^^^^^
+
+src/services/agent/tests/test_riskv2_profiles.py:45: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/agent/tests/test_riskv2_profiles.py:34: in make_store
+    return AccountProfileStore(**kw)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.riskv2.profiles.AccountProfileStore object at 0x110307e60>
+args = (), kwargs = {'rng': <random.Random object at 0x113810620>}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/riskv2/profiles.py:7: NotImplementedError
+____________ TestColdStart.test_same_seed_accounts_params_distinct _____________
+
+self = <tests.test_riskv2_profiles.TestColdStart object at 0x110252360>
+
+    def test_same_seed_accounts_params_distinct(self) -> None:
+        """同种子账号经 ±10% 噪声后参数两两不同（28 账号即使同种子也不同参数）。"""
+>       store = make_store()
+                ^^^^^^^^^^^^
+
+src/services/agent/tests/test_riskv2_profiles.py:54: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/agent/tests/test_riskv2_profiles.py:34: in make_store
+    return AccountProfileStore(**kw)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.riskv2.profiles.AccountProfileStore object at 0x10734c9b0>
+args = (), kwargs = {'rng': <random.Random object at 0x113811020>}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/riskv2/profiles.py:7: NotImplementedError
+______ TestColdStart.test_per_account_distribution_differs_from_v1_global ______
+
+self = <tests.test_riskv2_profiles.TestColdStart object at 0x110251f70>
+
+    def test_per_account_distribution_differs_from_v1_global(self) -> None:
+        """与 V1 全局分布（ln_mu=11.0 全网同一套）差异化：≥5 种独立 reply_mu。"""
+>       store = make_store()
+                ^^^^^^^^^^^^
+
+src/services/agent/tests/test_riskv2_profiles.py:60: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/agent/tests/test_riskv2_profiles.py:34: in make_store
+    return AccountProfileStore(**kw)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.riskv2.profiles.AccountProfileStore object at 0x110302300>
+args = (), kwargs = {'rng': <random.Random object at 0x11380ae20>}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/riskv2/profiles.py:7: NotImplementedError
+___________________ TestColdStart.test_get_is_cached_stable ____________________
+
+self = <tests.test_riskv2_profiles.TestColdStart object at 0x110250740>
+
+    def test_get_is_cached_stable(self) -> None:
+        """等价类：重复 get 幂等（不重新播种，参数稳定）。"""
+>       store = make_store()
+                ^^^^^^^^^^^^
+
+src/services/agent/tests/test_riskv2_profiles.py:67: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/agent/tests/test_riskv2_profiles.py:34: in make_store
+    return AccountProfileStore(**kw)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.riskv2.profiles.AccountProfileStore object at 0x110303ef0>
+args = (), kwargs = {'rng': <random.Random object at 0x113814c20>}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/riskv2/profiles.py:7: NotImplementedError
+__________ TestPerAccountSampling.test_fast_seed_mean_below_slow_seed __________
+
+self = <tests.test_riskv2_profiles.TestPerAccountSampling object at 0x110250b30>
+
+    def test_fast_seed_mean_below_slow_seed(self) -> None:
+        """方向性断言：快种子（mu 小）采样均值 < 慢种子（10^3 样本，确定性 rng）。"""
+>       store = make_store()
+                ^^^^^^^^^^^^
+
+src/services/agent/tests/test_riskv2_profiles.py:79: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/agent/tests/test_riskv2_profiles.py:34: in make_store
+    return AccountProfileStore(**kw)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.riskv2.profiles.AccountProfileStore object at 0x1103f8b30>
+args = (), kwargs = {'rng': <random.Random object at 0x113815620>}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/riskv2/profiles.py:7: NotImplementedError
+__________ TestPerAccountSampling.test_samples_clamped_to_gap_domain ___________
+
+self = <tests.test_riskv2_profiles.TestPerAccountSampling object at 0x1102508f0>
+
+    def test_samples_clamped_to_gap_domain(self) -> None:
+        """边界：10^4 次采样全部落在夹取域 [20, 600]s（防机械高频/超长静默）。"""
+>       store = make_store()
+                ^^^^^^^^^^^^
+
+src/services/agent/tests/test_riskv2_profiles.py:89: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/agent/tests/test_riskv2_profiles.py:34: in make_store
+    return AccountProfileStore(**kw)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.riskv2.profiles.AccountProfileStore object at 0x1103f8500>
+args = (), kwargs = {'rng': <random.Random object at 0x113816020>}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/riskv2/profiles.py:7: NotImplementedError
+____________ TestFitAndDrift.test_fit_below_min_samples_stays_seed _____________
+
+self = <tests.test_riskv2_profiles.TestFitAndDrift object at 0x110251670>
+
+    def test_fit_below_min_samples_stays_seed(self) -> None:
+        """边界：样本量恰差 1（199 条）→ None，画像保持 seed。"""
+>       store = make_store()
+                ^^^^^^^^^^^^
+
+src/services/agent/tests/test_riskv2_profiles.py:103: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/agent/tests/test_riskv2_profiles.py:34: in make_store
+    return AccountProfileStore(**kw)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.riskv2.profiles.AccountProfileStore object at 0x1103f9430>
+args = (), kwargs = {'rng': <random.Random object at 0x113816a20>}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/riskv2/profiles.py:7: NotImplementedError
+__________ TestFitAndDrift.test_fit_min_samples_converges_within_5pct __________
+
+self = <tests.test_riskv2_profiles.TestFitAndDrift object at 0x1102512b0>
+
+    def test_fit_min_samples_converges_within_5pct(self) -> None:
+        """边界/等价类：1000 条已知 μ/σ 人工日志拟合 → 恰达 200 门槛收敛，μ 误差 <5%（SR §9）。"""
+>       store = make_store()
+                ^^^^^^^^^^^^
+
+src/services/agent/tests/test_riskv2_profiles.py:111: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/agent/tests/test_riskv2_profiles.py:34: in make_store
+    return AccountProfileStore(**kw)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.riskv2.profiles.AccountProfileStore object at 0x1103fa240>
+args = (), kwargs = {'rng': <random.Random object at 0x113817420>}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/riskv2/profiles.py:7: NotImplementedError
+___________ TestFitAndDrift.test_drift_update_ewma_and_prev_snapshot ___________
+
+self = <tests.test_riskv2_profiles.TestFitAndDrift object at 0x1102307a0>
+
+    def test_drift_update_ewma_and_prev_snapshot(self) -> None:
+        """漂移：p = α·new + (1-α)·old（α=0.3）；prev_params 保留回滚位、version+1。"""
+>       store = make_store()
+                ^^^^^^^^^^^^
+
+src/services/agent/tests/test_riskv2_profiles.py:122: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/agent/tests/test_riskv2_profiles.py:34: in make_store
+    return AccountProfileStore(**kw)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.riskv2.profiles.AccountProfileStore object at 0x110302d20>
+args = (), kwargs = {'rng': <random.Random object at 0x11380ae20>}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/riskv2/profiles.py:7: NotImplementedError
+_____________ TestFitAndDrift.test_drift_unknown_account_rejected ______________
+
+self = <tests.test_riskv2_profiles.TestFitAndDrift object at 0x110230a10>
+
+    def test_drift_unknown_account_rejected(self) -> None:
+        """异常：漂移更新未知账号 → KeyError（不静默造画像）。"""
+>       store = make_store()
+                ^^^^^^^^^^^^
+
+src/services/agent/tests/test_riskv2_profiles.py:134: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/agent/tests/test_riskv2_profiles.py:34: in make_store
+    return AccountProfileStore(**kw)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.riskv2.profiles.AccountProfileStore object at 0x10734d8e0>
+args = (), kwargs = {'rng': <random.Random object at 0x113810e20>}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/riskv2/profiles.py:7: NotImplementedError
+______ TestConcurrencyAndFallback.test_concurrent_cold_start_no_overseed _______
+
+self = <tests.test_riskv2_profiles.TestConcurrencyAndFallback object at 0x110230d40>
+
+    def test_concurrent_cold_start_no_overseed(self) -> None:
+        """并发：28 线程首次 get → 仍恰 28 份画像、种子计数合计 28（无超发竞态）。"""
+>       store = make_store()
+                ^^^^^^^^^^^^
+
+src/services/agent/tests/test_riskv2_profiles.py:147: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/agent/tests/test_riskv2_profiles.py:34: in make_store
+    return AccountProfileStore(**kw)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.riskv2.profiles.AccountProfileStore object at 0x110307710>
+args = (), kwargs = {'rng': <random.Random object at 0x113815a20>}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/riskv2/profiles.py:7: NotImplementedError
+______ TestConcurrencyAndFallback.test_fallback_to_v1_global_distribution ______
+
+self = <tests.test_riskv2_profiles.TestConcurrencyAndFallback object at 0x110231040>
+
+    def test_fallback_to_v1_global_distribution(self) -> None:
+        """降级：account_id=None → 按 V1 全局分布（mu=11.0/sigma=0.6）采样，不抛错。"""
+>       store = make_store()
+                ^^^^^^^^^^^^
+
+src/services/agent/tests/test_riskv2_profiles.py:161: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/agent/tests/test_riskv2_profiles.py:34: in make_store
+    return AccountProfileStore(**kw)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.riskv2.profiles.AccountProfileStore object at 0x1103e4e30>
+args = (), kwargs = {'rng': <random.Random object at 0x113816420>}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/riskv2/profiles.py:7: NotImplementedError
+_____ TestConcurrencyAndFallback.test_deterministic_same_seed_same_params ______
+
+self = <tests.test_riskv2_profiles.TestConcurrencyAndFallback object at 0x110231340>
+
+    def test_deterministic_same_seed_same_params(self) -> None:
+        """确定性/降级：同随机种子实例产出一致画像（演练可复现，审计可回放）。"""
+>       s1, s2 = make_store(), make_store()
+                 ^^^^^^^^^^^^
+
+src/services/agent/tests/test_riskv2_profiles.py:171: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/agent/tests/test_riskv2_profiles.py:34: in make_store
+    return AccountProfileStore(**kw)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.riskv2.profiles.AccountProfileStore object at 0x1103fbe00>
+args = (), kwargs = {'rng': <random.Random object at 0x113817e20>}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/riskv2/profiles.py:7: NotImplementedError
+____________ TestWindowStagger.test_28_windows_all_distinct_starts _____________
+
+self = <tests.test_riskv2_stagger.TestWindowStagger object at 0x110250fe0>
+
+    def test_28_windows_all_distinct_starts(self) -> None:
+        """核心断言：28 账号窗口起点两两互异（无两账号同窗口起点）。"""
+>       scheduler = make_scheduler()
+                    ^^^^^^^^^^^^^^^^
+
+src/services/agent/tests/test_riskv2_stagger.py:45: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/agent/tests/test_riskv2_stagger.py:34: in make_scheduler
+    return StaggerScheduler(ACCOUNTS[:n], **kw)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.riskv2.stagger.StaggerScheduler object at 0x1103fb6b0>
+args = ([7001, 7002, 7003, 7004, 7005, 7006, ...],), kwargs = {}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/riskv2/stagger.py:7: NotImplementedError
+_______________ TestWindowStagger.test_window_duration_preserved _______________
+
+self = <tests.test_riskv2_stagger.TestWindowStagger object at 0x110250800>
+
+    def test_window_duration_preserved(self) -> None:
+        """窗口平移不错切时长：终点-起点恒等于基准窗口时长（10h）。"""
+>       scheduler = make_scheduler()
+                    ^^^^^^^^^^^^^^^^
+
+src/services/agent/tests/test_riskv2_stagger.py:51: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/agent/tests/test_riskv2_stagger.py:34: in make_scheduler
+    return StaggerScheduler(ACCOUNTS[:n], **kw)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.riskv2.stagger.StaggerScheduler object at 0x1103f8fe0>
+args = ([7001, 7002, 7003, 7004, 7005, 7006, ...],), kwargs = {}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/riskv2/stagger.py:7: NotImplementedError
+_________ TestWindowStagger.test_offsets_bounded_and_min_gap_positive __________
+
+self = <tests.test_riskv2_stagger.TestWindowStagger object at 0x110252e70>
+
+    def test_offsets_bounded_and_min_gap_positive(self) -> None:
+        """边界：偏移全部落在 ±45min 域内，且 28 个起点最小两两间隔 > 0（无聚堆）。"""
+>       scheduler = make_scheduler()
+                    ^^^^^^^^^^^^^^^^
+
+src/services/agent/tests/test_riskv2_stagger.py:57: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/agent/tests/test_riskv2_stagger.py:34: in make_scheduler
+    return StaggerScheduler(ACCOUNTS[:n], **kw)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.riskv2.stagger.StaggerScheduler object at 0x1103fb380>
+args = ([7001, 7002, 7003, 7004, 7005, 7006, ...],), kwargs = {}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/riskv2/stagger.py:7: NotImplementedError
+________________ TestSlotQuota.test_per_slot_count_within_quota ________________
+
+self = <tests.test_riskv2_stagger.TestSlotQuota object at 0x110251c70>
+
+    def test_per_slot_count_within_quota(self) -> None:
+        """等价类：分配后任意 30min 槽在线账号 ≤ 10（quota 默认）。"""
+>       scheduler = make_scheduler()
+                    ^^^^^^^^^^^^^^^^
+
+src/services/agent/tests/test_riskv2_stagger.py:74: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/agent/tests/test_riskv2_stagger.py:34: in make_scheduler
+    return StaggerScheduler(ACCOUNTS[:n], **kw)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.riskv2.stagger.StaggerScheduler object at 0x110544200>
+args = ([7001, 7002, 7003, 7004, 7005, 7006, ...],), kwargs = {}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/riskv2/stagger.py:7: NotImplementedError
+___________ TestSlotQuota.test_every_account_gets_at_least_one_slot ____________
+
+self = <tests.test_riskv2_stagger.TestSlotQuota object at 0x110230ef0>
+
+    def test_every_account_gets_at_least_one_slot(self) -> None:
+        """边界/公平：每账号至少分配 1 个槽（不允许饿死）。"""
+>       scheduler = make_scheduler()
+                    ^^^^^^^^^^^^^^^^
+
+src/services/agent/tests/test_riskv2_stagger.py:84: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/agent/tests/test_riskv2_stagger.py:34: in make_scheduler
+    return StaggerScheduler(ACCOUNTS[:n], **kw)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.riskv2.stagger.StaggerScheduler object at 0x110544bc0>
+args = ([7001, 7002, 7003, 7004, 7005, 7006, ...],), kwargs = {}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/riskv2/stagger.py:7: NotImplementedError
+________________ TestEdgeAndScale.test_unknown_account_rejected ________________
+
+self = <tests.test_riskv2_stagger.TestEdgeAndScale object at 0x110230d10>
+
+    def test_unknown_account_rejected(self) -> None:
+        """异常：未登记账号查询窗口 → KeyError（fail fast 防错配）。"""
+>       scheduler = make_scheduler()
+                    ^^^^^^^^^^^^^^^^
+
+src/services/agent/tests/test_riskv2_stagger.py:98: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/agent/tests/test_riskv2_stagger.py:34: in make_scheduler
+    return StaggerScheduler(ACCOUNTS[:n], **kw)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.riskv2.stagger.StaggerScheduler object at 0x110545580>
+args = ([7001, 7002, 7003, 7004, 7005, 7006, ...],), kwargs = {}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/riskv2/stagger.py:7: NotImplementedError
+_______________ TestEdgeAndScale.test_concurrent_plan_consistent _______________
+
+self = <tests.test_riskv2_stagger.TestEdgeAndScale object at 0x110231520>
+
+    def test_concurrent_plan_consistent(self) -> None:
+        """并发：14 线程同时取窗口，结果与串行一致（无状态竞争）。"""
+>       scheduler = make_scheduler()
+                    ^^^^^^^^^^^^^^^^
+
+src/services/agent/tests/test_riskv2_stagger.py:104: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/agent/tests/test_riskv2_stagger.py:34: in make_scheduler
+    return StaggerScheduler(ACCOUNTS[:n], **kw)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.riskv2.stagger.StaggerScheduler object at 0x110545fa0>
+args = ([7001, 7002, 7003, 7004, 7005, 7006, ...],), kwargs = {}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/riskv2/stagger.py:7: NotImplementedError
+___________ TestEdgeAndScale.test_allocation_idempotent_and_p2_scale ___________
+
+self = <tests.test_riskv2_stagger.TestEdgeAndScale object at 0x1102317f0>
+
+    def test_allocation_idempotent_and_p2_scale(self) -> None:
+        """确定性/参数化：同日两次分配一致；10 账号（P2 形态）同样无同窗口（NFR-SCA-01）。"""
+>       scheduler = make_scheduler()
+                    ^^^^^^^^^^^^^^^^
+
+src/services/agent/tests/test_riskv2_stagger.py:123: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/agent/tests/test_riskv2_stagger.py:34: in make_scheduler
+    return StaggerScheduler(ACCOUNTS[:n], **kw)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.riskv2.stagger.StaggerScheduler object at 0x1103fb7d0>
+args = ([7001, 7002, 7003, 7004, 7005, 7006, ...],), kwargs = {}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/riskv2/stagger.py:7: NotImplementedError
+____________ TestSimhashPrimitive.test_identical_text_distance_zero ____________
+
+self = <tests.test_riskv2_uniqueness.TestSimhashPrimitive object at 0x110251eb0>
+
+    def test_identical_text_distance_zero(self) -> None:
+        """等价类：同文本指纹一致，汉明距离 0。"""
+>       assert simhash64(TEXT) == simhash64(TEXT)
+               ^^^^^^^^^^^^^^^
+
+src/services/agent/tests/test_riskv2_uniqueness.py:66: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = ('您好！感谢咨询，我们的 ST-3200 支架现货供应，价格优惠，欢迎下单。',), kwargs = {}
+
+    def simhash64(*args, **kwargs):
+        """64bit simhash"""
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/riskv2/uniqueness.py:6: NotImplementedError
+__________ TestSimhashPrimitive.test_variant_distance_above_threshold __________
+
+self = <tests.test_riskv2_uniqueness.TestSimhashPrimitive object at 0x110233950>
+
+    def test_variant_distance_above_threshold(self) -> None:
+        """边界：重写变体与原文距离 >3（重写后可过检的前提）。"""
+>       assert hamming_distance(simhash64(TEXT), simhash64(VARIANT)) > 3
+                                ^^^^^^^^^^^^^^^
+
+src/services/agent/tests/test_riskv2_uniqueness.py:71: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = ('您好！感谢咨询，我们的 ST-3200 支架现货供应，价格优惠，欢迎下单。',), kwargs = {}
+
+    def simhash64(*args, **kwargs):
+        """64bit simhash"""
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/riskv2/uniqueness.py:6: NotImplementedError
+_____________ TestSimhashPrimitive.test_minor_edit_distance_small ______________
+
+self = <tests.test_riskv2_uniqueness.TestSimhashPrimitive object at 0x110232c60>
+
+    def test_minor_edit_distance_small(self) -> None:
+        """近相似：仅改一字符 → 距离小（相似域灵敏度）。"""
+        minor = TEXT.replace("优惠", "优慧")
+>       assert hamming_distance(simhash64(TEXT), simhash64(minor)) <= 8
+                                ^^^^^^^^^^^^^^^
+
+src/services/agent/tests/test_riskv2_uniqueness.py:76: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = ('您好！感谢咨询，我们的 ST-3200 支架现货供应，价格优惠，欢迎下单。',), kwargs = {}
+
+    def simhash64(*args, **kwargs):
+        """64bit simhash"""
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/riskv2/uniqueness.py:6: NotImplementedError
+_____________ TestGuardFlow.test_first_send_allowed_and_registered _____________
+
+self = <tests.test_riskv2_uniqueness.TestGuardFlow object at 0x110232660>
+
+    def test_first_send_allowed_and_registered(self) -> None:
+        """等价类：首账号首发 → 放行、登记 1 条指纹（reason=ok）。"""
+>       guard, rewriter = make_guard()
+                          ^^^^^^^^^^^^
+
+src/services/agent/tests/test_riskv2_uniqueness.py:87: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/agent/tests/test_riskv2_uniqueness.py:53: in make_guard
+    guard = ContentUniqueness(rewriter=rewriter, clock=lambda: clock["t"], **kw)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.riskv2.uniqueness.ContentUniqueness object at 0x110231880>
+args = ()
+kwargs = {'rewriter': <tests.test_riskv2_uniqueness.FixedRewriter object at 0x1102318e0>, 'clock': <function make_guard.<locals>.<lambda> at 0x1103feac0>}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/riskv2/uniqueness.py:15: NotImplementedError
+______ TestGuardFlow.test_same_text_second_account_forced_rewrite_passes _______
+
+self = <tests.test_riskv2_uniqueness.TestGuardFlow object at 0x110232210>
+
+    def test_same_text_second_account_forced_rewrite_passes(self) -> None:
+        """核心用例：第二账号同文案 → 命中强制重写 → 重写后过检（ok:rewritten）。"""
+>       guard, rewriter = make_guard()
+                          ^^^^^^^^^^^^
+
+src/services/agent/tests/test_riskv2_uniqueness.py:96: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/agent/tests/test_riskv2_uniqueness.py:53: in make_guard
+    guard = ContentUniqueness(rewriter=rewriter, clock=lambda: clock["t"], **kw)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.riskv2.uniqueness.ContentUniqueness object at 0x110546c30>
+args = ()
+kwargs = {'rewriter': <tests.test_riskv2_uniqueness.FixedRewriter object at 0x1103008c0>, 'clock': <function make_guard.<locals>.<lambda> at 0x1103ff060>}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/riskv2/uniqueness.py:15: NotImplementedError
+____________ TestGuardFlow.test_exact_duplicate_hits_sha_fast_path _____________
+
+self = <tests.test_riskv2_uniqueness.TestGuardFlow object at 0x1102323c0>
+
+    def test_exact_duplicate_hits_sha_fast_path(self) -> None:
+        """等价类：完全相同内容（sha256 快路径）同样命中（不依赖 simhash 位判）。"""
+>       guard, _ = make_guard()
+                   ^^^^^^^^^^^^
+
+src/services/agent/tests/test_riskv2_uniqueness.py:108: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/agent/tests/test_riskv2_uniqueness.py:53: in make_guard
+    guard = ContentUniqueness(rewriter=rewriter, clock=lambda: clock["t"], **kw)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.riskv2.uniqueness.ContentUniqueness object at 0x110545d30>
+args = ()
+kwargs = {'rewriter': <tests.test_riskv2_uniqueness.FixedRewriter object at 0x110547c80>, 'clock': <function make_guard.<locals>.<lambda> at 0x1103ff2e0>}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/riskv2/uniqueness.py:15: NotImplementedError
+_________________ TestGuardFlow.test_rewrite_exhausted_blocks __________________
+
+self = <tests.test_riskv2_uniqueness.TestGuardFlow object at 0x110231a00>
+
+    def test_rewrite_exhausted_blocks(self) -> None:
+        """异常：重写器始终返回相似文本 → 2 次耗尽 → 拒发（content_homog）不登记。"""
+>       guard, rewriter = make_guard(rewriter=FixedRewriter(always_similar=True))
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+src/services/agent/tests/test_riskv2_uniqueness.py:115: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/agent/tests/test_riskv2_uniqueness.py:53: in make_guard
+    guard = ContentUniqueness(rewriter=rewriter, clock=lambda: clock["t"], **kw)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.riskv2.uniqueness.ContentUniqueness object at 0x110544f80>
+args = ()
+kwargs = {'rewriter': <tests.test_riskv2_uniqueness.FixedRewriter object at 0x110544fe0>, 'clock': <function make_guard.<locals>.<lambda> at 0x1103ff600>}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/riskv2/uniqueness.py:15: NotImplementedError
+_________________ TestGuardFlow.test_msg_uid_idempotent_replay _________________
+
+self = <tests.test_riskv2_uniqueness.TestGuardFlow object at 0x110232000>
+
+    def test_msg_uid_idempotent_replay(self) -> None:
+        """异常/幂等：同 msg_uid 重复 guard → 回放首次结论、指纹库不重复计数。"""
+>       guard, rewriter = make_guard()
+                          ^^^^^^^^^^^^
+
+src/services/agent/tests/test_riskv2_uniqueness.py:125: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/agent/tests/test_riskv2_uniqueness.py:53: in make_guard
+    guard = ContentUniqueness(rewriter=rewriter, clock=lambda: clock["t"], **kw)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.riskv2.uniqueness.ContentUniqueness object at 0x110546c90>
+args = ()
+kwargs = {'rewriter': <tests.test_riskv2_uniqueness.FixedRewriter object at 0x110546cc0>, 'clock': <function make_guard.<locals>.<lambda> at 0x1103ff7e0>}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/riskv2/uniqueness.py:15: NotImplementedError
+_______________ TestWindowAndExclusion.test_own_history_excluded _______________
+
+self = <tests.test_riskv2_uniqueness.TestWindowAndExclusion object at 0x110230bf0>
+
+    def test_own_history_excluded(self) -> None:
+        """降级/排除：同账号再次发送同文案不判同质（仅跨账号比对）。"""
+>       guard, _ = make_guard()
+                   ^^^^^^^^^^^^
+
+src/services/agent/tests/test_riskv2_uniqueness.py:142: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/agent/tests/test_riskv2_uniqueness.py:53: in make_guard
+    guard = ContentUniqueness(rewriter=rewriter, clock=lambda: clock["t"], **kw)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.riskv2.uniqueness.ContentUniqueness object at 0x110547950>
+args = ()
+kwargs = {'rewriter': <tests.test_riskv2_uniqueness.FixedRewriter object at 0x110547980>, 'clock': <function make_guard.<locals>.<lambda> at 0x1103ffa60>}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/riskv2/uniqueness.py:15: NotImplementedError
+_____ TestWindowAndExclusion.test_fingerprint_expires_after_24h_and_prune ______
+
+self = <tests.test_riskv2_uniqueness.TestWindowAndExclusion object at 0x110230a40>
+
+    def test_fingerprint_expires_after_24h_and_prune(self) -> None:
+        """边界/降级：指纹恰过期（>24h）不再命中（窗口滚动）；显式裁剪后库计数下降。"""
+>       guard, rewriter = make_guard()
+                          ^^^^^^^^^^^^
+
+src/services/agent/tests/test_riskv2_uniqueness.py:149: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/agent/tests/test_riskv2_uniqueness.py:53: in make_guard
+    guard = ContentUniqueness(rewriter=rewriter, clock=lambda: clock["t"], **kw)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.riskv2.uniqueness.ContentUniqueness object at 0x110527a10>
+args = ()
+kwargs = {'rewriter': <tests.test_riskv2_uniqueness.FixedRewriter object at 0x110527b60>, 'clock': <function make_guard.<locals>.<lambda> at 0x1103ffd80>}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/riskv2/uniqueness.py:15: NotImplementedError
+____________ TestConcurrency.test_concurrent_guards_all_registered _____________
+
+self = <tests.test_riskv2_uniqueness.TestConcurrency object at 0x110233b30>
+
+    def test_concurrent_guards_all_registered(self) -> None:
+        """并发：14 账号并发各自文案 → 14 条指纹全落库（线程安全）。"""
+>       guard, _ = make_guard()
+                   ^^^^^^^^^^^^
+
+src/services/agent/tests/test_riskv2_uniqueness.py:167: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/agent/tests/test_riskv2_uniqueness.py:53: in make_guard
+    guard = ContentUniqueness(rewriter=rewriter, clock=lambda: clock["t"], **kw)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.riskv2.uniqueness.ContentUniqueness object at 0x110524da0>
+args = ()
+kwargs = {'rewriter': <tests.test_riskv2_uniqueness.FixedRewriter object at 0x110524a70>, 'clock': <function make_guard.<locals>.<lambda> at 0x1103fff60>}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/riskv2/uniqueness.py:15: NotImplementedError
+______________________ TestPearson.test_perfect_positive _______________________
+
+self = <tests.test_riskv2_correlation.TestPearson object at 0x110233cb0>
+
+    def test_perfect_positive(self) -> None:
+        """等价类：完全同向 → +1。"""
+        xs = [1.0, 2.0, 3.0, 4.0, 5.0]
+>       assert pearson(xs, xs) == pytest.approx(1.0)
+               ^^^^^^^^^^^^^^^
+
+src/services/agent/tests/test_riskv2_correlation.py:69: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = ([1.0, 2.0, 3.0, 4.0, 5.0], [1.0, 2.0, 3.0, 4.0, 5.0]), kwargs = {}
+
+    def pearson(*args, **kwargs):
+        """Pearson 相关系数"""
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/riskv2/correlation.py:6: NotImplementedError
+______________________ TestPearson.test_perfect_negative _______________________
+
+self = <tests.test_riskv2_correlation.TestPearson object at 0x1102321b0>
+
+    def test_perfect_negative(self) -> None:
+        """反相序列 → -1。"""
+        xs = [1.0, 2.0, 3.0]
+>       assert pearson(xs, [3.0, 2.0, 1.0]) == pytest.approx(-1.0)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+src/services/agent/tests/test_riskv2_correlation.py:74: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = ([1.0, 2.0, 3.0], [3.0, 2.0, 1.0]), kwargs = {}
+
+    def pearson(*args, **kwargs):
+        """Pearson 相关系数"""
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/riskv2/correlation.py:6: NotImplementedError
+____________________ TestPearson.test_zero_variance_guarded ____________________
+
+self = <tests.test_riskv2_correlation.TestPearson object at 0x110232b10>
+
+    def test_zero_variance_guarded(self) -> None:
+        """异常：零方差序列 → 0.0（不抛 NaN/ZeroDivisionError）。"""
+>       assert pearson([2.0, 2.0, 2.0], [1.0, 5.0, 9.0]) == 0.0
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+src/services/agent/tests/test_riskv2_correlation.py:78: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = ([2.0, 2.0, 2.0], [1.0, 5.0, 9.0]), kwargs = {}
+
+    def pearson(*args, **kwargs):
+        """Pearson 相关系数"""
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/riskv2/correlation.py:6: NotImplementedError
+________ TestPairCorrelation.test_synchronized_pair_alerts_with_detail _________
+
+self = <tests.test_riskv2_correlation.TestPairCorrelation object at 0x1102326c0>
+
+    def test_synchronized_pair_alerts_with_detail(self) -> None:
+        """等价类：完全同步两账号 → ρ≈1 > 0.6 → 高级告警且含账号对明细。"""
+>       monitor, alerts = make_monitor()
+                          ^^^^^^^^^^^^^^
+
+src/services/agent/tests/test_riskv2_correlation.py:89: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/agent/tests/test_riskv2_correlation.py:34: in make_monitor
+    monitor = CorrelationMonitor(alerts=alerts, audit=audit.append, **kw)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.riskv2.correlation.CorrelationMonitor object at 0x110233bf0>
+args = ()
+kwargs = {'alerts': <services.agent.core.engine.InMemoryAlerts object at 0x110233c20>, 'audit': <built-in method append of list object at 0x1102024c0>}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/riskv2/correlation.py:11: NotImplementedError
+_______________ TestPairCorrelation.test_staggered_pair_no_alert _______________
+
+self = <tests.test_riskv2_correlation.TestPairCorrelation object at 0x1102319a0>
+
+    def test_staggered_pair_no_alert(self) -> None:
+        """等价类：错峰账号对 → 相关系数低于阈值、无告警（错峰机制有效性证明）。"""
+>       monitor, alerts = make_monitor()
+                          ^^^^^^^^^^^^^^
+
+src/services/agent/tests/test_riskv2_correlation.py:100: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/agent/tests/test_riskv2_correlation.py:34: in make_monitor
+    monitor = CorrelationMonitor(alerts=alerts, audit=audit.append, **kw)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.riskv2.correlation.CorrelationMonitor object at 0x110307b30>
+args = ()
+kwargs = {'alerts': <services.agent.core.engine.InMemoryAlerts object at 0x110307e60>, 'audit': <built-in method append of list object at 0x110337040>}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/riskv2/correlation.py:11: NotImplementedError
+______ TestPairCorrelation.test_single_account_or_boundary_no_false_alert ______
+
+self = <tests.test_riskv2_correlation.TestPairCorrelation object at 0x110231550>
+
+    def test_single_account_or_boundary_no_false_alert(self) -> None:
+        """边界/降级：仅 1 账号无量测对 → 0.0 且 ok（不误报；超阈为严格大于）。"""
+>       monitor, _ = make_monitor()
+                     ^^^^^^^^^^^^^^
+
+src/services/agent/tests/test_riskv2_correlation.py:109: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/agent/tests/test_riskv2_correlation.py:34: in make_monitor
+    monitor = CorrelationMonitor(alerts=alerts, audit=audit.append, **kw)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.riskv2.correlation.CorrelationMonitor object at 0x1103f8860>
+args = ()
+kwargs = {'alerts': <services.agent.core.engine.InMemoryAlerts object at 0x1103fb6e0>, 'audit': <built-in method append of list object at 0x1101d5b00>}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/riskv2/correlation.py:11: NotImplementedError
+_______ TestContentSimilarRate.test_boundary_exactly_threshold_not_alert _______
+
+self = <tests.test_riskv2_correlation.TestContentSimilarRate object at 0x110230590>
+
+    def test_boundary_exactly_threshold_not_alert(self) -> None:
+        """边界：5/100 = 恰 5% → 不告警（≤5% 验收线内含）。"""
+>       monitor, alerts = make_monitor()
+                          ^^^^^^^^^^^^^^
+
+src/services/agent/tests/test_riskv2_correlation.py:124: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/agent/tests/test_riskv2_correlation.py:34: in make_monitor
+    monitor = CorrelationMonitor(alerts=alerts, audit=audit.append, **kw)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.riskv2.correlation.CorrelationMonitor object at 0x1103fabd0>
+args = ()
+kwargs = {'alerts': <services.agent.core.engine.InMemoryAlerts object at 0x1103fac30>, 'audit': <built-in method append of list object at 0x1103365c0>}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/riskv2/correlation.py:11: NotImplementedError
+______________ TestContentSimilarRate.test_over_threshold_alerts _______________
+
+self = <tests.test_riskv2_correlation.TestContentSimilarRate object at 0x11020f980>
+
+    def test_over_threshold_alerts(self) -> None:
+        """等价类：6/100 = 6% > 5% → 告警（含分子分母明细）。"""
+>       monitor, alerts = make_monitor()
+                          ^^^^^^^^^^^^^^
+
+src/services/agent/tests/test_riskv2_correlation.py:133: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/agent/tests/test_riskv2_correlation.py:34: in make_monitor
+    monitor = CorrelationMonitor(alerts=alerts, audit=audit.append, **kw)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.riskv2.correlation.CorrelationMonitor object at 0x110526f00>
+args = ()
+kwargs = {'alerts': <services.agent.core.engine.InMemoryAlerts object at 0x110526e70>, 'audit': <built-in method append of list object at 0x1103a8b40>}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/riskv2/correlation.py:11: NotImplementedError
+_______________ TestContentSimilarRate.test_zero_traffic_guarded _______________
+
+self = <tests.test_riskv2_correlation.TestContentSimilarRate object at 0x11020c110>
+
+    def test_zero_traffic_guarded(self) -> None:
+        """异常/降级：零流量 → 0.0 且 ok（不除零、不误报）。"""
+>       monitor, _ = make_monitor()
+                     ^^^^^^^^^^^^^^
+
+src/services/agent/tests/test_riskv2_correlation.py:143: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/agent/tests/test_riskv2_correlation.py:34: in make_monitor
+    monitor = CorrelationMonitor(alerts=alerts, audit=audit.append, **kw)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.riskv2.correlation.CorrelationMonitor object at 0x1105273e0>
+args = ()
+kwargs = {'alerts': <services.agent.core.engine.InMemoryAlerts object at 0x1105265a0>, 'audit': <built-in method append of list object at 0x1101c96c0>}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/riskv2/correlation.py:11: NotImplementedError
+_________ TestConcurrencyAndAudit.test_concurrent_send_counts_lossless _________
+
+self = <tests.test_riskv2_correlation.TestConcurrencyAndAudit object at 0x11020c4d0>
+
+    def test_concurrent_send_counts_lossless(self) -> None:
+        """并发：8 线程 × 50 笔发送计数 → total 恰 400（无丢失竞态）。"""
+>       monitor, _ = make_monitor()
+                     ^^^^^^^^^^^^^^
+
+src/services/agent/tests/test_riskv2_correlation.py:156: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/agent/tests/test_riskv2_correlation.py:34: in make_monitor
+    monitor = CorrelationMonitor(alerts=alerts, audit=audit.append, **kw)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.riskv2.correlation.CorrelationMonitor object at 0x110525ca0>
+args = ()
+kwargs = {'alerts': <services.agent.core.engine.InMemoryAlerts object at 0x110525d30>, 'audit': <built-in method append of list object at 0x11033c140>}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/riskv2/correlation.py:11: NotImplementedError
+______________ TestConcurrencyAndAudit.test_evaluate_writes_audit ______________
+
+self = <tests.test_riskv2_correlation.TestConcurrencyAndAudit object at 0x11020c7a0>
+
+    def test_evaluate_writes_audit(self) -> None:
+        """等价类：evaluate 对每项指标写审计行（仪表盘数据 + 审计双写，NFR-SEC-03）。"""
+>       monitor, _ = make_monitor()
+                     ^^^^^^^^^^^^^^
+
+src/services/agent/tests/test_riskv2_correlation.py:171: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/services/agent/tests/test_riskv2_correlation.py:34: in make_monitor
+    monitor = CorrelationMonitor(alerts=alerts, audit=audit.append, **kw)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <services.agent.core.riskv2.correlation.CorrelationMonitor object at 0x110526e40>
+args = ()
+kwargs = {'alerts': <services.agent.core.engine.InMemoryAlerts object at 0x110526ea0>, 'audit': <built-in method append of list object at 0x1101d2cc0>}
+
+    def __init__(self, *args, **kwargs):
+>       raise NotImplementedError('TDD 红：阶段③未实现')
+E       NotImplementedError: TDD 红：阶段③未实现
+
+src/services/agent/core/riskv2/correlation.py:11: NotImplementedError
+=========================== short test summary info ============================
+FAILED src/services/agent/tests/test_cluster_registry.py::TestBindingInvariants::test_register_28_instances_binding_consistent
+FAILED src/services/agent/tests/test_cluster_registry.py::TestStateMachine::test_legal_lifecycle_offline_running_paused_running
+FAILED src/services/agent/tests/test_cluster_registry.py::TestStateMachine::test_legal_paths_to_error_and_manual_recovery
+FAILED src/services/agent/tests/test_cluster_registry.py::TestStateMachine::test_state_change_writes_audit
+FAILED src/services/agent/tests/test_cluster_registry.py::TestBoundaries::test_seq_out_of_range_rejected[0]
+FAILED src/services/agent/tests/test_cluster_registry.py::TestBoundaries::test_seq_out_of_range_rejected[29]
+FAILED src/services/agent/tests/test_cluster_registry.py::TestBoundaries::test_seq_out_of_range_rejected[-1]
+FAILED src/services/agent/tests/test_cluster_registry.py::TestBoundaries::test_duplicate_proxy_ip_rejected
+FAILED src/services/agent/tests/test_cluster_registry.py::TestBoundaries::test_restart_window_expiry_resets_counter
+FAILED src/services/agent/tests/test_cluster_registry.py::TestIllegalTransitions::test_offline_to_error_rejected_state_kept
+FAILED src/services/agent/tests/test_cluster_registry.py::TestIllegalTransitions::test_error_to_offline_rejected
+FAILED src/services/agent/tests/test_cluster_registry.py::TestIllegalTransitions::test_get_unknown_instance_raises
+FAILED src/services/agent/tests/test_cluster_registry.py::TestDriftDetection::test_matching_ip_no_action
+FAILED src/services/agent/tests/test_cluster_registry.py::TestDriftDetection::test_ip_drift_pauses_and_alerts
+FAILED src/services/agent/tests/test_cluster_registry.py::TestDriftDetection::test_drift_keeps_binding_for_manual_rebind
+FAILED src/services/agent/tests/test_cluster_registry.py::TestConcurrency::test_concurrent_registration_all_land
+FAILED src/services/agent/tests/test_cluster_orchestrator.py::TestOverrideRendering::test_render_contains_container_and_volume
+FAILED src/services/agent/tests/test_cluster_orchestrator.py::TestOverrideRendering::test_render_proxy_env_with_placeholder
+FAILED src/services/agent/tests/test_cluster_orchestrator.py::TestBatchProvision::test_provision_28_instances_all_running
+FAILED src/services/agent/tests/test_cluster_orchestrator.py::TestBatchProvision::test_provision_respects_gray_batch_scope
+FAILED src/services/agent/tests/test_cluster_orchestrator.py::TestBatchProvision::test_provision_waits_between_rounds
+FAILED src/services/agent/tests/test_cluster_orchestrator.py::TestInstanceLifecycle::test_restart_keeps_running
+FAILED src/services/agent/tests/test_cluster_orchestrator.py::TestKillDrill::test_kill_one_other_27_untouched_and_recovered
+FAILED src/services/agent/tests/test_cluster_orchestrator.py::TestKillDrill::test_kill_drill_backoff_sequence_recorded
+FAILED src/services/agent/tests/test_cluster_orchestrator.py::TestFailureEscalation::test_restart_exhausted_transfers_to_error_with_alert
+FAILED src/services/agent/tests/test_cluster_orchestrator.py::TestFailureEscalation::test_ip_drift_isolates_without_restart
+FAILED src/services/agent/tests/test_cluster_orchestrator.py::TestFailureEscalation::test_login_expired_isolates_without_restart
+FAILED src/services/agent/tests/test_cluster_orchestrator.py::TestFailureEscalation::test_desired_not_running_skipped
+FAILED src/services/agent/tests/test_cluster_orchestrator.py::TestConcurrencyAndDegradation::test_concurrent_restart_mutual_exclusion
+FAILED src/services/agent/tests/test_cluster_orchestrator.py::TestConcurrencyAndDegradation::test_reconcile_all_swallows_single_instance_error
+FAILED src/services/agent/tests/test_cluster_callpool.py::TestQueryFingerprint::test_normalized_equivalent_queries_same_fingerprint
+FAILED src/services/agent/tests/test_cluster_callpool.py::TestQueryFingerprint::test_different_params_different_fingerprint
+FAILED src/services/agent/tests/test_cluster_callpool.py::TestMerge::test_same_fingerprint_merged_single_source
+FAILED src/services/agent/tests/test_cluster_callpool.py::TestMerge::test_different_fingerprint_no_cross_merge
+FAILED src/services/agent/tests/test_cluster_callpool.py::TestTwoLevelCache::test_l1_expired_cold_again
+FAILED src/services/agent/tests/test_cluster_callpool.py::TestTwoLevelCache::test_hot_query_promoted_to_l2
+FAILED src/services/agent/tests/test_cluster_callpool.py::TestTwoLevelCache::test_non_hot_expired_not_served_from_l2
+FAILED src/services/agent/tests/test_cluster_callpool.py::TestDegradationChain::test_milvus_down_serves_stale_cache
+FAILED src/services/agent/tests/test_cluster_callpool.py::TestDegradationChain::test_milvus_down_no_cache_falls_to_bm25_stub
+FAILED src/services/agent/tests/test_cluster_callpool.py::TestDegradationChain::test_chain_order_cache_before_stub
+FAILED src/services/agent/tests/test_cluster_callpool.py::TestDegradationChain::test_all_levels_down_raises_kb_unavailable
+FAILED src/services/agent/tests/test_cluster_callpool.py::TestConcurrentLoad::test_50_threads_same_fingerprint_single_source_no_race
+FAILED src/services/agent/tests/test_cluster_callpool.py::TestConcurrentLoad::test_50_threads_p95_within_budget
+FAILED src/services/agent/tests/test_cluster_callpool.py::TestConcurrentLoad::test_concurrent_distinct_fingerprints_all_served
+FAILED src/services/agent/tests/test_cluster_gray.py::TestGrouping::test_group_config_isolation
+FAILED src/services/agent/tests/test_cluster_gray.py::TestGate::test_gate_all_pass
+FAILED src/services/agent/tests/test_cluster_gray.py::TestGate::test_gate_any_failure_pauses_pilot[ban_or_restricted-1]
+FAILED src/services/agent/tests/test_cluster_gray.py::TestGate::test_gate_any_failure_pauses_pilot[reply_usable_rate-0.79]
+FAILED src/services/agent/tests/test_cluster_gray.py::TestGate::test_gate_any_failure_pauses_pilot[sessions_per_account_day-14.9]
+FAILED src/services/agent/tests/test_cluster_gray.py::TestGate::test_gate_alive_rate_precheck_fail
+FAILED src/services/agent/tests/test_cluster_gray.py::TestGate::test_gate_before_window_ends_rejected
+FAILED src/services/agent/tests/test_cluster_gray.py::TestGate::test_gate_window_boundary_exact_and_short_window
+FAILED src/services/agent/tests/test_cluster_gray.py::TestGate::test_gate_boundary_thresholds_equal_pass
+FAILED src/services/agent/tests/test_cluster_gray.py::TestRollout::test_rollout_pilot_to_wave2
+FAILED src/services/agent/tests/test_cluster_gray.py::TestRollout::test_rollout_wave2_to_full
+FAILED src/services/agent/tests/test_cluster_gray.py::TestRollout::test_rollout_requires_gate_passed
+FAILED src/services/agent/tests/test_cluster_gray.py::TestDecisionLedger::test_decision_record_fields_complete_and_ordered
+FAILED src/services/agent/tests/test_cluster_gray.py::TestRollback::test_rollback_removes_overrides_and_pauses_gray
+FAILED src/services/agent/tests/test_cluster_gray.py::TestRollback::test_rollback_idempotent_intercept
+FAILED src/services/agent/tests/test_cluster_api.py::test_instances_view_shape
+FAILED src/services/agent/tests/test_cluster_api.py::test_instance_stop_start_roundtrip
+FAILED src/services/agent/tests/test_cluster_api.py::test_unknown_instance_404
+FAILED src/services/agent/tests/test_cluster_api.py::test_illegal_transition_422
+FAILED src/services/agent/tests/test_cluster_api.py::test_batch_operation_report
+FAILED src/services/agent/tests/test_cluster_api.py::test_docker_failure_503
+FAILED src/services/agent/tests/test_cluster_api.py::test_gray_status_view - ...
+FAILED src/services/agent/tests/test_cluster_api.py::test_gray_promote_requires_gate_pass
+FAILED src/services/agent/tests/test_cluster_api.py::test_gray_promote_and_rollback_roundtrip
+FAILED src/services/agent/tests/test_cluster_compose_gen.py::TestGeneratorUnit::test_instance_plan_has_28_rows
+FAILED src/services/agent/tests/test_cluster_compose_gen.py::TestGeneratorUnit::test_instance_plan_main_sub_split
+FAILED src/services/agent/tests/test_cluster_compose_gen.py::TestGeneratorUnit::test_render_service_triple_binding
+FAILED src/services/agent/tests/test_cluster_compose_gen.py::TestGeneratorUnit::test_density_three_per_host
+FAILED src/services/agent/tests/test_cluster_compose_gen.py::TestGeneratorUnit::test_build_compose_dumpable_with_metadata
+FAILED src/services/agent/tests/test_cluster_compose_gen.py::TestGeneratedArtifact::test_artifact_has_28_services
+FAILED src/services/agent/tests/test_cluster_compose_gen.py::TestGeneratedArtifact::test_every_service_has_dedicated_cookie_volume
+FAILED src/services/agent/tests/test_cluster_compose_gen.py::TestGeneratedArtifact::test_no_plaintext_credentials
+FAILED src/services/agent/tests/test_cluster_compose_gen.py::TestGeneratedArtifact::test_resource_limits_and_restart_policy
+FAILED src/services/agent/tests/test_riskv2_profiles.py::TestColdStart::test_28_accounts_seed_distribution_balanced
+FAILED src/services/agent/tests/test_riskv2_profiles.py::TestColdStart::test_same_seed_accounts_params_distinct
+FAILED src/services/agent/tests/test_riskv2_profiles.py::TestColdStart::test_per_account_distribution_differs_from_v1_global
+FAILED src/services/agent/tests/test_riskv2_profiles.py::TestColdStart::test_get_is_cached_stable
+FAILED src/services/agent/tests/test_riskv2_profiles.py::TestPerAccountSampling::test_fast_seed_mean_below_slow_seed
+FAILED src/services/agent/tests/test_riskv2_profiles.py::TestPerAccountSampling::test_samples_clamped_to_gap_domain
+FAILED src/services/agent/tests/test_riskv2_profiles.py::TestFitAndDrift::test_fit_below_min_samples_stays_seed
+FAILED src/services/agent/tests/test_riskv2_profiles.py::TestFitAndDrift::test_fit_min_samples_converges_within_5pct
+FAILED src/services/agent/tests/test_riskv2_profiles.py::TestFitAndDrift::test_drift_update_ewma_and_prev_snapshot
+FAILED src/services/agent/tests/test_riskv2_profiles.py::TestFitAndDrift::test_drift_unknown_account_rejected
+FAILED src/services/agent/tests/test_riskv2_profiles.py::TestConcurrencyAndFallback::test_concurrent_cold_start_no_overseed
+FAILED src/services/agent/tests/test_riskv2_profiles.py::TestConcurrencyAndFallback::test_fallback_to_v1_global_distribution
+FAILED src/services/agent/tests/test_riskv2_profiles.py::TestConcurrencyAndFallback::test_deterministic_same_seed_same_params
+FAILED src/services/agent/tests/test_riskv2_stagger.py::TestWindowStagger::test_28_windows_all_distinct_starts
+FAILED src/services/agent/tests/test_riskv2_stagger.py::TestWindowStagger::test_window_duration_preserved
+FAILED src/services/agent/tests/test_riskv2_stagger.py::TestWindowStagger::test_offsets_bounded_and_min_gap_positive
+FAILED src/services/agent/tests/test_riskv2_stagger.py::TestSlotQuota::test_per_slot_count_within_quota
+FAILED src/services/agent/tests/test_riskv2_stagger.py::TestSlotQuota::test_every_account_gets_at_least_one_slot
+FAILED src/services/agent/tests/test_riskv2_stagger.py::TestEdgeAndScale::test_unknown_account_rejected
+FAILED src/services/agent/tests/test_riskv2_stagger.py::TestEdgeAndScale::test_concurrent_plan_consistent
+FAILED src/services/agent/tests/test_riskv2_stagger.py::TestEdgeAndScale::test_allocation_idempotent_and_p2_scale
+FAILED src/services/agent/tests/test_riskv2_uniqueness.py::TestSimhashPrimitive::test_identical_text_distance_zero
+FAILED src/services/agent/tests/test_riskv2_uniqueness.py::TestSimhashPrimitive::test_variant_distance_above_threshold
+FAILED src/services/agent/tests/test_riskv2_uniqueness.py::TestSimhashPrimitive::test_minor_edit_distance_small
+FAILED src/services/agent/tests/test_riskv2_uniqueness.py::TestGuardFlow::test_first_send_allowed_and_registered
+FAILED src/services/agent/tests/test_riskv2_uniqueness.py::TestGuardFlow::test_same_text_second_account_forced_rewrite_passes
+FAILED src/services/agent/tests/test_riskv2_uniqueness.py::TestGuardFlow::test_exact_duplicate_hits_sha_fast_path
+FAILED src/services/agent/tests/test_riskv2_uniqueness.py::TestGuardFlow::test_rewrite_exhausted_blocks
+FAILED src/services/agent/tests/test_riskv2_uniqueness.py::TestGuardFlow::test_msg_uid_idempotent_replay
+FAILED src/services/agent/tests/test_riskv2_uniqueness.py::TestWindowAndExclusion::test_own_history_excluded
+FAILED src/services/agent/tests/test_riskv2_uniqueness.py::TestWindowAndExclusion::test_fingerprint_expires_after_24h_and_prune
+FAILED src/services/agent/tests/test_riskv2_uniqueness.py::TestConcurrency::test_concurrent_guards_all_registered
+FAILED src/services/agent/tests/test_riskv2_correlation.py::TestPearson::test_perfect_positive
+FAILED src/services/agent/tests/test_riskv2_correlation.py::TestPearson::test_perfect_negative
+FAILED src/services/agent/tests/test_riskv2_correlation.py::TestPearson::test_zero_variance_guarded
+FAILED src/services/agent/tests/test_riskv2_correlation.py::TestPairCorrelation::test_synchronized_pair_alerts_with_detail
+FAILED src/services/agent/tests/test_riskv2_correlation.py::TestPairCorrelation::test_staggered_pair_no_alert
+FAILED src/services/agent/tests/test_riskv2_correlation.py::TestPairCorrelation::test_single_account_or_boundary_no_false_alert
+FAILED src/services/agent/tests/test_riskv2_correlation.py::TestContentSimilarRate::test_boundary_exactly_threshold_not_alert
+FAILED src/services/agent/tests/test_riskv2_correlation.py::TestContentSimilarRate::test_over_threshold_alerts
+FAILED src/services/agent/tests/test_riskv2_correlation.py::TestContentSimilarRate::test_zero_traffic_guarded
+FAILED src/services/agent/tests/test_riskv2_correlation.py::TestConcurrencyAndAudit::test_concurrent_send_counts_lossless
+FAILED src/services/agent/tests/test_riskv2_correlation.py::TestConcurrencyAndAudit::test_evaluate_writes_audit
+120 failed in 0.50s

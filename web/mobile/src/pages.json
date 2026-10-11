@@ -1,0 +1,50 @@
+{
+  // 项目：AI 外贸销售智能体移动端轻应用（FR-SC-006，SR-SC-006 §2/§6.1）
+  // 说明：uni-app 页面注册表；H5（钉钉微应用容器）与 MP-WEIXIN（微信小程序）双端条件编译。
+  "pages": [
+    {
+      "path": "dashboard/index",
+      "style": {
+        "navigationBarTitleText": "经营看板"
+      }
+    },
+    {
+      "path": "alert/center",
+      "style": {
+        "navigationBarTitleText": "告警中心"
+      }
+    },
+    {
+      "path": "approval/list",
+      "style": {
+        "navigationBarTitleText": "待办审批"
+      }
+    }
+  ],
+  "globalStyle": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "外贸销售智能体移动工作台",
+    "navigationBarBackgroundColor": "#FFFFFF",
+    "backgroundColor": "#F5F6F8"
+  }
+  // #ifdef MP-WEIXIN
+  ,
+  "mp-weixin": {
+    "appid": "<MP-WEIXIN-APPID-PLACEHOLDER>",
+    "setting": {
+      "urlCheck": true,
+      "minified": true
+    },
+    "usingComponents": true
+  }
+  // #endif
+  // #ifdef H5
+  ,
+  "h5": {
+    "title": "外贸销售智能体移动工作台",
+    "router": {
+      "mode": "hash"
+    }
+  }
+  // #endif
+}

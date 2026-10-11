@@ -1,0 +1,502 @@
+# 知识产权归甲方所有（COM-IP-01）——AI 外贸销售智能体系统交付物。
+# 许可与再分发须依据双方合同约定执行（COM-IP-02 乙方零使用权）。
+# 本文件由 tools/agent/gen_cluster_compose.py 生成，请勿手改；重新生成命令：
+#   python3 tools/agent/gen_cluster_compose.py
+x-cluster:
+  instance_count: 28
+  account_split:
+    main: 4
+    sub: 24
+  host_density: 3
+  hosts:
+  - runner-01
+  - runner-02
+  - runner-03
+  - runner-04
+  - runner-05
+  - runner-06
+  - runner-07
+  - runner-08
+  - runner-09
+  - runner-10
+  proxy_note: 出口 IP 与凭证均为占位（NFR-SEC-04），现场调研后经 .env/Docker secrets 注入
+  proxy_url_template: http://<PROXY-USER>:<PROXY-PASS>@<PROXY-IP-01>:<PORT>
+  generated_by: tools/agent/gen_cluster_compose.py
+services:
+  agent-runner-01:
+    image: ai-sale/openclaw-runner:0.1.0
+    container_name: agent-runner-01
+    restart: unless-stopped
+    environment:
+    - ACCOUNT_ID=7001
+    - ACCOUNT_TYPE=main
+    - HOST_NODE=runner-01
+    - PROXY_URL=http://<PROXY-USER>:<PROXY-PASS>@<PROXY-IP-01>:<PORT>
+    volumes:
+    - cookie-01:/data/openclaw/cookies
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 2g
+  agent-runner-02:
+    image: ai-sale/openclaw-runner:0.1.0
+    container_name: agent-runner-02
+    restart: unless-stopped
+    environment:
+    - ACCOUNT_ID=7002
+    - ACCOUNT_TYPE=main
+    - HOST_NODE=runner-01
+    - PROXY_URL=http://<PROXY-USER>:<PROXY-PASS>@<PROXY-IP-02>:<PORT>
+    volumes:
+    - cookie-02:/data/openclaw/cookies
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 2g
+  agent-runner-03:
+    image: ai-sale/openclaw-runner:0.1.0
+    container_name: agent-runner-03
+    restart: unless-stopped
+    environment:
+    - ACCOUNT_ID=7003
+    - ACCOUNT_TYPE=main
+    - HOST_NODE=runner-01
+    - PROXY_URL=http://<PROXY-USER>:<PROXY-PASS>@<PROXY-IP-03>:<PORT>
+    volumes:
+    - cookie-03:/data/openclaw/cookies
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 2g
+  agent-runner-04:
+    image: ai-sale/openclaw-runner:0.1.0
+    container_name: agent-runner-04
+    restart: unless-stopped
+    environment:
+    - ACCOUNT_ID=7004
+    - ACCOUNT_TYPE=main
+    - HOST_NODE=runner-02
+    - PROXY_URL=http://<PROXY-USER>:<PROXY-PASS>@<PROXY-IP-04>:<PORT>
+    volumes:
+    - cookie-04:/data/openclaw/cookies
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 2g
+  agent-runner-05:
+    image: ai-sale/openclaw-runner:0.1.0
+    container_name: agent-runner-05
+    restart: unless-stopped
+    environment:
+    - ACCOUNT_ID=7005
+    - ACCOUNT_TYPE=sub
+    - HOST_NODE=runner-02
+    - PROXY_URL=http://<PROXY-USER>:<PROXY-PASS>@<PROXY-IP-05>:<PORT>
+    volumes:
+    - cookie-05:/data/openclaw/cookies
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 2g
+  agent-runner-06:
+    image: ai-sale/openclaw-runner:0.1.0
+    container_name: agent-runner-06
+    restart: unless-stopped
+    environment:
+    - ACCOUNT_ID=7006
+    - ACCOUNT_TYPE=sub
+    - HOST_NODE=runner-02
+    - PROXY_URL=http://<PROXY-USER>:<PROXY-PASS>@<PROXY-IP-06>:<PORT>
+    volumes:
+    - cookie-06:/data/openclaw/cookies
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 2g
+  agent-runner-07:
+    image: ai-sale/openclaw-runner:0.1.0
+    container_name: agent-runner-07
+    restart: unless-stopped
+    environment:
+    - ACCOUNT_ID=7007
+    - ACCOUNT_TYPE=sub
+    - HOST_NODE=runner-03
+    - PROXY_URL=http://<PROXY-USER>:<PROXY-PASS>@<PROXY-IP-07>:<PORT>
+    volumes:
+    - cookie-07:/data/openclaw/cookies
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 2g
+  agent-runner-08:
+    image: ai-sale/openclaw-runner:0.1.0
+    container_name: agent-runner-08
+    restart: unless-stopped
+    environment:
+    - ACCOUNT_ID=7008
+    - ACCOUNT_TYPE=sub
+    - HOST_NODE=runner-03
+    - PROXY_URL=http://<PROXY-USER>:<PROXY-PASS>@<PROXY-IP-08>:<PORT>
+    volumes:
+    - cookie-08:/data/openclaw/cookies
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 2g
+  agent-runner-09:
+    image: ai-sale/openclaw-runner:0.1.0
+    container_name: agent-runner-09
+    restart: unless-stopped
+    environment:
+    - ACCOUNT_ID=7009
+    - ACCOUNT_TYPE=sub
+    - HOST_NODE=runner-03
+    - PROXY_URL=http://<PROXY-USER>:<PROXY-PASS>@<PROXY-IP-09>:<PORT>
+    volumes:
+    - cookie-09:/data/openclaw/cookies
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 2g
+  agent-runner-10:
+    image: ai-sale/openclaw-runner:0.1.0
+    container_name: agent-runner-10
+    restart: unless-stopped
+    environment:
+    - ACCOUNT_ID=7010
+    - ACCOUNT_TYPE=sub
+    - HOST_NODE=runner-04
+    - PROXY_URL=http://<PROXY-USER>:<PROXY-PASS>@<PROXY-IP-10>:<PORT>
+    volumes:
+    - cookie-10:/data/openclaw/cookies
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 2g
+  agent-runner-11:
+    image: ai-sale/openclaw-runner:0.1.0
+    container_name: agent-runner-11
+    restart: unless-stopped
+    environment:
+    - ACCOUNT_ID=7011
+    - ACCOUNT_TYPE=sub
+    - HOST_NODE=runner-04
+    - PROXY_URL=http://<PROXY-USER>:<PROXY-PASS>@<PROXY-IP-11>:<PORT>
+    volumes:
+    - cookie-11:/data/openclaw/cookies
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 2g
+  agent-runner-12:
+    image: ai-sale/openclaw-runner:0.1.0
+    container_name: agent-runner-12
+    restart: unless-stopped
+    environment:
+    - ACCOUNT_ID=7012
+    - ACCOUNT_TYPE=sub
+    - HOST_NODE=runner-04
+    - PROXY_URL=http://<PROXY-USER>:<PROXY-PASS>@<PROXY-IP-12>:<PORT>
+    volumes:
+    - cookie-12:/data/openclaw/cookies
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 2g
+  agent-runner-13:
+    image: ai-sale/openclaw-runner:0.1.0
+    container_name: agent-runner-13
+    restart: unless-stopped
+    environment:
+    - ACCOUNT_ID=7013
+    - ACCOUNT_TYPE=sub
+    - HOST_NODE=runner-05
+    - PROXY_URL=http://<PROXY-USER>:<PROXY-PASS>@<PROXY-IP-13>:<PORT>
+    volumes:
+    - cookie-13:/data/openclaw/cookies
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 2g
+  agent-runner-14:
+    image: ai-sale/openclaw-runner:0.1.0
+    container_name: agent-runner-14
+    restart: unless-stopped
+    environment:
+    - ACCOUNT_ID=7014
+    - ACCOUNT_TYPE=sub
+    - HOST_NODE=runner-05
+    - PROXY_URL=http://<PROXY-USER>:<PROXY-PASS>@<PROXY-IP-14>:<PORT>
+    volumes:
+    - cookie-14:/data/openclaw/cookies
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 2g
+  agent-runner-15:
+    image: ai-sale/openclaw-runner:0.1.0
+    container_name: agent-runner-15
+    restart: unless-stopped
+    environment:
+    - ACCOUNT_ID=7015
+    - ACCOUNT_TYPE=sub
+    - HOST_NODE=runner-05
+    - PROXY_URL=http://<PROXY-USER>:<PROXY-PASS>@<PROXY-IP-15>:<PORT>
+    volumes:
+    - cookie-15:/data/openclaw/cookies
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 2g
+  agent-runner-16:
+    image: ai-sale/openclaw-runner:0.1.0
+    container_name: agent-runner-16
+    restart: unless-stopped
+    environment:
+    - ACCOUNT_ID=7016
+    - ACCOUNT_TYPE=sub
+    - HOST_NODE=runner-06
+    - PROXY_URL=http://<PROXY-USER>:<PROXY-PASS>@<PROXY-IP-16>:<PORT>
+    volumes:
+    - cookie-16:/data/openclaw/cookies
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 2g
+  agent-runner-17:
+    image: ai-sale/openclaw-runner:0.1.0
+    container_name: agent-runner-17
+    restart: unless-stopped
+    environment:
+    - ACCOUNT_ID=7017
+    - ACCOUNT_TYPE=sub
+    - HOST_NODE=runner-06
+    - PROXY_URL=http://<PROXY-USER>:<PROXY-PASS>@<PROXY-IP-17>:<PORT>
+    volumes:
+    - cookie-17:/data/openclaw/cookies
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 2g
+  agent-runner-18:
+    image: ai-sale/openclaw-runner:0.1.0
+    container_name: agent-runner-18
+    restart: unless-stopped
+    environment:
+    - ACCOUNT_ID=7018
+    - ACCOUNT_TYPE=sub
+    - HOST_NODE=runner-06
+    - PROXY_URL=http://<PROXY-USER>:<PROXY-PASS>@<PROXY-IP-18>:<PORT>
+    volumes:
+    - cookie-18:/data/openclaw/cookies
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 2g
+  agent-runner-19:
+    image: ai-sale/openclaw-runner:0.1.0
+    container_name: agent-runner-19
+    restart: unless-stopped
+    environment:
+    - ACCOUNT_ID=7019
+    - ACCOUNT_TYPE=sub
+    - HOST_NODE=runner-07
+    - PROXY_URL=http://<PROXY-USER>:<PROXY-PASS>@<PROXY-IP-19>:<PORT>
+    volumes:
+    - cookie-19:/data/openclaw/cookies
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 2g
+  agent-runner-20:
+    image: ai-sale/openclaw-runner:0.1.0
+    container_name: agent-runner-20
+    restart: unless-stopped
+    environment:
+    - ACCOUNT_ID=7020
+    - ACCOUNT_TYPE=sub
+    - HOST_NODE=runner-07
+    - PROXY_URL=http://<PROXY-USER>:<PROXY-PASS>@<PROXY-IP-20>:<PORT>
+    volumes:
+    - cookie-20:/data/openclaw/cookies
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 2g
+  agent-runner-21:
+    image: ai-sale/openclaw-runner:0.1.0
+    container_name: agent-runner-21
+    restart: unless-stopped
+    environment:
+    - ACCOUNT_ID=7021
+    - ACCOUNT_TYPE=sub
+    - HOST_NODE=runner-07
+    - PROXY_URL=http://<PROXY-USER>:<PROXY-PASS>@<PROXY-IP-21>:<PORT>
+    volumes:
+    - cookie-21:/data/openclaw/cookies
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 2g
+  agent-runner-22:
+    image: ai-sale/openclaw-runner:0.1.0
+    container_name: agent-runner-22
+    restart: unless-stopped
+    environment:
+    - ACCOUNT_ID=7022
+    - ACCOUNT_TYPE=sub
+    - HOST_NODE=runner-08
+    - PROXY_URL=http://<PROXY-USER>:<PROXY-PASS>@<PROXY-IP-22>:<PORT>
+    volumes:
+    - cookie-22:/data/openclaw/cookies
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 2g
+  agent-runner-23:
+    image: ai-sale/openclaw-runner:0.1.0
+    container_name: agent-runner-23
+    restart: unless-stopped
+    environment:
+    - ACCOUNT_ID=7023
+    - ACCOUNT_TYPE=sub
+    - HOST_NODE=runner-08
+    - PROXY_URL=http://<PROXY-USER>:<PROXY-PASS>@<PROXY-IP-23>:<PORT>
+    volumes:
+    - cookie-23:/data/openclaw/cookies
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 2g
+  agent-runner-24:
+    image: ai-sale/openclaw-runner:0.1.0
+    container_name: agent-runner-24
+    restart: unless-stopped
+    environment:
+    - ACCOUNT_ID=7024
+    - ACCOUNT_TYPE=sub
+    - HOST_NODE=runner-08
+    - PROXY_URL=http://<PROXY-USER>:<PROXY-PASS>@<PROXY-IP-24>:<PORT>
+    volumes:
+    - cookie-24:/data/openclaw/cookies
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 2g
+  agent-runner-25:
+    image: ai-sale/openclaw-runner:0.1.0
+    container_name: agent-runner-25
+    restart: unless-stopped
+    environment:
+    - ACCOUNT_ID=7025
+    - ACCOUNT_TYPE=sub
+    - HOST_NODE=runner-09
+    - PROXY_URL=http://<PROXY-USER>:<PROXY-PASS>@<PROXY-IP-25>:<PORT>
+    volumes:
+    - cookie-25:/data/openclaw/cookies
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 2g
+  agent-runner-26:
+    image: ai-sale/openclaw-runner:0.1.0
+    container_name: agent-runner-26
+    restart: unless-stopped
+    environment:
+    - ACCOUNT_ID=7026
+    - ACCOUNT_TYPE=sub
+    - HOST_NODE=runner-09
+    - PROXY_URL=http://<PROXY-USER>:<PROXY-PASS>@<PROXY-IP-26>:<PORT>
+    volumes:
+    - cookie-26:/data/openclaw/cookies
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 2g
+  agent-runner-27:
+    image: ai-sale/openclaw-runner:0.1.0
+    container_name: agent-runner-27
+    restart: unless-stopped
+    environment:
+    - ACCOUNT_ID=7027
+    - ACCOUNT_TYPE=sub
+    - HOST_NODE=runner-09
+    - PROXY_URL=http://<PROXY-USER>:<PROXY-PASS>@<PROXY-IP-27>:<PORT>
+    volumes:
+    - cookie-27:/data/openclaw/cookies
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 2g
+  agent-runner-28:
+    image: ai-sale/openclaw-runner:0.1.0
+    container_name: agent-runner-28
+    restart: unless-stopped
+    environment:
+    - ACCOUNT_ID=7028
+    - ACCOUNT_TYPE=sub
+    - HOST_NODE=runner-10
+    - PROXY_URL=http://<PROXY-USER>:<PROXY-PASS>@<PROXY-IP-28>:<PORT>
+    volumes:
+    - cookie-28:/data/openclaw/cookies
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 2g
+volumes:
+  cookie-01: {}
+  cookie-02: {}
+  cookie-03: {}
+  cookie-04: {}
+  cookie-05: {}
+  cookie-06: {}
+  cookie-07: {}
+  cookie-08: {}
+  cookie-09: {}
+  cookie-10: {}
+  cookie-11: {}
+  cookie-12: {}
+  cookie-13: {}
+  cookie-14: {}
+  cookie-15: {}
+  cookie-16: {}
+  cookie-17: {}
+  cookie-18: {}
+  cookie-19: {}
+  cookie-20: {}
+  cookie-21: {}
+  cookie-22: {}
+  cookie-23: {}
+  cookie-24: {}
+  cookie-25: {}
+  cookie-26: {}
+  cookie-27: {}
+  cookie-28: {}
