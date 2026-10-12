@@ -5,6 +5,7 @@ from __future__ import annotations
 import math
 
 import pytest
+from pydantic import ValidationError
 
 from services.kb.core.vectorstore import (
     DENSE_DIM,
@@ -89,7 +90,8 @@ def test_record_key_and_varchar_limits() -> None:
 def test_record_frozen_and_extra_forbidden() -> None:
     """入库后不可变（frozen）、未知字段拒绝（extra=forbid）。"""
     record = _record()
-    with pytest.raises(Exception):
+    # CR P3-b 收窄：pydantic frozen 模型字段赋值 → ValidationError（frozen_instance），非裸 Exception
+    with pytest.raises(ValidationError, match="frozen"):
         record.chunk_id = 2  # type: ignore[misc]
     with pytest.raises(ValueError):
         _record(unknown_field="x")

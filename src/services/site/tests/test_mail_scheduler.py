@@ -27,8 +27,15 @@ CART_TPL = {
 }
 
 
-def make_world(per_domain_per_hour: int = 1000):
-    """装配调度世界：引擎/存储/模板/名单/限速/SMTP/调度器。"""
+#: 测试用退订签名盐（CR P2 修复后调度器构造必经 salt 解析）
+TEST_UNSUB_SALT = "test-unsub-salt"
+
+
+def make_world(per_domain_per_hour: int = 1000, *, with_salt: bool = True):
+    """装配调度世界：引擎/存储/模板/名单/限速/SMTP/调度器。
+
+    with_salt=False 用于测 fail-fast / 环境变量解析链（salt 留给 env 提供）。
+    """
     clock = MutableClock()
     store = MailStore()
     engine = SequenceEngine(store, clock=clock.now)
@@ -41,6 +48,7 @@ def make_world(per_domain_per_hour: int = 1000):
         engine=engine, store=store, transport=smtp, templates=templates,
         suppression=suppression, rate_guard=DomainRateGuard(per_domain_per_hour=per_domain_per_hour),
         clock=clock.now,
+        unsub_salt=TEST_UNSUB_SALT if with_salt else None,
     )
     return clock, store, engine, templates, suppression, smtp, scheduler
 
@@ -204,3 +212,75 @@ class TestDegradedPaths:
         assert mail.headers["List-Unsubscribe-Post"] == "List-Unsubscribe=One-Click"
         assert "List-Unsubscribe" in mail.headers
         assert "/s/m/u/" in mail.html
+
+
+# ─────────────── 退订 token 签名（CR P2 修复：顺序 job_id 可枚举 → HMAC 签名） ───────────────
+
+
+class TestUnsubTokenSigning:
+    """CR P2 修复：退订链接 token 必须经 HMAC 签名，顺序数字形态（可枚举）不再产出。"""
+
+    def test_missing_salt_fails_fast(self, monkeypatch: pytest.MonkeyPatch) -> None:
+        """未注入 salt 且环境变量 KB_MAIL_UNSUB_SALT 未配置：构造即中文 fail-fast。"""
+        monkeypatch.delenv("KB_MAIL_UNSUB_SALT", raising=False)
+        from services.site.core.mailing.scheduler import UnsubConfigError
+
+        with pytest.raises(UnsubConfigError, match="KB_MAIL_UNSUB_SALT"):
+            make_world(with_salt=False)
+
+    def test_env_salt_accepted(self, monkeypatch: pytest.MonkeyPatch) -> None:
+        """环境变量注入 salt：构造成功（参数 → env 解析链）。"""
+        monkeypatch.setenv("KB_MAIL_UNSUB_SALT", "env-provided-salt")
+        _, _, _, _, _, _, sched = make_world(with_salt=False)
+        assert sched._unsub_salt == "env-provided-salt"
+
+    def test_url_token_is_signed_not_sequential(self) -> None:
+        """退订 URL 的 token 为「job_id.HMAC 签名」形态，非零填充顺序数字。"""
+        from services.site.core.mailing.scheduler import sign_unsub_token
+
+        _, _, _, _, _, _, sched = make_world()
+        url = sched._unsub_url(type("J", (), {"job_id": 42})())  # 最小 job 形态
+        token_part = url.rsplit("/", 1)[1]
+        job_part, _, sig = token_part.partition(".")
+        assert job_part == "42" and len(sig) == 16
+        assert token_part == sign_unsub_token(42, "test-unsub-salt")
+
+    def test_sign_and_verify_roundtrip(self) -> None:
+        """sign → verify 往返还原 job_id；不同 salt 签名互不通用。"""
+        from services.site.core.mailing.scheduler import sign_unsub_token, verify_unsub_token
+
+        token = sign_unsub_token(42, "test-unsub-salt")
+        assert verify_unsub_token(token, "test-unsub-salt") == 42
+        with pytest.raises(ValueError, match="签名"):
+            verify_unsub_token(token, "another-salt")
+
+    def test_verify_rejects_legacy_sequential_format(self) -> None:
+        """旧格式（零填充顺序数字，可枚举）一律拒绝——枚举退订链接不再可能。"""
+        from services.site.core.mailing.scheduler import verify_unsub_token
+
+        for legacy in ("00000042", "42", "1", "00000001"):
+            with pytest.raises(ValueError, match="非法"):
+                verify_unsub_token(legacy, "test-unsub-salt")
+
+    def test_verify_rejects_tampered_token(self) -> None:
+        """签名段被篡改（换一位 hex）→ 校验失败。"""
+        from services.site.core.mailing.scheduler import sign_unsub_token, verify_unsub_token
+
+        token = sign_unsub_token(7, "test-unsub-salt")
+        job, _, sig = token.partition(".")
+        flipped = "0" if sig[0] != "0" else "1"
+        with pytest.raises(ValueError, match="签名"):
+            verify_unsub_token(f"{job}.{flipped}{sig[1:]}", "test-unsub-salt")
+
+    def test_sent_mail_carries_signed_token(self) -> None:
+        """端到端：发出的邮件退订链接携带签名 token（头部与正文一致可校验）。"""
+        from services.site.core.mailing.scheduler import verify_unsub_token
+
+        clock, store, _, _, _, smtp, sched = make_world()
+        sched.on_event(cart_event())
+        clock.advance(hours=1)
+        sched.poll()
+        mail = smtp.sent[0]
+        token = mail.headers["List-Unsubscribe"].strip("<>").rsplit("/", 1)[1]
+        job_id = verify_unsub_token(token, "test-unsub-salt")
+        assert store.jobs[job_id].status == "delivered"

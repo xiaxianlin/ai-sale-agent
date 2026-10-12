@@ -19,6 +19,7 @@
 from __future__ import annotations
 
 import random
+import threading
 
 from services.agent.core.driver import FakeBrowserDriver, TypingPlan
 from services.agent.core.engine import (
@@ -264,13 +265,25 @@ def test_idem_key_shape_and_uniqueness() -> None:
 
 
 def test_mark_sent_cas_exactly_one() -> None:
-    """CAS 防重发（幂等键③）：双路径并发推进 sending→sent 恰一成功。"""
+    """CAS 防重发（幂等键③）：双线程真并发推进 sending→sent 恰一成功。
+
+    CR P2-a 修复：原「顺序两次 CAS」假并发改 threading.Barrier(2) 双线程同刻放行
+    （照抄仓库既有并发范式，如 test_crm_merge 并发恰一胜）；cas_status 在 RLock 内
+    条件更新，双线程竞争下结果确定：恰一 True 一 False，败者绝不二次外发。
+    """
     jobs = InMemoryReplyJobStore()
     job = make_job(jobs, "C1", "并发补账内容", JOB_SENDING)
-    first = jobs.cas_status(job.uid, JOB_SENDING, JOB_SENT)
-    second = jobs.cas_status(job.uid, JOB_SENDING, JOB_SENT)
-    assert first is True
-    assert second is False  # 败者放弃，绝不二次外发
+    barrier = threading.Barrier(2)
+    results: list[bool] = []
+
+    def try_cas() -> None:
+        barrier.wait()  # 双线程同刻竞争同一 sending→sent 迁移
+        results.append(jobs.cas_status(job.uid, JOB_SENDING, JOB_SENT))
+
+    t1 = threading.Thread(target=try_cas)
+    t2 = threading.Thread(target=try_cas)
+    t1.start(); t2.start(); t1.join(); t2.join()
+    assert sorted(results) == [False, True]  # 恰一胜；败者放弃，绝不二次外发
 
 
 def test_rto_within_target() -> None:

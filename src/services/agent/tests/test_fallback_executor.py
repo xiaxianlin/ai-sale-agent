@@ -143,7 +143,9 @@ def test_alert_event_emitted_with_reason() -> None:
 
 
 def test_todo_enqueue_idempotent_key() -> None:
-    """并发/幂等类：幂等键 {conv}:{msg}:conf_fallback——重复执行待办仅一条、ID 稳定。"""
+    """幂等重放（CR P2-a 正名）：幂等键 {conv}:{msg}:conf_fallback——同一 verdict
+    顺序重放两次，待办仅一条、ID 稳定。非真并发用例：待办队列是内存 list 无锁，
+    双线程并发 execute 会真双入队（引入 flaky）；重放幂等由确定性顺序重放钉死。"""
     deps, _, queue = make_deps()
     first = execute_fallback(VERDICT, CTX, deps)
     second = execute_fallback(VERDICT, CTX, deps)

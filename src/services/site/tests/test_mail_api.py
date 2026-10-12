@@ -47,6 +47,7 @@ def make_client(per_hour: int = 100):
     scheduler = MailScheduler(engine=engine, store=store, transport=FakeSmtpTransport(clock),
                               templates=templates, suppression=SuppressionList(),
                               rate_guard=DomainRateGuard(per_domain_per_hour=per_hour),
+                              unsub_salt="demo-unsub-salt",  # 测试专用盐（CR P2 修复后必填）
                               clock=clock.now)
     tracker = DeliveryTracker(store, engine, SuppressionList(), clock=clock.now)
     app = create_mail_app(scheduler=scheduler, tracker=tracker, templates=templates,
@@ -140,7 +141,8 @@ def test_default_denies_write_without_claims_provider() -> None:
         scheduler=MailScheduler(engine=SequenceEngine(store, clock=clock.now), store=store,
                                 transport=FakeSmtpTransport(clock), templates=templates,
                                 suppression=SuppressionList(),
-                                rate_guard=DomainRateGuard(per_domain_per_hour=100), clock=clock.now),
+                                rate_guard=DomainRateGuard(per_domain_per_hour=100),
+                                unsub_salt="demo-unsub-salt", clock=clock.now),
         tracker=DeliveryTracker(store, SequenceEngine(store, clock=clock.now),
                                 SuppressionList(), clock=clock.now),
         templates=templates, store=store, api_key=TEST_MAIL_API_KEY)
@@ -152,6 +154,9 @@ def test_missing_api_key_fails_fast(monkeypatch) -> None:
     """CR P0-5 修复：未传 api_key 且环境变量 KB_MAIL_WEBHOOK_KEY 未配置 → 启动即
     SiteConfigError（fail-fast，拒绝无密钥运行；对齐 vault 缺主密钥口径）。"""
     monkeypatch.delenv("KB_MAIL_WEBHOOK_KEY", raising=False)
+    # 本用例聚焦 webhook key 的 fail-fast：退订盐先行就绪（MailScheduler 作为参数在进入
+    # 工厂前求值，盐缺失会先抛 UnsubConfigError 掩盖目标异常）
+    monkeypatch.setenv("KB_MAIL_UNSUB_SALT", "demo-unsub-salt")
     clock = MutableClock()
     store = MailStore()
     templates = TemplateRegistry(clock=clock.now)
@@ -161,6 +166,7 @@ def test_missing_api_key_fails_fast(monkeypatch) -> None:
                                     transport=FakeSmtpTransport(clock), templates=templates,
                                     suppression=SuppressionList(),
                                     rate_guard=DomainRateGuard(per_domain_per_hour=100),
+                                unsub_salt="demo-unsub-salt",  # 测试专用盐（CR P2 修复后必填）
                                     clock=clock.now),
             tracker=DeliveryTracker(store, SequenceEngine(store, clock=clock.now),
                                     SuppressionList(), clock=clock.now),

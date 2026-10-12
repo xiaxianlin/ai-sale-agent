@@ -17,6 +17,9 @@ SMTP 以 :class:`MailTransport` 协议注入（demo 用确定性 Fake，生产 a
 """
 from __future__ import annotations
 
+import hashlib
+import hmac
+import os
 from collections.abc import Callable
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta
@@ -25,6 +28,56 @@ from typing import Protocol
 from services.site.core.mailing.sequences import MailJob, MailStore, Sequence, SequenceEngine
 from services.site.core.mailing.templates import TemplateError, TemplateRegistry, inject_unsubscribe
 from services.site.core.mailing.tracking import SuppressionList
+
+# ── 退订 token 签名（CR P2 修复：顺序 job_id 可枚举 → HMAC 签名不可枚举）─────────
+
+#: 退订链接签名盐环境变量（CR P2 修复：参数 → env → fail-fast，对齐 KB_MAIL_WEBHOOK_KEY 前批模式）
+UNSUB_SALT_ENV: str = "KB_MAIL_UNSUB_SALT"
+
+#: token 签名段长度：HMAC-SHA256 hex 前 16 位（64 bit 抗暴力枚举，URL 友好）
+_UNSUB_SIG_LEN: int = 16
+
+
+class UnsubConfigError(Exception):
+    """退订签名盐缺失（CR P2 修复，fail-fast）：拒绝以可枚举顺序 ID 形态产出退订链接。"""
+
+
+def resolve_unsub_salt(salt: str | None) -> str:
+    """退订签名盐解析：显式参数 → 环境变量 KB_MAIL_UNSUB_SALT；均缺即抛
+    UnsubConfigError（中文 fail-fast，NFR-SEC-04 口径：无盐不签发）。"""
+    value = salt if salt is not None else os.environ.get(UNSUB_SALT_ENV)
+    if not value:
+        raise UnsubConfigError(
+            f"缺少退订链接签名盐：请经构造参数 unsub_salt 注入或设置环境变量 "
+            f"{UNSUB_SALT_ENV}（CR P2 修复：退订 token 必须经 HMAC 签名，"
+            "拒绝可枚举的顺序 job_id 形态；生产经密钥管理下发）"
+        )
+    return value
+
+
+def sign_unsub_token(job_id: int, salt: str) -> str:
+    """签发退订 token：``{job_id}.{HMAC-SHA256(salt, job_id) 前 16 位}``。
+
+    HMAC 绑定 job_id：不知道 salt 无法为任意 job 伪造合法 token——枚举
+    ``00000041/00000042/...`` 顺序遍历他人退订链接的攻击面就此关闭。
+    """
+    sig = hmac.new(salt.encode("utf-8"), str(job_id).encode("ascii"), hashlib.sha256).hexdigest()
+    return f"{job_id}.{sig[:_UNSUB_SIG_LEN]}"
+
+
+def verify_unsub_token(token: str, salt: str) -> int:
+    """校验退订 token → 还原 job_id；旧格式（纯顺序数字）/签名不符一律 ValueError。
+
+    退信点击回执入口（one-click 端点）消费方：任何非法形态均拒绝——
+    旧零填充顺序格式（``00000042``）正是本修复要封死的可枚举形态。
+    """
+    job_part, sep, sig = token.strip().partition(".")
+    if not sep or not sig or not job_part.isdigit():
+        raise ValueError(f"退订 token 非法：缺少签名段或任务号段非数字（旧顺序格式已停用）：{token[:8]}…")
+    expected = hmac.new(salt.encode("utf-8"), job_part.encode("ascii"), hashlib.sha256).hexdigest()
+    if not hmac.compare_digest(sig.lower(), expected[:_UNSUB_SIG_LEN]):
+        raise ValueError("退订 token 校验失败：签名不匹配（token 被篡改或盐不一致）")
+    return int(job_part)
 
 
 def domain_of(email: str) -> str:
@@ -129,6 +182,7 @@ class MailScheduler:
                  rate_guard: DomainRateGuard, clock: Callable[[], datetime],
                  rate_backoff_min: int = 30, store_url: str = "https://shop.example.com",
                  unsub_base_url: str = "https://shop.example.com/s/m/u",
+                 unsub_salt: str | None = None,
                  stop_lookup: Callable[[Sequence], str | None] | None = None) -> None:
         self.engine = engine
         self.store = store
@@ -140,6 +194,8 @@ class MailScheduler:
         self.rate_backoff_min = rate_backoff_min
         self.store_url = store_url
         self.unsub_base_url = unsub_base_url
+        # CR P2 修复：退订链接签名盐（参数 → env → fail-fast，无盐不签发）
+        self._unsub_salt = resolve_unsub_salt(unsub_salt)
         self.stop_lookup = stop_lookup
         self.sendq = MemoryZSet()
         self.alerts: list[dict] = []  # 告警登记（模板失效等，SR §6.2 alert.push 占位）
@@ -247,8 +303,8 @@ class MailScheduler:
         return variables
 
     def _unsub_url(self, job: MailJob) -> str:
-        """退订链接（token 形态，URL 不含明文 PII；demo token=job 摘要）。"""
-        return f"{self.unsub_base_url}/{job.job_id:08d}"
+        """退订链接（CR P2 修复：HMAC 签名 token，URL 不含明文 PII 且不可枚举）。"""
+        return f"{self.unsub_base_url}/{sign_unsub_token(job.job_id, self._unsub_salt)}"
 
     def _headers(self, job: MailJob) -> dict[str, str]:
         """合规头域：List-Unsubscribe（RFC 8058 one-click）+ bulk 标记（SR §6.3）。"""

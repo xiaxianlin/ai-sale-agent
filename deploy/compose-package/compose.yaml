@@ -1,0 +1,122 @@
+# 知识产权归甲方所有（COM-IP-01）——AI 外贸销售智能体系统交付物。
+# 一键部署包编排文件（FR-SAAS-004，SR-SAAS-004 §6.2）——CR A4 修复：补齐 install.sh
+# `docker compose -f` 指向的真实 compose 文件（此前 --env-file 无 -f、包内亦无 compose
+# 文件，属部署三断链之一）。
+# 形态：demo 单机全栈。数据层沿用 deploy/compose/compose.yaml 的钉版与拓扑
+# （版本清单以该文件为单一来源，勿在此另立版本）；app / site 为 deploy/nginx/ai-sale.conf
+# upstream 引用的同名服务（nginx 经容器网络 DNS 互访 app:8000 / site:8000）。
+# 凭证纪律（NFR-SEC-04 零明文）：数据层口令经 Docker Secrets 文件注入（bootstrap 第②步
+# 生成 .secrets/，权限 600）；应用层密钥经 ${...} 环境占位由 .env 注入（gen-config 下发）。
+# 迁移口径：migrations/ 为裸 SQL（psql 幂等执行，无迁移框架，见 install.sh 第⑤步）。
+services:
+  postgres:                                   # 数据层口令：secrets 文件注入（零明文）
+    image: postgres:16                        # 钉版以 deploy/compose/compose.yaml 为单一来源
+    secrets: [pg_password]
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-aisale}
+      POSTGRES_PASSWORD_FILE: /run/secrets/pg_password
+      POSTGRES_DB: ${POSTGRES_DB:-aisale}
+    volumes: [pgdata:/var/lib/postgresql/data]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-aisale}"]
+      interval: 5s
+      retries: 10
+  redis:
+    image: redis:7
+    secrets: [redis_password]
+    # 官方镜像不支持 *_FILE，以启动命令读取 secrets 文件（不落环境变量）
+    command: >
+      sh -c "exec redis-server --requirepass \"$$(cat /run/secrets/redis_password)\""
+    healthcheck:
+      test: ["CMD-SHELL",
+             "redis-cli -a \"$$(cat /run/secrets/redis_password)\" ping | grep -q PONG"]
+      interval: 5s
+      retries: 10
+  # Milvus standalone（官方三件套：etcd + milvus；数据层不发布公网端口，仅容器网络互访）
+  etcd:
+    image: quay.io/coreos/etcd:v3.5.18
+    environment:
+      ETCD_AUTO_COMPACTION_MODE: revision
+      ETCD_AUTO_COMPACTION_RETENTION: "1000"
+      ETCD_QUOTA_BACKEND_BYTES: "4294967296"
+    command: etcd -advertise-client-urls=http://etcd:2379 -listen-client-urls http://0.0.0.0:2379 --data-dir /etcd
+    healthcheck:
+      test: ["CMD-SHELL", "etcdctl --endpoints=http://localhost:2379 endpoint health"]
+      interval: 15s
+      retries: 5
+  milvus:
+    image: milvusdb/milvus:v2.5.6
+    command: ["milvus", "run", "standalone"]
+    environment:
+      ETCD_ENDPOINTS: etcd:2379
+      COMMON_STORAGETYPE: local
+    volumes: ["milvusdata:/var/lib/milvus"]
+    depends_on: [etcd]
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost:9091/healthz || exit 1"]
+      interval: 15s
+      retries: 10
+      start_period: 60s
+  # 本机 TEI（BGE-M3）：--profile tei 启用；arm64 拉取失败时本机用 Fake，ECS(x86) 必用 TEI
+  tei:
+    image: ghcr.io/huggingface/text-embeddings-inference:cpu-1.8.0
+    command: ["--model-id", "BAAI/bge-m3", "--auto-truncate"]
+    profiles: ["tei"]
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost:8080/health || exit 1"]
+      interval: 15s
+      retries: 10
+      start_period: 90s
+  # kb-service / 管理后台 API（CR A4 修复：nginx upstream app_backend 的同名服务）
+  app:
+    image: ${IMAGE_REGISTRY:-registry.example.com}/aisale-app:${IMAGE_TAG:-1.0.0}
+    # 占位口径：镜像内已烘焙依赖，此处 command 为 demo 兜底（services.kb.app 工厂）
+    command: ["uvicorn", "services.kb.app:create_app", "--factory",
+              "--host", "0.0.0.0", "--port", "8000"]
+    environment:
+      # 应用层密钥：${} 占位由 .env 注入（gen-config 下发，缺即启动失败 fail-closed）
+      KB_SITE_TOKEN_SECRET: ${KB_SITE_TOKEN_SECRET:?请在 .env 提供 KB_SITE_TOKEN_SECRET}
+      KB_SAAS_TOKEN_SECRET: ${KB_SAAS_TOKEN_SECRET:?请在 .env 提供 KB_SAAS_TOKEN_SECRET}
+      # DeepSeek 出域密钥（甲方自备，NFR-SEC-06；键名与代码一致，CR A6-b 对齐）
+      KB_DEEPSEEK_API_KEY: ${KB_DEEPSEEK_API_KEY:-}
+      KB_DEEPSEEK_BASE_URL: ${KB_DEEPSEEK_BASE_URL:-https://api.deepseek.com}
+      # 数据层端点（容器网络 DNS 互访；口令经 secrets 由驱动/中间层注入，不落此处）
+      KB_PG_DSN: postgresql://${POSTGRES_USER:-aisale}@postgres:5432/${POSTGRES_DB:-aisale}
+      KB_REDIS_URL: redis://redis:6379/0
+      KB_MILVUS_URI: http://milvus:19530
+      KB_TEI_ENDPOINT: http://tei:8080
+    ports: ["8000:8000"]                      # 唯一业务发布口（nginx 前置前的 demo 直连口径）
+    depends_on: [postgres, redis, milvus]
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost:8000/healthz || exit 1"]
+      interval: 15s
+      retries: 5
+      start_period: 60s
+  # site-service（CR A4 修复：nginx upstream site_ws_backend / site_api_backend 的同名服务）
+  site:
+    image: ${IMAGE_REGISTRY:-registry.example.com}/aisale-site:${IMAGE_TAG:-1.0.0}
+    command: ["uvicorn", "services.site.api.app:create_site_app", "--factory",
+              "--host", "0.0.0.0", "--port", "8000"]
+    environment:
+      KB_SITE_TOKEN_SECRET: ${KB_SITE_TOKEN_SECRET:?请在 .env 提供 KB_SITE_TOKEN_SECRET}
+      KB_SITE_SDK_KEY: ${KB_SITE_SDK_KEY:?请在 .env 提供 KB_SITE_SDK_KEY}
+      KB_MAIL_WEBHOOK_KEY: ${KB_MAIL_WEBHOOK_KEY:?请在 .env 提供 KB_MAIL_WEBHOOK_KEY}
+      KB_PG_DSN: postgresql://${POSTGRES_USER:-aisale}@postgres:5432/${POSTGRES_DB:-aisale}
+      KB_REDIS_URL: redis://redis:6379/0
+    ports: ["8100:8000"]                      # demo 直连口径（生产由 nginx chat 子域前置）
+    depends_on: [postgres, redis]
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost:8000/healthz || exit 1"]
+      interval: 15s
+      retries: 5
+      start_period: 60s
+volumes:
+  pgdata:
+  milvusdata:
+secrets:                                      # bootstrap 第②步生成（.secrets/，600，不入 Git）
+  pg_password:
+    file: ./.secrets/pg_password
+  redis_password:
+    file: ./.secrets/redis_password
+  jwt_salt:
+    file: ./.secrets/jwt_salt                 # JWT 盐（应用层按需挂载，预留统一下发口）

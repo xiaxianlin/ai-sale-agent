@@ -5,10 +5,13 @@
 # 用法：./rollback.sh --to <version> [--skip-db]
 # 退出码契约：0 成功（含重复回滚 no-op）；20 目标版本不存在；21 未备份拒绝执行。
 # 边界（SR §6.6）：downgrade 仅保证 N-1 相邻版本自动可回；跨 ≥2 版本须人工评估
-# 双人确认；downgrade 前强制 pg_dump 快照（--skip-db 仅回滚应用层，schema 未变场景）。
+# 双人确认；downgrade 前强制使用迁移前快照（--skip-db 仅回滚应用层，schema 未变场景）。
+# CR A4 修复：docker compose 调用补 -f 指向包内 compose.yaml；DB 回退口径改为
+# 恢复迁移前快照（migrations/ 为裸 SQL，无迁移框架回滚链）。
 set -euo pipefail
 
 PKG_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+COMPOSE_FILE="${PKG_DIR}/compose.yaml"   # CR A4 修复：包内真实编排文件（-f 必指）
 ENV_FILE="${PKG_DIR}/.env"
 BACKUP_DIR="${PKG_DIR}/backups"
 TARGET_VERSION=""
@@ -25,8 +28,12 @@ done
 
 log() { echo "[rollback $(date -u +%FT%TZ)] $*"; }
 
+# compose 调用统一入口（CR A4 修复：-f 指向包内 compose.yaml + --env-file 注入 .env）
+dc() { docker compose -f "${COMPOSE_FILE}" --env-file "${ENV_FILE}" "$@"; }
+
 [[ -n "${TARGET_VERSION}" ]] || { echo "缺少 --to <version>"; exit 20; }
 [[ -f "${ENV_FILE}" ]] || { echo "缺 ${ENV_FILE}（未部署或已移除）"; exit 20; }
+[[ -f "${COMPOSE_FILE}" ]] || { echo "缺编排文件：${COMPOSE_FILE}"; exit 20; }
 [[ "${TARGET_VERSION}" != "latest" ]] || { echo "禁止回滚到 latest（版本化不可变）"; exit 20; }
 
 CURRENT_TAG="$(grep -E '^IMAGE_TAG=' "${ENV_FILE}" | cut -d= -f2- || true)"
@@ -52,13 +59,25 @@ fi
 # ① 恢复镜像 tag 与配置指纹（.env 由 gen-config 重新生成后校验，指纹对齐目标版本）
 log "回滚应用层：IMAGE_TAG ${CURRENT_TAG} → ${TARGET_VERSION}"
 sed -i.bak "s/^IMAGE_TAG=.*/IMAGE_TAG=${TARGET_VERSION}/" "${ENV_FILE}"
-docker compose --env-file "${ENV_FILE}" up -d --force-recreate app
+dc up -d --force-recreate app site
 
-# ② DB downgrade（--skip-db 跳过：纯代码缺陷、schema 未变场景）
+# ② DB 回退（--skip-db 跳过：纯代码缺陷、schema 未变场景）
+#    CR A4 修复：裸 SQL 口径无迁移框架回滚——回退 = 清库后恢复迁移前快照
 if [[ "${SKIP_DB}" != "true" ]]; then
-  log "执行 DB downgrade（仅保证 N-1 相邻版本自动可回）"
-  docker compose --env-file "${ENV_FILE}" run --rm app \
-    alembic downgrade -1 || { echo "downgrade 失败，请人工评估（跨 ≥2 版本需双人确认）"; exit 21; }
+  log "执行 DB 快照恢复（仅保证 N-1 相邻版本自动可回）"
+  local_pg_user() { grep -E '^POSTGRES_USER=' "${ENV_FILE}" | cut -d= -f2- || true; }
+  local_pg_db() { grep -E '^POSTGRES_DB=' "${ENV_FILE}" | cut -d= -f2- || true; }
+  PG_USER="$(local_pg_user)"; PG_USER="${PG_USER:-aisale}"
+  PG_DB="$(local_pg_db)"; PG_DB="${PG_DB:-aisale}"
+  dc exec -T postgres psql -U "${PG_USER}" -d postgres \
+    -c "SELECT pg_terminate_backend(pid) FROM pg_stat_activity \
+         WHERE datname = '${PG_DB}' AND pid <> pg_backend_pid();" \
+    -c "DROP DATABASE IF EXISTS ${PG_DB};" \
+    -c "CREATE DATABASE ${PG_DB};" \
+    || { echo "清库失败（准备恢复快照前），请人工评估"; exit 21; }
+  dc exec -T postgres psql -v ON_ERROR_STOP=1 -U "${PG_USER}" -d "${PG_DB}" \
+    < "${LATEST_BACKUP}" \
+    || { echo "快照恢复失败，请人工评估（跨 ≥2 版本需双人确认）"; exit 21; }
 fi
 
 # ③ 留痕 rolled_back（生产写 deploy_record.result='rolled_back'）

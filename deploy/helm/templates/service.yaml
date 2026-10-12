@@ -1,0 +1,32 @@
+# 知识产权归甲方所有（COM-IP-01）——AI 外贸销售智能体系统交付物。
+# CR A4 修复：最小 Service 模板（kb-service / saas-service 对内暴露；agent-runner 为
+# 出向执行器不建 Service；对外入口由 Ingress/Nginx 统一，见 values.ingress）。
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.saasTenant.id }}-kb
+  namespace: {{ .Values.saasTenant.namespace }}
+  labels:
+    app: kb-service
+spec:
+  selector:
+    app: kb-service
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.saasTenant.id }}-saas
+  namespace: {{ .Values.saasTenant.namespace }}
+  labels:
+    app: saas-service
+spec:
+  selector:
+    app: saas-service
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8000

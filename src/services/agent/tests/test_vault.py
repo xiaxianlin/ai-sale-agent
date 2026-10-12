@@ -8,7 +8,8 @@
 - 错误主密钥：解密失败中文报错（口令不匹配/密文被篡改归一）；
 - 明文永不回显：密文不含明文子串；mask 仅回显尾 2 位（短输入全掩码）；
 - DEK 轮换版本化：rotate 后新 seal 落新版本，旧版本密文仍可解（共存过渡）；
-- 主密钥环境变量未配置：构造即中文报错；demo 限定声明存在；
+- 主密钥注入三通道（CR A6 修复）：_FILE 文件优先（读首行、不缓存明文）、
+  文件缺失中文报错、_FILE 与直读均无 fail-fast；环境变量直读与显式传参等价；
 - zeroize：明文缓冲用后覆写清零。
 
 实现方案：docs/07-实现方案/NFR/SR-NFR-SEC-04-账号凭证安全.md §6.1、§6.6、§9
@@ -17,10 +18,13 @@
 
 from __future__ import annotations
 
+from pathlib import Path
+
 import pytest
 
 from services.agent.core.vault import (
     MASTER_KEY_ENV,
+    MASTER_KEY_FILE_ENV,
     CipherBundle,
     CredentialVault,
     VaultConfigError,
@@ -95,18 +99,70 @@ def test_rotate_dek_versions() -> None:
 
 
 def test_missing_master_key_env_chinese(monkeypatch: pytest.MonkeyPatch) -> None:
-    """主密钥环境变量未配置：构造即中文报错（fail-fast，拒绝无密钥运行）。"""
+    """主密钥两种注入口均未配置：构造即中文报错（fail-fast，拒绝无密钥运行）。"""
     monkeypatch.delenv(MASTER_KEY_ENV, raising=False)
-    with pytest.raises(VaultConfigError, match="KB_AGENT_MASTER_KEY"):
+    monkeypatch.delenv(MASTER_KEY_FILE_ENV, raising=False)  # CR A6：排除 _FILE 通道干扰
+    with pytest.raises(VaultConfigError, match="均未配置"):
         CredentialVault()
 
 
 def test_master_key_from_env(monkeypatch: pytest.MonkeyPatch) -> None:
     """环境变量注入主密钥：与显式传入等价（生产形态 KMS/Secrets 注入的 demo 对位）。"""
+    monkeypatch.delenv(MASTER_KEY_FILE_ENV, raising=False)  # 直读通道生效前提：_FILE 未配置
     monkeypatch.setenv(MASTER_KEY_ENV, "env-injected-key-42")
     vault = CredentialVault()
     bundle = vault.seal(PLAINTEXT, context=CTX)
     assert vault.unseal(bundle, context=CTX).decode("utf-8") == PLAINTEXT
+
+
+def test_master_key_file_priority_over_env(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    """CR A6：_FILE 文件优先于环境变量直读——读文件首行（后续行忽略）。"""
+    import hmac
+
+    from services.agent.core.vault import _derive_key
+
+    key_file = tmp_path / "vault_master_key"
+    key_file.write_text("file-master-key-777\nsecond-line-must-be-ignored\n",
+                        encoding="utf-8")
+    monkeypatch.setenv(MASTER_KEY_FILE_ENV, str(key_file))
+    monkeypatch.setenv(MASTER_KEY_ENV, "env-key-must-lose")
+    vault = CredentialVault()
+    bundle = vault.seal(PLAINTEXT, context=CTX)
+    assert vault.unseal(bundle, context=CTX).decode("utf-8") == PLAINTEXT
+    # 优先级证明（DEK 为实例内随机、跨实例不可解密，故以 KEK 派生值为判据）：
+    # KEK 由文件首行值派生，而非环境变量值、也非文件第二行值
+    salt = b"agent-runner/vault/kek"
+    assert hmac.compare_digest(vault._kek, _derive_key("file-master-key-777", salt))
+    assert not hmac.compare_digest(
+        vault._kek, _derive_key("env-key-must-lose", salt))
+    assert not hmac.compare_digest(
+        vault._kek, _derive_key("second-line-must-be-ignored", salt))
+    # 读后不缓存明文：实例状态里不得残留文件明文（仅保留派生 KEK）
+    assert "file-master-key-777" not in str(vars(vault))
+
+
+def test_master_key_file_missing_chinese_error(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    """CR A6：_FILE 已配置但文件缺失 → 构造即中文报错（不静默回退直读通道）。"""
+    monkeypatch.setenv(MASTER_KEY_FILE_ENV, str(tmp_path / "not-exist.key"))
+    monkeypatch.setenv(MASTER_KEY_ENV, "fallback-forbidden")  # 有直读值也不得回退
+    with pytest.raises(VaultConfigError, match="不可读"):
+        CredentialVault()
+
+
+def test_master_key_file_empty_fails_fast(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    """CR A6：_FILE 指向空文件 → fail-fast（空密钥等同无密钥，拒绝初始化）。"""
+    empty = tmp_path / "empty.key"
+    empty.write_text("   \n", encoding="utf-8")
+    monkeypatch.setenv(MASTER_KEY_FILE_ENV, str(empty))
+    monkeypatch.delenv(MASTER_KEY_ENV, raising=False)
+    with pytest.raises(VaultConfigError, match="为空"):
+        CredentialVault()
 
 
 def test_demo_cipher_limitation_declared() -> None:

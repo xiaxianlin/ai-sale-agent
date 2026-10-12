@@ -10,6 +10,8 @@ import asyncio
 import json
 from typing import Any
 
+import pytest
+
 from services.kb.core.retrieval.reranker import (
     DEGRADE_RERANK_BAD_RESPONSE,
     DEGRADE_RERANK_TIMEOUT,
@@ -21,13 +23,39 @@ from services.kb.core.retrieval.reranker import (
 from services.kb.tests.test_retrieval_stubs import hit, run
 
 import httpx  # noqa: E402 —— 须位于 reranker 导入（platform 自愈）之后
+from foundation.net.egress import EgressDestination, EgressGuard, EgressViolation  # noqa: E402
+
+#: 测试用 TEI 端点（域名形态：EgressGuard 禁止 IP 直连，注册内网域名后放行）
+_TEI_TEST_BASE = "http://tei-rerank:8081"
+
+
+def _tei_guard() -> EgressGuard:
+    """构造已注册本地 TEI 内网目的地的守卫（CR S3：内网目标注册后放行）。"""
+    guard = EgressGuard()
+    guard.register(
+        EgressDestination(
+            code="tei_rerank",
+            host="tei-rerank",
+            port=8081,
+            schemes=("http",),
+            purposes=("rerank",),
+            owner="ai-sale-agent",
+        )
+    )
+    return guard
 
 
 def make_client(handler: Any, *, timeout_ms: float = 250.0, on_degrade: Any = None) -> BgeRerankerClient:
-    """以 MockTransport 构造 TEI 客户端（handler 收到 Request 返回 Response）。"""
+    """以 MockTransport 构造 TEI 客户端（handler 收到 Request 返回 Response；CR S3 后必经守卫）。"""
     transport = httpx.MockTransport(handler)
     client = httpx.AsyncClient(transport=transport)
-    return BgeRerankerClient(timeout_ms=timeout_ms, client=client, on_degrade=on_degrade)
+    return BgeRerankerClient(
+        base_url=_TEI_TEST_BASE,
+        timeout_ms=timeout_ms,
+        client=client,
+        on_degrade=on_degrade,
+        guard=_tei_guard(),
+    )
 
 
 class SlowTransport(httpx.AsyncBaseTransport):
@@ -78,9 +106,11 @@ class TestBgeRerankerClient:
         # 判定点 D：250ms 硬超时 → RRF 序直出 TopK + on_degrade 留痕
         reasons: list[str] = []
         client = BgeRerankerClient(
+            base_url=_TEI_TEST_BASE,
             timeout_ms=30.0,
             client=httpx.AsyncClient(transport=SlowTransport(delay_s=0.3)),
             on_degrade=reasons.append,
+            guard=_tei_guard(),
         )
         cands = [hit("c0", 0.03), hit("c1", 0.02), hit("c2", 0.01)]
         reranked = run(client.rerank("q", cands, top_k=2))
@@ -136,3 +166,52 @@ class TestPassthroughReranker:
         # Reranker Protocol 鸭子类型：两种实现均可通过运行时检查
         assert isinstance(PassthroughReranker(), Reranker)
         assert isinstance(BgeRerankerClient(client=httpx.AsyncClient()), Reranker)
+
+
+class TestEgressGuardAssertion:
+    """CR S3 修复：TEI /rerank 调用前必经 EgressGuard 出域断言（内网目标，fail-fast）。"""
+
+    def test_default_guard_fail_closed_not_degraded(self) -> None:
+        """未注入守卫：空注册表 fail-closed，EgressViolation 直接抛出（不走降级直出）。"""
+        client = BgeRerankerClient(
+            base_url=_TEI_TEST_BASE,
+            client=httpx.AsyncClient(transport=httpx.MockTransport(
+                lambda request: httpx.Response(200, json=[])
+            )),
+        )
+        with pytest.raises(EgressViolation):
+            run(client.rerank("q", [hit("c0", 0.03)], top_k=1))
+        run(client.aclose())
+
+    def test_ip_literal_endpoint_rejected(self) -> None:
+        """IP 直连端点（缺省 127.0.0.1 形态）：EgressGuard 禁止 IP 直连绕过域名白名单。"""
+        client = BgeRerankerClient(
+            base_url="http://127.0.0.1:8081",
+            client=httpx.AsyncClient(transport=httpx.MockTransport(
+                lambda request: httpx.Response(200, json=[])
+            )),
+            guard=_tei_guard(),  # 守卫只注册域名 tei-rerank，IP 形态不匹配
+        )
+        with pytest.raises(EgressViolation):
+            run(client.rerank("q", [hit("c0", 0.03)], top_k=1))
+        run(client.aclose())
+
+    def test_guarded_call_leaves_audit_record(self) -> None:
+        """守卫放行的调用在账本留痕：purpose=rerank、caller=kb.retrieval.rerank。"""
+        guard = _tei_guard()
+        client = BgeRerankerClient(
+            base_url=_TEI_TEST_BASE,
+            client=httpx.AsyncClient(transport=httpx.MockTransport(
+                lambda request: httpx.Response(200, json=[{"index": 0, "score": 0.9}])
+            )),
+            guard=guard,
+        )
+        reranked = run(client.rerank("q", [hit("c0", 0.03)], top_k=1))
+        run(client.aclose())
+        assert reranked[0].rerank_score == 0.9
+        calls = guard.iter_calls()
+        assert len(calls) == 1
+        assert calls[0].verdict == "allowed"
+        assert calls[0].purpose == "rerank"
+        assert calls[0].caller == "kb.retrieval.reranker"
+        assert calls[0].content_sha256  # 出域内容摘要已留痕

@@ -25,6 +25,7 @@ from collections.abc import Iterator
 from contextlib import contextmanager
 from datetime import datetime, timezone
 from pathlib import Path
+from urllib.parse import urlsplit
 
 import psycopg
 from psycopg import Cursor
@@ -52,6 +53,35 @@ def utc_now() -> datetime:
     return datetime.now(timezone.utc)
 
 
+def mask_dsn(dsn: str) -> str:
+    """DSN 脱敏（CR S1 修复 / NFR-SEC-04）：``scheme://user:***@host:port/db``。
+
+    - 密码段一律替换为 ``***``（无法证明无密码也统一掩码，fail-closed 口径）；
+    - query 串整体丢弃——``?password=...`` 可藏在连接参数里，绝不随消息回显；
+    - 主机/端口/库名保留：上层按主机线索降级排障（设计口径「携带 DSN 主机/端口线索」）；
+    - 解析异常时兜底为 ``<DSN 已整体脱敏>``——脱敏函数自身绝不抛错掩盖原始故障。
+    """
+    try:
+        parts = urlsplit(dsn.strip())
+        scheme = parts.scheme.lower() or "postgresql"
+        host = (parts.hostname or "").lower()
+        if not host:
+            return "<DSN 已整体脱敏>"
+        user = parts.username
+        try:
+            port = parts.port
+        except ValueError:
+            port = None
+        authority = f"{user}:***@" if user else "***@"
+        if port is not None:
+            authority += f"{host}:{port}"
+        else:
+            authority += host
+        return f"{scheme}://{authority}{parts.path}"
+    except Exception:  # noqa: BLE001 - 脱敏兜底：任何解析异常不掩盖原始连接错误
+        return "<DSN 已整体脱敏>"
+
+
 class PgConnection:
     """PG 连接上下文管理器：with 语句内复用单条 psycopg 连接（autocommit=False）。
 
@@ -72,7 +102,7 @@ class PgConnection:
 
     @property
     def dsn(self) -> str:
-        """注入的连接串（脱敏展示时由上层截断密码段）。"""
+        """注入的连接串（展示/日志口径一律先经 :func:`mask_dsn` 脱敏，CR S1）。"""
         return self._dsn
 
     @property
@@ -81,11 +111,14 @@ class PgConnection:
         return self._conn is not None and not self._conn.closed
 
     def __enter__(self) -> PgConnection:
-        """建立连接：autocommit=False + 会话 UTC；失败转中文 RuntimeError。"""
+        """建立连接：autocommit=False + 会话 UTC；失败转中文 RuntimeError（DSN 先脱敏，CR S1）。"""
         try:
             self._conn = psycopg.connect(self._dsn, autocommit=False, options=_SESSION_OPTIONS)
         except psycopg.OperationalError as exc:
-            raise RuntimeError(f"PostgreSQL 连接失败（DSN={self._dsn}）：{exc}") from exc
+            # CR S1 修复：异常消息先经 mask_dsn 脱敏，密码段绝不随消息外泄（NFR-SEC-04）
+            raise RuntimeError(
+                f"PostgreSQL 连接失败（DSN={mask_dsn(self._dsn)}）：{exc}"
+            ) from exc
         return self
 
     def __exit__(self, *exc_info: object) -> None:

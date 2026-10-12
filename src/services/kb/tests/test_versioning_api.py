@@ -220,7 +220,10 @@ def test_rollback_missing_version_40401() -> None:
 
 
 def test_rollback_stale_expected_version_40901() -> None:
-    """乐观并发冲突：expected_version 落后 → 409 + 40901。"""
+    """乐观锁冲突契约（CR P2-a 正名）：预置 current=V2 后以落后 expected_version=1
+    请求 → 409 + 40901「已被他人修改」。这是确定性冲突契约用例（模拟竞争败者视角），
+    非真并发——真并发双线程打 TestClient 会引入 flaky，并发语义已由 service 层
+    「并发 append 同版本恰一入链」用例覆盖（见覆盖矩阵 2.3 KB-022 并发列）。"""
     client, _, _ = _build_client()
     uid = _seed_two_versions(_client_service(client))
     resp = client.post(

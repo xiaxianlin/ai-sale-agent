@@ -8,7 +8,8 @@
 - 发送物理阻断：send_reply 仅接受闸门签发的 SendToken，伪造对象 TypeError；
 - 页面改版降级：inject_drift → PageDriftError，clear_drift 后恢复；
 - OpenClawDriver：KB_OPENCLAW_ENDPOINT 未配置中文报错；环境变量注入 +
-  httpx MockTransport 打桩的请求路径与字段映射；HTTP 错误中文归一。
+  httpx MockTransport 打桩的请求路径与字段映射；HTTP 错误中文归一；
+  出域白名单断言（CR S3 修复）：未注入守卫 fail-closed 拒发，注入守卫后放行。
 
 实现方案：docs/07-实现方案/AG/SR-AG-002-浏览器自动化.md §5、§6、§9
 """
@@ -18,6 +19,7 @@ from __future__ import annotations
 
 import httpx
 import pytest
+from foundation.net.egress import EgressDestination, EgressGuard, EgressViolation
 
 from services.agent.core.driver import (
     OPENCLAW_ENDPOINT_ENV,
@@ -39,6 +41,25 @@ from services.agent.core.state import SendToken
 def make_token(uid: str = "alibaba:C001", version: int = 0) -> SendToken:
     """构造闸门形态的合法令牌（模拟 AISendGate 签发产物）。"""
     return SendToken(uid=uid, version=version, issued_at=100.0)
+
+
+def openclaw_guard(endpoint: str = "http://openclaw-internal:9223") -> EgressGuard:
+    """构造已注册 OpenClaw 内网目的地的守卫（CR S3：内网目标注册后放行）。"""
+    from urllib.parse import urlsplit
+
+    parts = urlsplit(endpoint)
+    guard = EgressGuard()
+    guard.register(
+        EgressDestination(
+            code="openclaw_internal",
+            host=(parts.hostname or "").lower(),
+            port=parts.port or 80,
+            schemes=("http", "https"),
+            purposes=("browser_ops",),
+            owner="ai-sale-agent",
+        )
+    )
+    return guard
 
 
 # ─────────────────────────── FakeBrowserDriver 确定性 ───────────────────────────
@@ -199,7 +220,10 @@ def test_openclaw_env_endpoint_and_poll_mapping(
         return httpx.Response(404, json={})
 
     monkeypatch.setenv(OPENCLAW_ENDPOINT_ENV, "http://openclaw-internal:9223")
-    driver = OpenClawDriver(client=httpx.Client(transport=httpx.MockTransport(handler)))
+    driver = OpenClawDriver(
+        client=httpx.Client(transport=httpx.MockTransport(handler)),
+        guard=openclaw_guard(),
+    )
     assert driver.ensure_login() == "alive"
     items = driver.poll_inquiries()
     assert len(items) == 1 and items[0].external_conv_id == "C001"
@@ -216,6 +240,46 @@ def test_openclaw_http_error_chinese() -> None:
     driver = OpenClawDriver(
         endpoint="http://openclaw-internal:9223",
         client=httpx.Client(transport=httpx.MockTransport(handler)),
+        guard=openclaw_guard(),
     )
     with pytest.raises(OpenClawError, match="503"):
         driver.ensure_login()
+
+
+# ─────────────────────────── OpenClawDriver 出域白名单断言（CR S3 修复） ───────────────────────────
+
+
+def test_openclaw_default_guard_fail_closed() -> None:
+    """未注入守卫：空注册表 fail-closed，httpx 请求不发起（无「先发后审」）。"""
+    requested: list[str] = []
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        requested.append(str(request.url))
+        return httpx.Response(200, json={"state": "alive"})
+
+    driver = OpenClawDriver(
+        endpoint="http://openclaw-internal:9223",
+        client=httpx.Client(transport=httpx.MockTransport(handler)),
+    )
+    with pytest.raises(EgressViolation):
+        driver.ensure_login()
+    assert requested == []  # 拦截发生在连接前
+
+
+def test_openclaw_guarded_call_leaves_audit_record() -> None:
+    """守卫放行的调用在账本留痕：purpose=browser_ops、caller=agent.driver。"""
+    def handler(request: httpx.Request) -> httpx.Response:
+        return httpx.Response(200, json={"state": "alive"})
+
+    guard = openclaw_guard()
+    driver = OpenClawDriver(
+        endpoint="http://openclaw-internal:9223",
+        client=httpx.Client(transport=httpx.MockTransport(handler)),
+        guard=guard,
+    )
+    assert driver.ensure_login() == "alive"
+    calls = guard.iter_calls()
+    assert len(calls) == 1
+    assert calls[0].verdict == "allowed"
+    assert calls[0].purpose == "browser_ops"
+    assert calls[0].caller == "agent.driver"

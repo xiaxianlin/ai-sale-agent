@@ -15,7 +15,7 @@ postgresql://kb:***@localhost:15432/kb（凭证见 deploy/compose/compose.yaml�
 """
 from __future__ import annotations
 
-from .connection import PgConnection, apply_migrations, ensure_utc, utc_now
+from .connection import PgConnection, apply_migrations, ensure_utc, mask_dsn, utc_now
 from .ingest_log_store import PsycopgIngestLogStore
 from .item_store import PsycopgKnowledgeItemStore
 from .version_store import PsycopgVersionStore
@@ -27,5 +27,6 @@ __all__ = [
     "PsycopgVersionStore",
     "apply_migrations",
     "ensure_utc",
+    "mask_dsn",
     "utc_now",
 ]

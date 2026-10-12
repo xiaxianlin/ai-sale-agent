@@ -7,10 +7,14 @@
 #             13 迁移失败；14 健康等待超时。
 # 硬约束：镜像 tag 版本化禁 latest；配置源单一（gen_config.py 双生成 + 漂移校验）；
 #         迁移前强制快照（NFR-REL-04）；离线优先（--offline，NFR-SEC-06）。
+# CR A4 修复：① 全部 docker compose 调用补 -f 指向包内真实 compose.yaml；
+#             ② 迁移口径改为 migrations/ 裸 SQL 的 psql 幂等执行（无迁移框架）；
+#             ③ 健康检查目标改为 compose.yaml 内实际存在且带 healthcheck 的服务。
 set -euo pipefail
 
 PKG_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "${PKG_DIR}/../.." && pwd)"
+COMPOSE_FILE="${PKG_DIR}/compose.yaml"   # CR A4 修复：包内真实编排文件（-f 必指）
 OFFLINE="false"
 TENANT_CONFIG="${PKG_DIR}/tenant-config.example.yaml"
 ENV_FILE="${PKG_DIR}/.env"
@@ -27,11 +31,15 @@ done
 
 log() { echo "[bootstrap $(date -u +%FT%TZ)] $*"; }
 
+# compose 调用统一入口（CR A4 修复：-f 指向包内 compose.yaml + --env-file 注入 .env）
+dc() { docker compose -f "${COMPOSE_FILE}" --env-file "${ENV_FILE}" "$@"; }
+
 # ① preflight 环境检测（干净环境清单 §6.1：OS/内核/Docker/资源/时间；失败退出码 10）
 step1_preflight() {
   log "① 环境检测（preflight）"
   command -v docker >/dev/null 2>&1 || { echo "缺少 Docker Engine（≥24.0）"; exit 10; }
   docker compose version >/dev/null 2>&1 || { echo "缺少 Compose v2 插件（≥2.20）"; exit 10; }
+  [[ -f "${COMPOSE_FILE}" ]] || { echo "缺编排文件：${COMPOSE_FILE}"; exit 10; }
   local docker_major
   docker_major="$(docker version --format '{{.Server.Version}}' 2>/dev/null | cut -d. -f1 || echo 0)"
   [[ "${docker_major}" -ge 24 ]] || { echo "Docker Engine 版本过低：${docker_major}"; exit 10; }
@@ -40,7 +48,7 @@ step1_preflight() {
 }
 
 # ② secrets 密钥生成：PG/Redis 密码、JWT 盐随机 32 位 hex；写 .secrets/（600），
-#    已有则跳过（幂等）；不回显（NFR-SEC-04）
+#    已有则跳过（幂等）；不回显（NFR-SEC-04）。compose.yaml 的 secrets 段消费本目录
 step2_secrets() {
   log "② 密钥生成（secrets）"
   mkdir -p "${SECRETS_DIR}"; chmod 700 "${SECRETS_DIR}"
@@ -54,7 +62,7 @@ step2_secrets() {
     openssl rand -hex 24 > "${SECRETS_DIR}/jwt_salt"
   fi
   chmod 600 "${SECRETS_DIR}"/*
-  log "密钥就绪（.secrets/，权限 600，不回显）"
+  log "密钥就绪（.secrets/，权限 600，不回显；compose secrets 段挂载消费）"
 }
 
 # ③ images 镜像准备：--offline → docker load images/*.tar + sha256 校验（失败 11）；
@@ -69,9 +77,9 @@ step3_images() {
       || { echo "离线镜像 sha256 校验失败"; exit 11; }
     docker load -i "${images_dir}"/*.tar >/dev/null
   else
-    docker compose --env-file "${ENV_FILE}" pull --ignore-pull-failures || true
+    dc pull --ignore-pull-failures || true
   fi
-  log "镜像就绪（依赖版本以 .env 钉版为准，禁 latest）"
+  log "镜像就绪（依赖版本以 compose.yaml 钉版为准，禁 latest）"
 }
 
 # ④ config 配置生成：gen_config.py 双生成 + 漂移校验（指纹不一致退出码 12 硬门禁）
@@ -84,36 +92,56 @@ step4_config() {
   log "配置一致（指纹对账通过）"
 }
 
-# ⑤ migrate 数据库迁移：迁移前自动快照（拒绝未备份执行，NFR-REL-04）→ alembic upgrade
+# ⑤ migrate 数据库迁移（CR A4 修复：migrations/ 为裸 SQL，无迁移框架——
+#    先拉起 postgres → 迁移前快照（NFR-REL-04）→ psql 逐文件幂等执行）
 step5_migrate() {
-  log "⑤ 数据库迁移（migrate，含前置快照）"
+  log "⑤ 数据库迁移（migrate：裸 SQL 幂等执行 + 前置快照）"
+  local pg_user pg_db
+  pg_user="$(grep -E '^POSTGRES_USER=' "${ENV_FILE}" | cut -d= -f2- || true)"
+  pg_user="${pg_user:-aisale}"
+  pg_db="$(grep -E '^POSTGRES_DB=' "${ENV_FILE}" | cut -d= -f2- || true)"
+  pg_db="${pg_db:-aisale}"
+  dc up -d postgres
+  local waited=0
+  until dc ps postgres --format json 2>/dev/null | grep -q '"Health": *"healthy"'; do
+    sleep 5; waited=$((waited + 5))
+    if [[ ${waited} -ge 120 ]]; then
+      echo "postgres 健康等待超时，无法执行迁移（卡点见 docker compose ps postgres）"
+      exit 13
+    fi
+  done
   local backup_dir="${PKG_DIR}/backups"
   mkdir -p "${backup_dir}"
   local snapshot="${backup_dir}/pre-migrate-$(date -u +%Y%m%dT%H%M%SZ).sql"
-  if docker compose --env-file "${ENV_FILE}" ps postgres 2>/dev/null | grep -q "running"; then
-    docker compose --env-file "${ENV_FILE}" exec -T postgres \
-      pg_dump -U aisale aisale > "${snapshot}" || { echo "迁移前快照失败"; exit 13; }
-    log "已生成迁移前快照：${snapshot}（保留 ≥30 天）"
-  else
-    log "首部署（无运行中 PG），跳过快照"
-  fi
-  docker compose --env-file "${ENV_FILE}" run --rm app alembic upgrade head \
-    || { echo "数据库迁移失败（alembic upgrade）"; exit 13; }
+  dc exec -T postgres pg_dump -U "${pg_user}" "${pg_db}" > "${snapshot}" \
+    || { echo "迁移前快照失败"; exit 13; }
+  log "已生成迁移前快照：${snapshot}（保留 ≥30 天）"
+  local sql count=0
+  for sql in "${REPO_ROOT}"/migrations/*.sql; do
+    [[ -f "${sql}" ]] || { echo "缺迁移文件：${REPO_ROOT}/migrations/（裸 SQL 目录为空）"; exit 13; }
+    dc exec -T postgres psql -v ON_ERROR_STOP=1 -U "${pg_user}" -d "${pg_db}" < "${sql}" \
+      || { echo "数据库迁移失败（psql 执行 ${sql}）"; exit 13; }
+    count=$((count + 1))
+    log "迁移已执行：${sql}"
+  done
+  log "迁移完成（${count} 个 SQL 文件，CREATE IF NOT EXISTS 幂等口径）"
 }
 
 # ⑥ wait_healthy 健康等待：轮询全部 healthcheck，超时 HEALTHCHECK_TIMEOUT_SEC → 14
+#    （CR A4 修复：目标为 compose.yaml 内实际存在且带 healthcheck 的常驻服务
+#     postgres/redis/etcd/milvus/app/site 共 6 个；tei 为可选 profile 不计入）
 step6_wait_healthy() {
   log "⑥ 健康等待（wait_healthy，超时 ${HEALTHCHECK_TIMEOUT_SEC}s）"
-  docker compose --env-file "${ENV_FILE}" up -d
+  dc up -d
   local waited=0
-  until [[ "$(docker compose --env-file "${ENV_FILE}" ps --format json \
-              | grep -c '"Health":"healthy"' || true)" -ge 4 ]]; do
+  until [[ "$(dc ps --format json 2>/dev/null \
+              | grep -c '"Health": *"healthy"' || true)" -ge 6 ]]; do
     sleep 10; waited=$((waited + 10))
     if [[ ${waited} -ge ${HEALTHCHECK_TIMEOUT_SEC} ]]; then
       echo "健康等待超时（卡点服务见 docker compose ps）"; exit 14
     fi
   done
-  log "全部核心容器 healthy"
+  log "全部核心容器 healthy（6/6：postgres/redis/etcd/milvus/app/site）"
 }
 
 # ⑦ init_admin 初始化管理员：随机密码打印一次 + 落 .secrets/（600），首登强制改密
@@ -139,7 +167,7 @@ verify() {
   # 端口连通：80/443 外部可达；示例检索：统一检索 API 内置样例命中。
   local health
   health="$(curl -fsS "http://localhost:8000/healthz" 2>/dev/null || echo FAIL)"
-  [[ "${health}" != "FAIL" ]] || { echo "自检失败：/healthz 不可达"; exit 14; }
+  [[ "${health}" != "FAIL" ]] || { echo "自检失败：app /healthz 不可达"; exit 14; }
   grep -q "latest" "${ENV_FILE}" && { echo "自检失败：.env 出现 latest tag"; exit 12; }
   log "verify 通过（服务健康/依赖版本/端口连通/示例检索四类全绿，报告入 deploy_record）"
 }
@@ -149,7 +177,7 @@ main() {
   step2_secrets     # ② 密钥生成（幂等）
   step3_images      # ③ 镜像准备（--offline 校验失败 11）
   step4_config      # ④ 配置生成 + 漂移校验（漂移 12）
-  step5_migrate     # ⑤ 迁移（失败 13，前置快照）
+  step5_migrate     # ⑤ 迁移（失败 13，前置快照；裸 SQL psql 幂等）
   step6_wait_healthy # ⑥ 健康等待（超时 14）
   step7_init_admin  # ⑦ 管理员初始化
   verify            # 自检四类检查

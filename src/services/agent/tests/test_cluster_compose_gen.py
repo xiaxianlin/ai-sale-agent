@@ -2,11 +2,12 @@
 # 许可与再分发须依据双方合同约定执行（COM-IP-02 乙方零使用权）。
 """28 实例 compose override 生成器与产物结构测试（FR-SC-001，SR-SC-001 §6.2/§6.8；Phase 4 TDD 阶段①）。
 
-覆盖：
-- 生成器单元：绑定清单 28 行（4 主 + 24 子）、单实例渲染三要素（容器名/Cookie 卷/代理 env）、
-  宿主机密度 3/台反亲和摊开（§6.7）；
-- 产物断言（deploy/compose/cluster.yaml，生成器产物）：可解析、版权头、28 服务齐备、
-  独立卷一一对应、代理占位零明文凭证（NFR-SEC-04）、资源配额（§6.7）。
+覆盖（CR A5 修复后口径：与 deploy/compose/agent-runner.yaml 同款双容器拓扑）：
+- 生成器单元：绑定清单 28 行（4 主 + 24 子）、单实例渲染（容器名/Cookie 卷/
+  网络绑定 proxy-egress-NN/secrets 挂载/健康检查）、宿主机密度 3/台反亲和摊开（§6.7）；
+- 产物断言（deploy/compose/cluster.yaml，生成器产物）：可解析、版权头、
+  28 组双容器（proxy-egress-NN + agent-runner-NN）齐备、独立卷一一对应、
+  代理占位零明文凭证（NFR-SEC-04）、资源配额与 restart: always（§6.7）。
 
 实现方案：docs/07-实现方案/SC/SR-SC-001-Agent集群.md §6.2、§6.7、§6.8
 """
@@ -21,6 +22,7 @@ from tools.agent.gen_cluster_compose import (
     DEFAULT_COUNT,
     build_compose,
     instance_plan,
+    render_egress,
     render_service,
 )
 
@@ -50,14 +52,34 @@ class TestGeneratorUnit:
         assert types.count("sub") == 24
 
     def test_render_service_triple_binding(self) -> None:
-        """单实例渲染：容器名 agent-runner-NN、卷 cookie-NN、代理 env 占位注入（渲染即校验）。"""
+        """单实例 runner 渲染：容器名 agent-runner-NN、卷 cookie-NN、账号 env 注入，
+        且网络绑定 service:proxy-egress-NN、健康检查与 restart: always 齐备。"""
         row = instance_plan(1)[0]
         svc = render_service(row)
         assert svc["container_name"] == "agent-runner-01"
-        assert "cookie-01:/data/openclaw/cookies" in svc["volumes"]
+        assert "cookie-01:/data/cookies" in svc["volumes"]
+        assert "spool-01:/data/spool" in svc["volumes"]
         env = "|".join(svc["environment"])
-        assert "ACCOUNT_ID=" in env and "PROXY_URL=" in env
-        assert "<PROXY-USER>" in env and "<PROXY-PASS>" in env
+        assert "ACCOUNT_ID=" in env and "ACCOUNT_TYPE=" in env
+        assert "HTTP_PROXY=" in env and "HTTPS_PROXY=" in env  # 双保险显式代理
+        assert "KB_AGENT_MASTER_KEY_FILE=/run/secrets/vault_master_key" in env
+        assert svc["network_mode"] == "service:proxy-egress-01"  # 出口命名空间绑定
+        assert svc["restart"] == "always"
+        assert svc["depends_on"] == ["proxy-egress-01"]
+        hc = svc["healthcheck"]
+        assert hc.get("test") and "start_period" in hc  # 业务探针 + 恢复预算
+
+    def test_render_egress_secrets_and_ip_placeholder(self) -> None:
+        """单实例出口容器渲染：secrets 挂载代理接入串、出口 IP <占位>、
+        出口自检健康检查、NET_ADMIN 最小权限、restart: always（CR A5 同款拓扑）。"""
+        row = instance_plan(2)[1]
+        egress = render_egress(row)
+        assert egress["secrets"] == ["proxy_url_02"]          # 凭证走 secrets 零明文
+        assert egress["environment"] == ["EXPECTED_EGRESS_IP=<PROXY-IP-02>"]
+        assert egress["cap_add"] == ["NET_ADMIN"]
+        assert egress["restart"] == "always"
+        assert egress["healthcheck"]["test"] == ["CMD-SHELL", "sh /app/check-egress-ip.sh"]
+
     def test_density_three_per_host(self) -> None:
         """密度规划：每宿主机 3 容器（4C8G×3，§6.7），10 台摊开 28 实例。"""
         plan = instance_plan(DEFAULT_COUNT)
@@ -67,11 +89,15 @@ class TestGeneratorUnit:
         assert len(first_host) == 3
 
     def test_build_compose_dumpable_with_metadata(self) -> None:
-        """整包构建：x-cluster 元数据 + services/volumes 三段齐备，可 safe_load。"""
+        """整包构建：x-cluster 元数据 + services/volumes/secrets 齐备，可 safe_load。"""
         data = yaml.safe_load(build_compose(2))
         assert data["x-cluster"]["instance_count"] == 2
-        assert set(data["services"]) == {"agent-runner-01", "agent-runner-02"}
-        assert set(data["volumes"]) == {"cookie-01", "cookie-02"}
+        assert set(data["services"]) == {"proxy-egress-01", "agent-runner-01",
+                                         "proxy-egress-02", "agent-runner-02"}
+        assert set(data["volumes"]) == {"cookie-01", "spool-01", "cookie-02", "spool-02"}
+        assert set(data["secrets"]) == {"proxy_url_01", "proxy_url_02", "vault_master_key"}
+        # secrets 文件路径不入 Git 的占位形态（现场注入）
+        assert data["secrets"]["proxy_url_01"] == {"file": "./secrets/proxy_url_01.txt"}
 
 
 # ───────────────────────── 产物断言 ─────────────────────────
@@ -89,30 +115,49 @@ class TestGeneratedArtifact:
         assert isinstance(data, dict)
         return data
 
-    def test_artifact_has_28_services(self) -> None:
-        """28 服务齐备且命名规范（agent-runner-01…28）。"""
+    def test_artifact_has_28_service_pairs(self) -> None:
+        """28 组双容器齐备且命名规范（proxy-egress-01…28 + agent-runner-01…28）。"""
         services = self.load()["services"]
-        assert len(services) == 28
-        assert set(services) == {f"agent-runner-{n:02d}" for n in range(1, 29)}
+        assert len(services) == 56
+        assert set(services) == (
+            {f"proxy-egress-{n:02d}" for n in range(1, 29)}
+            | {f"agent-runner-{n:02d}" for n in range(1, 29)}
+        )
 
-    def test_every_service_has_dedicated_cookie_volume(self) -> None:
-        """独立 Cookie 空间：每服务挂 cookie-NN 且顶层卷一一对应（禁共享）。"""
+    def test_every_runner_binds_egress_and_dedicated_volumes(self) -> None:
+        """出口绑定与独立 Cookie 空间：每 runner 挂 cookie-NN+spool-NN 卷且
+        network_mode 绑定本账号 proxy-egress-NN，顶层卷一一对应（禁共享）。"""
         data = self.load()
         for n in range(1, 29):
             svc = data["services"][f"agent-runner-{n:02d}"]
-            assert f"cookie-{n:02d}:/data/openclaw/cookies" in svc["volumes"]
+            assert f"cookie-{n:02d}:/data/cookies" in svc["volumes"]
+            assert f"spool-{n:02d}:/data/spool" in svc["volumes"]
             assert f"cookie-{n:02d}" in data["volumes"]
+            assert f"spool-{n:02d}" in data["volumes"]
+            assert svc["network_mode"] == f"service:proxy-egress-{n:02d}"
+            assert svc["depends_on"] == [f"proxy-egress-{n:02d}"]
+            assert isinstance(svc.get("healthcheck"), dict)  # 业务探针必在
+            egress = data["services"][f"proxy-egress-{n:02d}"]
+            assert egress["secrets"] == [f"proxy_url_{n:02d}"]  # 凭证 secrets 挂载
+            assert egress["restart"] == "always"
+            assert isinstance(egress.get("healthcheck"), dict)  # 出口自检必在
+            assert f"proxy_url_{n:02d}" in data["secrets"]
+        assert "vault_master_key" in data["secrets"]  # 主密钥文件（vault _FILE 通道）
 
     def test_no_plaintext_credentials(self) -> None:
-        """零凭证明文：代理接入串一律 <占位> 形态（scan_secrets 口径）。"""
+        """零凭证明文：出口 IP/代理接入串一律 <占位> 形态（scan_secrets 口径）。"""
         text = ARTIFACT.read_text(encoding="utf-8")
-        assert "<PROXY-USER>:<PROXY-PASS>@" in text
+        assert "<PROXY-USER>:<PROXY-PASS>@" in text  # 占位模板仅存于元数据说明
         assert "<PROXY-IP-01>" in text  # 出口 IP 占位（现场调研后经 .env/secrets 注入）
+        for banned in ("PROXY_PASS=", "password:", "socks5://user:"):
+            assert banned not in text, f"出现明文凭证形态：{banned}"
 
     def test_resource_limits_and_restart_policy(self) -> None:
-        """资源配额与自愈：单容器 1.0 CPU/2g、restart=unless-stopped（§6.2 模板）。"""
+        """资源配额与自愈：单容器 1.0 CPU/2g、restart=always（§6.2 模板，
+        CR A5 对齐 agent-runner.yaml 口径）。"""
         services = self.load()["services"]
         svc = services["agent-runner-14"]
-        assert svc["restart"] == "unless-stopped"
+        assert svc["restart"] == "always"
         assert svc["deploy"]["resources"]["limits"]["cpus"] == "1.0"
         assert svc["deploy"]["resources"]["limits"]["memory"] == "2g"
+        assert services["proxy-egress-14"]["restart"] == "always"

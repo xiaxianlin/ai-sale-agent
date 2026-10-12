@@ -148,7 +148,7 @@ class TestDeepSeekScorer:
         def handler(request: httpx.Request) -> httpx.Response:
             return httpx.Response(200, json={"choices": [{"message": {"content": json.dumps(payload)}}]})
 
-        scorer = DeepSeekDrillScorer(api_key="stub", transport=httpx.MockTransport(handler))
+        scorer = _guarded_scorer(httpx.MockTransport(handler))
         out = scorer.score(CASE, GOOD_ANSWER)
         assert out.total == 75
         assert [d.score for d in out.dims] == [80, 75, 70]
@@ -160,7 +160,7 @@ class TestDeepSeekScorer:
         def handler(request: httpx.Request) -> httpx.Response:
             return httpx.Response(200, json={"choices": [{"message": {"content": "不是 JSON"}}]})
 
-        scorer = DeepSeekDrillScorer(api_key="stub", transport=httpx.MockTransport(handler))
+        scorer = _guarded_scorer(httpx.MockTransport(handler))
         with pytest.raises(ScoringError):
             scorer.score(CASE, GOOD_ANSWER)
 
@@ -180,6 +180,78 @@ class TestDeepSeekScorer:
         def handler(request: httpx.Request) -> httpx.Response:
             return httpx.Response(200, json={"choices": [{"message": {"content": json.dumps(payload)}}]})
 
-        scorer = DeepSeekDrillScorer(api_key="stub", transport=httpx.MockTransport(handler))
+        scorer = _guarded_scorer(httpx.MockTransport(handler))
         with pytest.raises(ScoringError):
             scorer.score(CASE, GOOD_ANSWER)
+
+
+def _guarded_scorer(transport: object) -> DeepSeekDrillScorer:
+    """构造带白名单守卫的离线评分器（注册 api.deepseek.com，CR S3 修复后评分必经守卫）。"""
+    from foundation.net.egress import EgressDestination, EgressGuard
+
+    guard = EgressGuard()
+    guard.register(
+        EgressDestination(
+            code="deepseek_api",
+            host="api.deepseek.com",
+            port=443,
+            purposes=("llm_chat",),
+            owner="ai-sale-agent",
+        )
+    )
+    return DeepSeekDrillScorer(api_key="stub", guard=guard, transport=transport)
+
+
+class TestDeepSeekScorerEgressGuard:
+    """CR S3 修复：DeepSeek 评分调用必须先过 EgressGuard 出域断言（NFR-SEC-06 fail-closed）。"""
+
+    def test_default_guard_blocks_before_request(self) -> None:
+        """未注入守卫：空注册表 fail-closed，httpx 请求不发起（无「先发后审」）。"""
+        import httpx
+
+        requested: list[str] = []
+
+        def handler(request: httpx.Request) -> httpx.Response:
+            requested.append(str(request.url))
+            return httpx.Response(200, json={"choices": [{"message": {"content": "{}"}}]})
+
+        from foundation.net.egress import EgressViolation
+
+        scorer = DeepSeekDrillScorer(api_key="stub", transport=httpx.MockTransport(handler))
+        with pytest.raises(EgressViolation):
+            scorer.score(CASE, GOOD_ANSWER)
+        assert requested == []  # 拦截发生在连接前
+
+    def test_guarded_call_leaves_llm_chat_audit_record(self) -> None:
+        """白名单放行的调用在守卫账本留痕：purpose=llm_chat、caller=training.drill。"""
+        import httpx
+
+        def handler(request: httpx.Request) -> httpx.Response:
+            body = {
+                "dims": [
+                    {"dim": DIM_PRODUCT, "score": 80, "evidence": [], "missed_points": []},
+                    {"dim": DIM_SCRIPT, "score": 80, "evidence": [], "missed_points": []},
+                    {"dim": DIM_STRATEGY, "score": 80, "evidence": [], "missed_points": []},
+                ],
+                "total": 80,
+                "comment": "",
+            }
+            return httpx.Response(200, json={"choices": [{"message": {"content": json.dumps(body)}}]})
+
+        from foundation.net.egress import EgressDestination, EgressGuard
+
+        guard = EgressGuard()
+        guard.register(
+            EgressDestination(
+                code="deepseek_api", host="api.deepseek.com", port=443,
+                purposes=("llm_chat",), owner="ai-sale-agent",
+            )
+        )
+        scorer = DeepSeekDrillScorer(api_key="stub", guard=guard, transport=httpx.MockTransport(handler))
+        assert scorer.score(CASE, GOOD_ANSWER).total == 80
+        calls = guard.iter_calls()
+        assert len(calls) == 1
+        assert calls[0].verdict == "allowed"
+        assert calls[0].purpose == "llm_chat"
+        assert calls[0].caller == "training.drill"
+        assert calls[0].content_sha256  # 出域内容摘要已留痕

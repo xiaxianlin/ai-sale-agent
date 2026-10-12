@@ -1,0 +1,137 @@
+# 知识产权归甲方所有（COM-IP-01）——AI 外贸销售智能体系统交付物。
+# CR A4 修复：补齐最小 templates/（deployment+service+configmap 三类，引用 values
+# 全参数）。数据层（postgresql/milvus/redis）由 Chart.yaml dependencies 子图表提供，
+# 不在此重复定义；HPA 参数以注解外置（autoscaling 栈消费），保持模板最小无控制流。
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.saasTenant.id }}-kb
+  namespace: {{ .Values.saasTenant.namespace }}
+  labels:
+    app: kb-service
+    tenant: {{ .Values.saasTenant.id }}
+  annotations:
+    hpa.ai-sale/min-replicas: {{ .Values.apps.kbService.hpa.min | quote }}
+    hpa.ai-sale/max-replicas: {{ .Values.apps.kbService.hpa.max | quote }}
+spec:
+  replicas: {{ .Values.apps.kbService.replicas }}
+  selector:
+    matchLabels:
+      app: kb-service
+  template:
+    metadata:
+      labels:
+        app: kb-service
+        tenant: {{ .Values.saasTenant.id }}
+    spec:
+      containers:
+        - name: kb-service
+          image: "{{ .Values.global.imageRegistry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          ports:
+            - name: http
+              containerPort: 8000
+          envFrom:
+            - configMapRef:
+                name: {{ .Values.saasTenant.id }}-app-config
+          resources:
+            requests:
+              cpu: {{ .Values.apps.kbService.resources.requests.cpu }}
+              memory: {{ .Values.apps.kbService.resources.requests.memory }}
+            limits:
+              cpu: {{ .Values.apps.kbService.resources.limits.cpu }}
+              memory: {{ .Values.apps.kbService.resources.limits.memory }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.saasTenant.id }}-agent-core
+  namespace: {{ .Values.saasTenant.namespace }}
+  labels:
+    app: agent-core
+spec:
+  replicas: {{ .Values.apps.agentCore.replicas }}
+  selector:
+    matchLabels:
+      app: agent-core
+  template:
+    metadata:
+      labels:
+        app: agent-core
+    spec:
+      containers:
+        - name: agent-core
+          image: "{{ .Values.global.imageRegistry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          envFrom:
+            - configMapRef:
+                name: {{ .Values.saasTenant.id }}-app-config
+          resources:
+            requests:
+              cpu: {{ .Values.apps.agentCore.resources.requests.cpu }}
+              memory: {{ .Values.apps.agentCore.resources.requests.memory }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.saasTenant.id }}-agent-runner
+  namespace: {{ .Values.saasTenant.namespace }}
+  labels:
+    app: agent-runner
+  annotations:
+    # 独立 Cookie 空间（FR-SC-001）：PVC 名称与 StorageClass 参数外置
+    cookies.ai-sale/pvc-name: {{ .Values.apps.agentRunner.cookieVolume | quote }}
+    cookies.ai-sale/storage-class: {{ .Values.global.storageClass | quote }}
+spec:
+  replicas: {{ .Values.apps.agentRunner.replicas }}
+  selector:
+    matchLabels:
+      app: agent-runner
+  template:
+    metadata:
+      labels:
+        app: agent-runner
+    spec:
+      containers:
+        - name: agent-runner
+          image: "{{ .Values.global.imageRegistry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          volumeMounts:
+            - name: cookies
+              mountPath: /data/cookies
+          envFrom:
+            - configMapRef:
+                name: {{ .Values.saasTenant.id }}-app-config
+          resources:
+            requests:
+              cpu: {{ .Values.apps.agentRunner.resources.requests.cpu }}
+              memory: {{ .Values.apps.agentRunner.resources.requests.memory }}
+      volumes:
+        - name: cookies
+          persistentVolumeClaim:
+            claimName: {{ .Values.apps.agentRunner.cookieVolume }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.saasTenant.id }}-saas
+  namespace: {{ .Values.saasTenant.namespace }}
+  labels:
+    app: saas-service
+spec:
+  replicas: {{ .Values.apps.saasService.replicas }}
+  selector:
+    matchLabels:
+      app: saas-service
+  template:
+    metadata:
+      labels:
+        app: saas-service
+    spec:
+      containers:
+        - name: saas-service
+          image: "{{ .Values.global.imageRegistry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          envFrom:
+            - configMapRef:
+                name: {{ .Values.saasTenant.id }}-app-config
+          resources:
+            requests:
+              cpu: {{ .Values.apps.saasService.resources.requests.cpu }}
+              memory: {{ .Values.apps.saasService.resources.requests.memory }}

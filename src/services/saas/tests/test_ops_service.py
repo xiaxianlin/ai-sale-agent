@@ -11,20 +11,21 @@
 
 from __future__ import annotations
 
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timezone
 
 import pytest
 
 from services.saas.core.ops.service import (
     ADMIN_ONLY_ACTIONS,
-    AuditChain,
     AuthError,
     FORBIDDEN_PRICING_SUBSTRINGS,
     PLATFORM_AUD,
     ROLE_DENIED,
     TENANT_AUD,
+    TenantGateError,
     UsageExportError,
     OpsService,
+    RoleDeniedError,
 )
 from services.saas.core.quota.engine import QuotaEngine
 from services.saas.core.tenant.context import SAAS_TOKEN_SECRET_ENV, SaasConfigError
@@ -117,9 +118,10 @@ def test_admin_only_action_role_gate() -> None:
         type("R", (), {"headers": {"Authorization": f"Bearer {admin}"}})()
     )
     assert ADMIN_ONLY_ACTIONS == frozenset({"tenant_purge"})
-    with pytest.raises(Exception) as excinfo:
+    # CR P3-b 收窄：admin-only 越权 → RoleDeniedError(40301)，项目自定义异常类
+    with pytest.raises(RoleDeniedError) as excinfo:
         ops.require_role(op_principal, *ADMIN_ONLY_ACTIONS)
-    assert getattr(excinfo.value, "code", None) == ROLE_DENIED == 40301
+    assert excinfo.value.code == ROLE_DENIED == 40301
     ops.require_role(ad_principal, *ADMIN_ONLY_ACTIONS)  # 不抛即放行
 
 
@@ -128,9 +130,10 @@ def test_unknown_platform_role_denied() -> None:
     ops, _, _ = build_ops()
     token = ops.issue_platform_token("ghost", "sales")
     request = type("R", (), {"headers": {"Authorization": f"Bearer {token}"}})()
-    with pytest.raises(Exception) as excinfo:
+    # CR P3-b 收窄：角色不在平台角色集 → RoleDeniedError(40301)（fail-closed）
+    with pytest.raises(RoleDeniedError) as excinfo:
         ops.platform_principal(request)
-    assert getattr(excinfo.value, "code", None) == ROLE_DENIED == 40301
+    assert excinfo.value.code == ROLE_DENIED == 40301
 
 
 # --------------------------------------------------------------------------- 审计哈希链（NFR-SEC-03）
@@ -231,6 +234,7 @@ def test_gate_blocks_suspended_tenant() -> None:
     claims = ops.tenant_gate(type("R", (), {"headers": {"Authorization": f"Bearer {token}"}})())
     assert claims.tenant_id == tid
     registry.suspend(tid, reason="欠费")
-    with pytest.raises(Exception) as excinfo:
+    # CR P3-b 收窄：停用租户闸门拦截 → TenantGateError(40302 TENANT_SUSPENDED)
+    with pytest.raises(TenantGateError) as excinfo:
         ops.tenant_gate(type("R", (), {"headers": {"Authorization": f"Bearer {token}"}})())
-    assert getattr(excinfo.value, "code", None) == 40302
+    assert excinfo.value.code == 40302

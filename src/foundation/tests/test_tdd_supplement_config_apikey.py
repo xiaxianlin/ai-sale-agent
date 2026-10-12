@@ -37,6 +37,7 @@ from foundation.apikey.ratelimit import SlidingWindowRateLimiter
 from foundation.config import (
     ConfigCenter,
     ConfigSchema,
+    ConfigValidationError,
     UnknownConfigKeyError,
 )
 
@@ -69,10 +70,10 @@ class TestConfigSupplement:
         assert center.get("risk.limits.max_ops_per_day") == 30
         center.set("risk.limits.max_ops_per_day", 400, operator="ops", reason="上界探活")
         assert center.get("risk.limits.max_ops_per_day") == 400
-        # 端点外 1 步即拒绝
-        with pytest.raises(Exception) as excinfo:
+        # 端点外 1 步即拒绝（CR P3-b 收窄：越界 → ConfigValidationError(40002)，项目自定义异常类）
+        with pytest.raises(ConfigValidationError) as excinfo:
             center.set("risk.limits.max_ops_per_day", 401, reason="越界")
-        assert getattr(excinfo.value, "code", 0) == 40002
+        assert excinfo.value.code == 40002
 
     def test_concurrent_set_versions_strictly_increasing(self, center: ConfigCenter) -> None:
         """【并发】12 线程 × 5 次 set：全局序号 1..60 无一丢失或重复（RLock 串行化）。

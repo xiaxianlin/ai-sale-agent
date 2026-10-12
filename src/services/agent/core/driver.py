@@ -19,6 +19,7 @@
 from __future__ import annotations
 
 import itertools
+import json
 import os
 from collections.abc import Iterator
 from dataclasses import dataclass
@@ -26,6 +27,7 @@ from typing import Protocol, runtime_checkable
 
 import httpx
 
+from foundation.net.egress import EgressGuard
 from services.agent.core.state import SendToken
 
 #: OpenClaw 服务端点环境变量（demo 未配置时拒绝构造真实驱动）
@@ -33,6 +35,13 @@ OPENCLAW_ENDPOINT_ENV = "KB_OPENCLAW_ENDPOINT"
 
 #: OpenClaw 内部 API 前缀（04-接口设计 §4 agent-runner ↔ OpenClaw 形态）
 _CLAW_API = "/api/v1/claw"
+
+#: 出域用途编码（CR S3 修复）：OpenClaw 浏览器自动化操作——内网目的地，
+#: 出域注册表 purposes 口径（内网非外发数据通道，仍统一走 EgressGuard 留痕）
+EGRESS_PURPOSE_OPENCLAW: str = "browser_ops"
+
+#: 出域调用方标识（egress_call_log 留痕 caller 字段；CR S3 修复）
+EGRESS_CALLER: str = "agent.driver"
 
 
 # ─────────────────────────── 异常 ───────────────────────────
@@ -307,7 +316,10 @@ class OpenClawDriver:
     """OpenClaw 真实客户端接口（httpx；demo 以桩 transport 打样）。
 
     构造即要求 KB_OPENCLAW_ENDPOINT（或显式 endpoint）配置，未配置中文报错
-    拒绝启动——避免静默把生产流量打到默认地址；HTTP 非 2xx 归一 OpenClawError。
+    拒绝启动——避免静默把生产流量打到默认地址；HTTP 非 2xx 归一 OpenClawError；
+    每次请求前经 ``guard.assert_egress`` 出域白名单断言（CR S3 修复，
+    NFR-SEC-06 fail-closed）：guard 未注入时空注册表守卫全拒——OpenClaw 为
+    内网目标，生产必须注入已注册内网目的地（purposes 含 browser_ops）的守卫。
     """
 
     def __init__(
@@ -315,6 +327,7 @@ class OpenClawDriver:
         endpoint: str | None = None,
         *,
         client: httpx.Client | None = None,
+        guard: EgressGuard | None = None,
         timeout_seconds: float = 10.0,
     ) -> None:
         self._endpoint = endpoint or os.environ.get(OPENCLAW_ENDPOINT_ENV)
@@ -323,6 +336,8 @@ class OpenClawDriver:
                 f"环境变量 {OPENCLAW_ENDPOINT_ENV} 未配置：无法连接 OpenClaw 浏览器自动化服务"
                 "（demo 环境请改用 FakeBrowserDriver，生产经环境变量/KMS 注入端点）"
             )
+        # CR S3 修复：未注入守卫时使用空注册表守卫——fail-closed（内网目标也须注册）
+        self._guard = guard if guard is not None else EgressGuard()
         self._client = client or httpx.Client(base_url=self._endpoint, timeout=timeout_seconds)
 
     # ---- BrowserDriver 协议实现 ----
@@ -388,12 +403,20 @@ class OpenClawDriver:
     # ---- 内部 ----
 
     def _post(self, path: str, payload: dict[str, object]) -> dict[str, object]:
-        """统一 POST：非 2xx 归一 OpenClawError（中文上下文，带状态码）。
+        """统一 POST：出域断言 → 非 2xx 归一 OpenClawError（中文上下文，带状态码）。
 
         URL 以端点拼接为绝对地址——注入的桩 client（MockTransport，无 base_url）
-        与生产 client（base_url=端点）两种形态均可用。
+        与生产 client（base_url=端点）两种形态均可用。CR S3 修复：发起连接前
+        必须经 EgressGuard 白名单断言（fail-closed，拦截前守卫已留痕）。
         """
         url = path if path.startswith("http") else f"{self._endpoint}{path}"
+        # ── 出域白名单断言（CR S3 / NFR-SEC-06 fail-closed）──
+        self._guard.assert_egress(
+            url,
+            EGRESS_PURPOSE_OPENCLAW,
+            content=json.dumps(payload, ensure_ascii=False),
+            caller=EGRESS_CALLER,
+        )
         try:
             response = self._client.post(url, json=payload)
         except httpx.HTTPError as exc:

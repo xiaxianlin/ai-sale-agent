@@ -31,6 +31,19 @@ from services.kb.tests.test_retrieval_stubs import (
 )
 
 import httpx  # noqa: E402 —— 须位于被测模块导入（platform 自愈）之后
+from foundation.net.egress import EgressDestination, EgressGuard  # noqa: E402
+
+
+def _tei_guard() -> EgressGuard:
+    """构造已注册本地 TEI 内网目的地的守卫（CR S3 后 BgeRerankerClient 必经守卫）。"""
+    guard = EgressGuard()
+    guard.register(
+        EgressDestination(
+            code="tei_rerank", host="tei-rerank", port=8081,
+            schemes=("http",), purposes=("rerank",), owner="ai-sale-agent",
+        )
+    )
+    return guard
 
 
 def build_pipeline(
@@ -151,9 +164,11 @@ class TestRerankerDegradeDetection:
 
         reasons: list[str] = []
         reranker = BgeRerankerClient(
+            base_url="http://tei-rerank:8081",
             timeout_ms=50.0,
             client=httpx.AsyncClient(transport=httpx.MockTransport(handler)),
             on_degrade=reasons.append,
+            guard=_tei_guard(),
         )
         pipeline, _, metrics = build_pipeline(reranker=reranker)
         result = run(pipeline.search("云台支架", top_k=2))

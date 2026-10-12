@@ -22,6 +22,7 @@ from __future__ import annotations
 
 import asyncio
 import importlib.util
+import json
 import os
 import sys
 import sysconfig
@@ -60,11 +61,17 @@ def _ensure_stdlib_platform() -> None:
 _ensure_stdlib_platform()
 
 import httpx  # noqa: E402 —— 必须位于 platform 自愈之后（见模块 docstring）
+from foundation.net.egress import EgressGuard  # noqa: E402 —— 同上（pydantic 链路依赖 platform 自愈）
 
 # 重排硬超时默认值（KB_SEARCH_RERANK_TIMEOUT_MS，判定点 D）
 RERANK_TIMEOUT_MS_DEFAULT = 250.0
 # 本地 TEI rerank 端点默认地址（deploy/docker-compose.yml tei-reranker 服务）
 TEI_RERANK_BASE_URL_DEFAULT = "http://127.0.0.1:8081"
+
+# 出域用途编码（CR S3 修复）：本地 TEI 重排——内网目的地，purposes 口径
+EGRESS_PURPOSE_RERANK: str = "rerank"
+# 出域调用方标识（egress_call_log 留痕 caller 字段；CR S3 修复）
+EGRESS_CALLER: str = "kb.retrieval.reranker"
 
 # 降级原因标记（on_degrade 回调入参与流水线 degrade 链 token）
 DEGRADE_RERANK_TIMEOUT = "rerank_timeout"
@@ -96,6 +103,11 @@ class BgeRerankerClient:
 
     构造注入 httpx.AsyncClient（测试注入 MockTransport/自定义传输），缺省
     自建指向本地 TEI 端点的客户端并由本实例持有（aclose 释放）。
+
+    CR S3 修复：每次请求前经 ``guard.assert_egress`` 出域白名单断言
+    （NFR-SEC-06 fail-closed，内网目标也须注册——域名形态，禁止 IP 直连）；
+    guard 未注入时使用空注册表守卫（全部拒绝、直接抛 EgressViolation 不走
+    降级直出——安全边界优先于可用性，fail-fast）。
     """
 
     def __init__(
@@ -105,12 +117,15 @@ class BgeRerankerClient:
         timeout_ms: float = RERANK_TIMEOUT_MS_DEFAULT,
         client: httpx.AsyncClient | None = None,
         on_degrade: Callable[[str], None] | None = None,
+        guard: EgressGuard | None = None,
     ) -> None:
         self._timeout_s = timeout_ms / 1000.0
         self._on_degrade = on_degrade
         self._owns_client = client is None
         # 始终请求绝对 URL（注入客户端可不带 base_url，仅提供传输层）
         self._endpoint = f"{base_url.rstrip('/')}/rerank"
+        # CR S3 修复：未注入守卫时使用空注册表守卫——fail-closed（内网目标也须注册）
+        self._guard = guard if guard is not None else EgressGuard()
         self._client = client if client is not None else httpx.AsyncClient(
             base_url=base_url, timeout=httpx.Timeout(self._timeout_s),
         )
@@ -141,9 +156,19 @@ class BgeRerankerClient:
             return self._degrade(DEGRADE_RERANK_BAD_RESPONSE, cands, top_k)
 
     async def _rerank_call(self, query: str, cands: Sequence[Hit], top_k: int) -> list[Hit]:
-        """实际调用本地 TEI /rerank（异常交由 rerank 统一分类降级）。"""
+        """实际调用本地 TEI /rerank（异常交由 rerank 统一分类降级）。
+
+        CR S3 修复：发起连接前先经 EgressGuard 出域断言（在 rerank 的降级
+        try/except 之外执行——EgressViolation 直接上抛，fail-fast 不降级）。
+        """
         texts = [c.snippet or c.title or str(c.chunk_id) for c in cands]
         payload = {"query": query, "texts": texts, "top_n": top_k}
+        self._guard.assert_egress(
+            self._endpoint,
+            EGRESS_PURPOSE_RERANK,
+            content=json.dumps(payload, ensure_ascii=False),
+            caller=EGRESS_CALLER,
+        )
         response = await self._client.post(self._endpoint, json=payload)
         response.raise_for_status()
         items = response.json()

@@ -31,6 +31,7 @@ from services.training.core.drill.casebank import (
     DrillCase,
     RubricPoint,
 )
+from foundation.net.egress import EgressGuard
 
 # --------------------------------------------------------------------------- 常量与异常
 
@@ -40,6 +41,10 @@ ENV_API_KEY: str = "TR_DRILL_DEEPSEEK_API_KEY"
 ENV_BASE_URL: str = "TR_DRILL_DEEPSEEK_BASE_URL"
 #: 缺省服务入口（DeepSeek-V3 官方 OpenAI 兼容端点）
 DEFAULT_BASE_URL: str = "https://api.deepseek.com"
+#: 出域用途编码（foundation 出域目的地注册表 purposes 口径，llm_chat；CR S3 修复）
+EGRESS_PURPOSE_LLM_CHAT: str = "llm_chat"
+#: 出域调用方标识（egress_call_log 留痕 caller 字段；CR S3 修复）
+EGRESS_CALLER: str = "training.drill"
 #: 评分 Prompt 版本（校准回路 bump，SR §7 tr.drill.score.prompt_version）
 SCORE_PROMPT_VERSION: str = "tr.drill.score@v1"
 #: 证据引用窗口（命中关键词左右各取字符数，保证 quote 为作答子串）
@@ -250,6 +255,10 @@ class DeepSeekDrillScorer:
     - api_key / base_url 解析顺序：构造参数 → 环境变量 → 缺省值；未配置 api_key
       时 :meth:`score` 首次调用即抛 :class:`ScorerConfigError`（中文提示），
       demo 环境应注入 :class:`FakeDrillScorer`；
+    - 每次请求前经 ``guard.assert_egress`` 出域白名单断言（CR S3 修复，
+      NFR-SEC-06 fail-closed）：guard 未注入时使用空注册表守卫（全部拒绝）——
+      生产必须注入已注册 ``api.deepseek.com``（purposes 含 llm_chat、OI-09 已确认）
+      的守卫实例；
     - transport 可注入（httpx.MockTransport），单测离线验证响应解析与结构校验；
     - 响应不可解析 / 维度残缺 / 分值越界一律抛 :class:`ScoringError`
       （服务层降级 pending_manual，不产出残缺分数）。
@@ -261,6 +270,7 @@ class DeepSeekDrillScorer:
         base_url: str | None = None,
         *,
         model: str = "deepseek-v3",
+        guard: EgressGuard | None = None,
         timeout_s: float = 60.0,
         temperature: float = 0.1,
         transport: Any | None = None,
@@ -270,6 +280,9 @@ class DeepSeekDrillScorer:
             base_url if base_url is not None else os.environ.get(ENV_BASE_URL, "").strip() or DEFAULT_BASE_URL
         ).rstrip("/")
         self._model = model
+        # CR S3 修复：未注入守卫时使用空注册表守卫——fail-closed，未注册目的地一律拒绝出域
+        # （与 tutor/llm.py DeepSeekLlmClient 同模式；生产必须注入已注册 api.deepseek.com 的守卫）
+        self._guard = guard if guard is not None else EgressGuard()
         self._timeout_s = timeout_s
         self._temperature = temperature
         self._transport = transport
@@ -296,7 +309,12 @@ class DeepSeekDrillScorer:
         )
 
     def _chat_json(self, prompt: str) -> str:
-        """调用 /chat/completions（JSON mode），返回首条消息文本；故障统一 ScoringError。"""
+        """调用 /chat/completions（JSON mode），返回首条消息文本；故障统一 ScoringError。
+
+        CR S3 修复：发起连接前必须经 foundation 出域白名单断言（NFR-SEC-06
+        fail-closed，与 tutor/llm.py 同模式）——白名单外 / OI-09 未确认即拒，
+        无「先发后审」路径。
+        """
         import httpx
 
         payload = {
@@ -305,10 +323,18 @@ class DeepSeekDrillScorer:
             "response_format": {"type": "json_object"},
             "messages": [{"role": "user", "content": prompt}],
         }
+        url = f"{self._base_url}/chat/completions"
+        # ── 出域白名单断言（NFR-SEC-06 fail-closed；拦截前守卫已留痕）──
+        self._guard.assert_egress(
+            url,
+            EGRESS_PURPOSE_LLM_CHAT,
+            content=json.dumps(payload, ensure_ascii=False),
+            caller=EGRESS_CALLER,
+        )
         try:
             with httpx.Client(timeout=self._timeout_s, transport=self._transport) as client:
                 response = client.post(
-                    f"{self._base_url}/chat/completions",
+                    url,
                     json=payload,
                     headers={"Authorization": f"Bearer {self._api_key}"},
                 )
@@ -361,6 +387,8 @@ __all__ = [
     "ENV_API_KEY",
     "ENV_BASE_URL",
     "DEFAULT_BASE_URL",
+    "EGRESS_PURPOSE_LLM_CHAT",
+    "EGRESS_CALLER",
     "SCORE_PROMPT",
     "SCORE_PROMPT_VERSION",
     "ScoringError",

@@ -3,8 +3,10 @@
 """凭证保险库（NFR-SEC-04，SR-NFR-SEC-04 §6.1/§6.6；迭代 2.1 demo 形态）。
 
 信封加密（demo 口径）：
-- 主密钥（KEK）：环境变量 KB_AGENT_MASTER_KEY 注入（生产 = 阿里云 KMS CMK，
-  永不出 KMS；本地兜底 KEK 走 Docker Secrets 文件，二者均不进 Git/镜像）；
+- 主密钥（KEK）：优先 ``KB_AGENT_MASTER_KEY_FILE`` 指向的 Docker Secrets 文件
+  （读首行，读后不缓存明文；CR A6 修复，容器形态标准注入口），其次环境变量
+  ``KB_AGENT_MASTER_KEY`` 直读（生产 = 阿里云 KMS CMK，永不出 KMS；本地兜底 KEK
+  走 Docker Secrets 文件，二者均不进 Git/镜像）；
 - 数据密钥（DEK）：os.urandom(32) 生成，仅以「被主密钥包裹」的密文形态存于
   vault 实例（生产 = credential_dek 表 wrapped_dek 列）；明文仅在内存瞬时存在；
 - 凭证本体：当前 active DEK 加密（AAD 绑定 tenant:account:cred_type 防密文移植）；
@@ -29,6 +31,10 @@ from dataclasses import dataclass
 
 #: 主密钥环境变量（demo 注入口；生产 = KMS CMK + Docker Secrets 兜底 KEK）
 MASTER_KEY_ENV = "KB_AGENT_MASTER_KEY"
+
+#: 主密钥文件环境变量（CR A6 修复：容器形态优先读 Docker Secrets 文件首行；
+#: 与 deploy/compose/agent-runner.yaml 的 KB_AGENT_MASTER_KEY_FILE=/run/secrets/... 对齐）
+MASTER_KEY_FILE_ENV = "KB_AGENT_MASTER_KEY_FILE"
 
 # ── 密码实现选择：优先 cryptography AES-256-GCM（生产口径），缺失退化 demo 流密码 ──
 try:  # pragma: no cover - 环境相关分支
@@ -126,17 +132,45 @@ class CredentialVault:
         *,
         force_demo_cipher: bool = False,
     ) -> None:
-        secret = master_key if master_key is not None else os.environ.get(MASTER_KEY_ENV)
-        if not secret:
-            raise VaultConfigError(
-                f"环境变量 {MASTER_KEY_ENV} 未配置：凭证保险库无法初始化"
-                "（demo 口径 fail-fast；生产经 KMS/Docker Secrets 注入主密钥）"
-            )
+        secret = self._load_master_key(master_key)
         self._kek = _derive_key(secret, b"agent-runner/vault/kek")
         self._use_aes = _HAS_CRYPTOGRAPHY and not force_demo_cipher
         self._wrapped_deks: dict[int, bytes] = {}      # {版本: 被主密钥包裹的 DEK}
         self._active_version = 0
         self.rotate_dek()                              # 初始版本 v1
+
+    @staticmethod
+    def _load_master_key(master_key: str | bytes | None) -> str | bytes:
+        """主密钥加载（CR A6 修复）：显式传参 > _FILE 文件（首行）> 环境变量直读 > 抛错。
+
+        文件形态优先于环境变量直读：容器部署以 Docker Secrets 文件为标准注入口
+        （KB_AGENT_MASTER_KEY_FILE）；读文件首行后仅用于派生 KEK，不在实例上
+        缓存明文（局部变量用毕即弃，内存纪律与 NFR-SEC-04 一致）。
+        """
+        if master_key is not None:
+            return master_key
+        file_path = os.environ.get(MASTER_KEY_FILE_ENV, "")
+        if file_path:  # _FILE 已配置即走文件路径（FILE 优先）
+            try:
+                with open(file_path, "r", encoding="utf-8") as fh:
+                    first_line = fh.readline().strip()
+            except OSError as exc:
+                raise VaultConfigError(
+                    f"环境变量 {MASTER_KEY_FILE_ENV} 指向的主密钥文件不可读：{file_path}"
+                    "（文件缺失或权限不足；fail-fast 拒绝无密钥运行，NFR-SEC-04）"
+                ) from exc
+            if not first_line:
+                raise VaultConfigError(
+                    f"主密钥文件为空：{file_path}（{MASTER_KEY_FILE_ENV}，fail-fast）"
+                )
+            return first_line
+        direct = os.environ.get(MASTER_KEY_ENV)
+        if direct:
+            return direct
+        raise VaultConfigError(
+            f"环境变量 {MASTER_KEY_FILE_ENV}/{MASTER_KEY_ENV} 均未配置：凭证保险库"
+            "无法初始化（demo 口径 fail-fast；生产经 KMS/Docker Secrets 注入主密钥）"
+        )
 
     # ---- 写路径 ----
 

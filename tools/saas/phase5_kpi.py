@@ -30,8 +30,17 @@ def main() -> int:
     checks.append(("新租户纯配置接入（零代码演练）", code == 0, "zero_code_check"))
     code, _ = _run([sys.executable, "tools/saas/onboard_smoke.py"])
     checks.append(("配置化开通端到端（四步+初始化+白标+域名）", code == 0, "onboard_smoke"))
-    checks.append(("一键部署包（双形态/指纹/回滚——结构断言）", True, "test_deploy_pkg 16 条（真实部署留 ECS）"))
-    checks.append(("白标配置生效（ETag/域名/兜底）", True, "test_branding_* 26 条"))
+    # CR T1 修复：④⑤两项由硬编码 True 改为实跑对应 pytest 套件取退出码（证据=pytest 汇总行；
+    # 不另传 -q：pyproject addopts 已含 -q，双重 -q 会吞掉"N passed"汇总行）
+    code, tail = _run([sys.executable, "-m", "pytest",
+                       "src/services/saas/tests/test_deploy_pkg.py"])
+    checks.append(("一键部署包（双形态/指纹/回滚——结构断言）", code == 0,
+                   tail.strip().splitlines()[-1] if tail.strip() else "test_deploy_pkg（真实部署留 ECS）"))
+    code, tail = _run([sys.executable, "-m", "pytest",
+                       "src/services/saas/tests/test_branding_api.py",
+                       "src/services/saas/tests/test_branding_service.py"])
+    checks.append(("白标配置生效（ETag/域名/兜底）", code == 0,
+                   tail.strip().splitlines()[-1] if tail.strip() else "test_branding_*"))
     code, tail = _run([sys.executable, "tools/saas/gen_docs.py"])
     checks.append(("产品文档三件套（完整性/零断链/版本联动）", code == 0, "gen_docs 门禁"))
 

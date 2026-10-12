@@ -4,6 +4,7 @@
 #   python3 tools/agent/gen_cluster_compose.py
 x-cluster:
   instance_count: 28
+  topology: proxy-egress-NN + agent-runner-NN 双容器/账号（CR A5 修复：与 deploy/compose/agent-runner.yaml 同款）
   account_split:
     main: 4
     sub: 24
@@ -23,449 +24,1513 @@ x-cluster:
   proxy_url_template: http://<PROXY-USER>:<PROXY-PASS>@<PROXY-IP-01>:<PORT>
   generated_by: tools/agent/gen_cluster_compose.py
 services:
+  proxy-egress-01:
+    restart: always
+    image: ai-sale/proxy-egress:0.1.0
+    cap_add:
+    - NET_ADMIN
+    environment:
+    - EXPECTED_EGRESS_IP=<PROXY-IP-01>
+    secrets:
+    - proxy_url_01
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - sh /app/check-egress-ip.sh
+      interval: 30s
+      timeout: 10s
+      retries: 3
   agent-runner-01:
+    restart: always
     image: ai-sale/openclaw-runner:0.1.0
     container_name: agent-runner-01
-    restart: unless-stopped
+    network_mode: service:proxy-egress-01
     environment:
     - ACCOUNT_ID=7001
     - ACCOUNT_TYPE=main
     - HOST_NODE=runner-01
-    - PROXY_URL=http://<PROXY-USER>:<PROXY-PASS>@<PROXY-IP-01>:<PORT>
+    - HTTP_PROXY=http://127.0.0.1:6152
+    - HTTPS_PROXY=http://127.0.0.1:6152
+    - NO_PROXY=localhost,127.0.0.1,app,postgres,redis,milvus,tei,nginx
+    - KB_OPENCLAW_ENDPOINT=http://127.0.0.1:9223
+    - KB_AGENT_MASTER_KEY_FILE=/run/secrets/vault_master_key
     volumes:
-    - cookie-01:/data/openclaw/cookies
+    - cookie-01:/data/cookies
+    - spool-01:/data/spool
+    secrets:
+    - vault_master_key
+    depends_on:
+    - proxy-egress-01
+    healthcheck:
+      test:
+      - CMD
+      - curl
+      - -fsS
+      - http://127.0.0.1:9223/healthz
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 90s
+    labels:
+    - autoheal=true
     deploy:
       resources:
         limits:
           cpus: '1.0'
           memory: 2g
+  proxy-egress-02:
+    restart: always
+    image: ai-sale/proxy-egress:0.1.0
+    cap_add:
+    - NET_ADMIN
+    environment:
+    - EXPECTED_EGRESS_IP=<PROXY-IP-02>
+    secrets:
+    - proxy_url_02
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - sh /app/check-egress-ip.sh
+      interval: 30s
+      timeout: 10s
+      retries: 3
   agent-runner-02:
+    restart: always
     image: ai-sale/openclaw-runner:0.1.0
     container_name: agent-runner-02
-    restart: unless-stopped
+    network_mode: service:proxy-egress-02
     environment:
     - ACCOUNT_ID=7002
     - ACCOUNT_TYPE=main
     - HOST_NODE=runner-01
-    - PROXY_URL=http://<PROXY-USER>:<PROXY-PASS>@<PROXY-IP-02>:<PORT>
+    - HTTP_PROXY=http://127.0.0.1:6152
+    - HTTPS_PROXY=http://127.0.0.1:6152
+    - NO_PROXY=localhost,127.0.0.1,app,postgres,redis,milvus,tei,nginx
+    - KB_OPENCLAW_ENDPOINT=http://127.0.0.1:9223
+    - KB_AGENT_MASTER_KEY_FILE=/run/secrets/vault_master_key
     volumes:
-    - cookie-02:/data/openclaw/cookies
+    - cookie-02:/data/cookies
+    - spool-02:/data/spool
+    secrets:
+    - vault_master_key
+    depends_on:
+    - proxy-egress-02
+    healthcheck:
+      test:
+      - CMD
+      - curl
+      - -fsS
+      - http://127.0.0.1:9223/healthz
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 90s
+    labels:
+    - autoheal=true
     deploy:
       resources:
         limits:
           cpus: '1.0'
           memory: 2g
+  proxy-egress-03:
+    restart: always
+    image: ai-sale/proxy-egress:0.1.0
+    cap_add:
+    - NET_ADMIN
+    environment:
+    - EXPECTED_EGRESS_IP=<PROXY-IP-03>
+    secrets:
+    - proxy_url_03
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - sh /app/check-egress-ip.sh
+      interval: 30s
+      timeout: 10s
+      retries: 3
   agent-runner-03:
+    restart: always
     image: ai-sale/openclaw-runner:0.1.0
     container_name: agent-runner-03
-    restart: unless-stopped
+    network_mode: service:proxy-egress-03
     environment:
     - ACCOUNT_ID=7003
     - ACCOUNT_TYPE=main
     - HOST_NODE=runner-01
-    - PROXY_URL=http://<PROXY-USER>:<PROXY-PASS>@<PROXY-IP-03>:<PORT>
+    - HTTP_PROXY=http://127.0.0.1:6152
+    - HTTPS_PROXY=http://127.0.0.1:6152
+    - NO_PROXY=localhost,127.0.0.1,app,postgres,redis,milvus,tei,nginx
+    - KB_OPENCLAW_ENDPOINT=http://127.0.0.1:9223
+    - KB_AGENT_MASTER_KEY_FILE=/run/secrets/vault_master_key
     volumes:
-    - cookie-03:/data/openclaw/cookies
+    - cookie-03:/data/cookies
+    - spool-03:/data/spool
+    secrets:
+    - vault_master_key
+    depends_on:
+    - proxy-egress-03
+    healthcheck:
+      test:
+      - CMD
+      - curl
+      - -fsS
+      - http://127.0.0.1:9223/healthz
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 90s
+    labels:
+    - autoheal=true
     deploy:
       resources:
         limits:
           cpus: '1.0'
           memory: 2g
+  proxy-egress-04:
+    restart: always
+    image: ai-sale/proxy-egress:0.1.0
+    cap_add:
+    - NET_ADMIN
+    environment:
+    - EXPECTED_EGRESS_IP=<PROXY-IP-04>
+    secrets:
+    - proxy_url_04
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - sh /app/check-egress-ip.sh
+      interval: 30s
+      timeout: 10s
+      retries: 3
   agent-runner-04:
+    restart: always
     image: ai-sale/openclaw-runner:0.1.0
     container_name: agent-runner-04
-    restart: unless-stopped
+    network_mode: service:proxy-egress-04
     environment:
     - ACCOUNT_ID=7004
     - ACCOUNT_TYPE=main
     - HOST_NODE=runner-02
-    - PROXY_URL=http://<PROXY-USER>:<PROXY-PASS>@<PROXY-IP-04>:<PORT>
+    - HTTP_PROXY=http://127.0.0.1:6152
+    - HTTPS_PROXY=http://127.0.0.1:6152
+    - NO_PROXY=localhost,127.0.0.1,app,postgres,redis,milvus,tei,nginx
+    - KB_OPENCLAW_ENDPOINT=http://127.0.0.1:9223
+    - KB_AGENT_MASTER_KEY_FILE=/run/secrets/vault_master_key
     volumes:
-    - cookie-04:/data/openclaw/cookies
+    - cookie-04:/data/cookies
+    - spool-04:/data/spool
+    secrets:
+    - vault_master_key
+    depends_on:
+    - proxy-egress-04
+    healthcheck:
+      test:
+      - CMD
+      - curl
+      - -fsS
+      - http://127.0.0.1:9223/healthz
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 90s
+    labels:
+    - autoheal=true
     deploy:
       resources:
         limits:
           cpus: '1.0'
           memory: 2g
+  proxy-egress-05:
+    restart: always
+    image: ai-sale/proxy-egress:0.1.0
+    cap_add:
+    - NET_ADMIN
+    environment:
+    - EXPECTED_EGRESS_IP=<PROXY-IP-05>
+    secrets:
+    - proxy_url_05
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - sh /app/check-egress-ip.sh
+      interval: 30s
+      timeout: 10s
+      retries: 3
   agent-runner-05:
+    restart: always
     image: ai-sale/openclaw-runner:0.1.0
     container_name: agent-runner-05
-    restart: unless-stopped
+    network_mode: service:proxy-egress-05
     environment:
     - ACCOUNT_ID=7005
     - ACCOUNT_TYPE=sub
     - HOST_NODE=runner-02
-    - PROXY_URL=http://<PROXY-USER>:<PROXY-PASS>@<PROXY-IP-05>:<PORT>
+    - HTTP_PROXY=http://127.0.0.1:6152
+    - HTTPS_PROXY=http://127.0.0.1:6152
+    - NO_PROXY=localhost,127.0.0.1,app,postgres,redis,milvus,tei,nginx
+    - KB_OPENCLAW_ENDPOINT=http://127.0.0.1:9223
+    - KB_AGENT_MASTER_KEY_FILE=/run/secrets/vault_master_key
     volumes:
-    - cookie-05:/data/openclaw/cookies
+    - cookie-05:/data/cookies
+    - spool-05:/data/spool
+    secrets:
+    - vault_master_key
+    depends_on:
+    - proxy-egress-05
+    healthcheck:
+      test:
+      - CMD
+      - curl
+      - -fsS
+      - http://127.0.0.1:9223/healthz
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 90s
+    labels:
+    - autoheal=true
     deploy:
       resources:
         limits:
           cpus: '1.0'
           memory: 2g
+  proxy-egress-06:
+    restart: always
+    image: ai-sale/proxy-egress:0.1.0
+    cap_add:
+    - NET_ADMIN
+    environment:
+    - EXPECTED_EGRESS_IP=<PROXY-IP-06>
+    secrets:
+    - proxy_url_06
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - sh /app/check-egress-ip.sh
+      interval: 30s
+      timeout: 10s
+      retries: 3
   agent-runner-06:
+    restart: always
     image: ai-sale/openclaw-runner:0.1.0
     container_name: agent-runner-06
-    restart: unless-stopped
+    network_mode: service:proxy-egress-06
     environment:
     - ACCOUNT_ID=7006
     - ACCOUNT_TYPE=sub
     - HOST_NODE=runner-02
-    - PROXY_URL=http://<PROXY-USER>:<PROXY-PASS>@<PROXY-IP-06>:<PORT>
+    - HTTP_PROXY=http://127.0.0.1:6152
+    - HTTPS_PROXY=http://127.0.0.1:6152
+    - NO_PROXY=localhost,127.0.0.1,app,postgres,redis,milvus,tei,nginx
+    - KB_OPENCLAW_ENDPOINT=http://127.0.0.1:9223
+    - KB_AGENT_MASTER_KEY_FILE=/run/secrets/vault_master_key
     volumes:
-    - cookie-06:/data/openclaw/cookies
+    - cookie-06:/data/cookies
+    - spool-06:/data/spool
+    secrets:
+    - vault_master_key
+    depends_on:
+    - proxy-egress-06
+    healthcheck:
+      test:
+      - CMD
+      - curl
+      - -fsS
+      - http://127.0.0.1:9223/healthz
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 90s
+    labels:
+    - autoheal=true
     deploy:
       resources:
         limits:
           cpus: '1.0'
           memory: 2g
+  proxy-egress-07:
+    restart: always
+    image: ai-sale/proxy-egress:0.1.0
+    cap_add:
+    - NET_ADMIN
+    environment:
+    - EXPECTED_EGRESS_IP=<PROXY-IP-07>
+    secrets:
+    - proxy_url_07
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - sh /app/check-egress-ip.sh
+      interval: 30s
+      timeout: 10s
+      retries: 3
   agent-runner-07:
+    restart: always
     image: ai-sale/openclaw-runner:0.1.0
     container_name: agent-runner-07
-    restart: unless-stopped
+    network_mode: service:proxy-egress-07
     environment:
     - ACCOUNT_ID=7007
     - ACCOUNT_TYPE=sub
     - HOST_NODE=runner-03
-    - PROXY_URL=http://<PROXY-USER>:<PROXY-PASS>@<PROXY-IP-07>:<PORT>
+    - HTTP_PROXY=http://127.0.0.1:6152
+    - HTTPS_PROXY=http://127.0.0.1:6152
+    - NO_PROXY=localhost,127.0.0.1,app,postgres,redis,milvus,tei,nginx
+    - KB_OPENCLAW_ENDPOINT=http://127.0.0.1:9223
+    - KB_AGENT_MASTER_KEY_FILE=/run/secrets/vault_master_key
     volumes:
-    - cookie-07:/data/openclaw/cookies
+    - cookie-07:/data/cookies
+    - spool-07:/data/spool
+    secrets:
+    - vault_master_key
+    depends_on:
+    - proxy-egress-07
+    healthcheck:
+      test:
+      - CMD
+      - curl
+      - -fsS
+      - http://127.0.0.1:9223/healthz
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 90s
+    labels:
+    - autoheal=true
     deploy:
       resources:
         limits:
           cpus: '1.0'
           memory: 2g
+  proxy-egress-08:
+    restart: always
+    image: ai-sale/proxy-egress:0.1.0
+    cap_add:
+    - NET_ADMIN
+    environment:
+    - EXPECTED_EGRESS_IP=<PROXY-IP-08>
+    secrets:
+    - proxy_url_08
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - sh /app/check-egress-ip.sh
+      interval: 30s
+      timeout: 10s
+      retries: 3
   agent-runner-08:
+    restart: always
     image: ai-sale/openclaw-runner:0.1.0
     container_name: agent-runner-08
-    restart: unless-stopped
+    network_mode: service:proxy-egress-08
     environment:
     - ACCOUNT_ID=7008
     - ACCOUNT_TYPE=sub
     - HOST_NODE=runner-03
-    - PROXY_URL=http://<PROXY-USER>:<PROXY-PASS>@<PROXY-IP-08>:<PORT>
+    - HTTP_PROXY=http://127.0.0.1:6152
+    - HTTPS_PROXY=http://127.0.0.1:6152
+    - NO_PROXY=localhost,127.0.0.1,app,postgres,redis,milvus,tei,nginx
+    - KB_OPENCLAW_ENDPOINT=http://127.0.0.1:9223
+    - KB_AGENT_MASTER_KEY_FILE=/run/secrets/vault_master_key
     volumes:
-    - cookie-08:/data/openclaw/cookies
+    - cookie-08:/data/cookies
+    - spool-08:/data/spool
+    secrets:
+    - vault_master_key
+    depends_on:
+    - proxy-egress-08
+    healthcheck:
+      test:
+      - CMD
+      - curl
+      - -fsS
+      - http://127.0.0.1:9223/healthz
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 90s
+    labels:
+    - autoheal=true
     deploy:
       resources:
         limits:
           cpus: '1.0'
           memory: 2g
+  proxy-egress-09:
+    restart: always
+    image: ai-sale/proxy-egress:0.1.0
+    cap_add:
+    - NET_ADMIN
+    environment:
+    - EXPECTED_EGRESS_IP=<PROXY-IP-09>
+    secrets:
+    - proxy_url_09
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - sh /app/check-egress-ip.sh
+      interval: 30s
+      timeout: 10s
+      retries: 3
   agent-runner-09:
+    restart: always
     image: ai-sale/openclaw-runner:0.1.0
     container_name: agent-runner-09
-    restart: unless-stopped
+    network_mode: service:proxy-egress-09
     environment:
     - ACCOUNT_ID=7009
     - ACCOUNT_TYPE=sub
     - HOST_NODE=runner-03
-    - PROXY_URL=http://<PROXY-USER>:<PROXY-PASS>@<PROXY-IP-09>:<PORT>
+    - HTTP_PROXY=http://127.0.0.1:6152
+    - HTTPS_PROXY=http://127.0.0.1:6152
+    - NO_PROXY=localhost,127.0.0.1,app,postgres,redis,milvus,tei,nginx
+    - KB_OPENCLAW_ENDPOINT=http://127.0.0.1:9223
+    - KB_AGENT_MASTER_KEY_FILE=/run/secrets/vault_master_key
     volumes:
-    - cookie-09:/data/openclaw/cookies
+    - cookie-09:/data/cookies
+    - spool-09:/data/spool
+    secrets:
+    - vault_master_key
+    depends_on:
+    - proxy-egress-09
+    healthcheck:
+      test:
+      - CMD
+      - curl
+      - -fsS
+      - http://127.0.0.1:9223/healthz
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 90s
+    labels:
+    - autoheal=true
     deploy:
       resources:
         limits:
           cpus: '1.0'
           memory: 2g
+  proxy-egress-10:
+    restart: always
+    image: ai-sale/proxy-egress:0.1.0
+    cap_add:
+    - NET_ADMIN
+    environment:
+    - EXPECTED_EGRESS_IP=<PROXY-IP-10>
+    secrets:
+    - proxy_url_10
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - sh /app/check-egress-ip.sh
+      interval: 30s
+      timeout: 10s
+      retries: 3
   agent-runner-10:
+    restart: always
     image: ai-sale/openclaw-runner:0.1.0
     container_name: agent-runner-10
-    restart: unless-stopped
+    network_mode: service:proxy-egress-10
     environment:
     - ACCOUNT_ID=7010
     - ACCOUNT_TYPE=sub
     - HOST_NODE=runner-04
-    - PROXY_URL=http://<PROXY-USER>:<PROXY-PASS>@<PROXY-IP-10>:<PORT>
+    - HTTP_PROXY=http://127.0.0.1:6152
+    - HTTPS_PROXY=http://127.0.0.1:6152
+    - NO_PROXY=localhost,127.0.0.1,app,postgres,redis,milvus,tei,nginx
+    - KB_OPENCLAW_ENDPOINT=http://127.0.0.1:9223
+    - KB_AGENT_MASTER_KEY_FILE=/run/secrets/vault_master_key
     volumes:
-    - cookie-10:/data/openclaw/cookies
+    - cookie-10:/data/cookies
+    - spool-10:/data/spool
+    secrets:
+    - vault_master_key
+    depends_on:
+    - proxy-egress-10
+    healthcheck:
+      test:
+      - CMD
+      - curl
+      - -fsS
+      - http://127.0.0.1:9223/healthz
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 90s
+    labels:
+    - autoheal=true
     deploy:
       resources:
         limits:
           cpus: '1.0'
           memory: 2g
+  proxy-egress-11:
+    restart: always
+    image: ai-sale/proxy-egress:0.1.0
+    cap_add:
+    - NET_ADMIN
+    environment:
+    - EXPECTED_EGRESS_IP=<PROXY-IP-11>
+    secrets:
+    - proxy_url_11
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - sh /app/check-egress-ip.sh
+      interval: 30s
+      timeout: 10s
+      retries: 3
   agent-runner-11:
+    restart: always
     image: ai-sale/openclaw-runner:0.1.0
     container_name: agent-runner-11
-    restart: unless-stopped
+    network_mode: service:proxy-egress-11
     environment:
     - ACCOUNT_ID=7011
     - ACCOUNT_TYPE=sub
     - HOST_NODE=runner-04
-    - PROXY_URL=http://<PROXY-USER>:<PROXY-PASS>@<PROXY-IP-11>:<PORT>
+    - HTTP_PROXY=http://127.0.0.1:6152
+    - HTTPS_PROXY=http://127.0.0.1:6152
+    - NO_PROXY=localhost,127.0.0.1,app,postgres,redis,milvus,tei,nginx
+    - KB_OPENCLAW_ENDPOINT=http://127.0.0.1:9223
+    - KB_AGENT_MASTER_KEY_FILE=/run/secrets/vault_master_key
     volumes:
-    - cookie-11:/data/openclaw/cookies
+    - cookie-11:/data/cookies
+    - spool-11:/data/spool
+    secrets:
+    - vault_master_key
+    depends_on:
+    - proxy-egress-11
+    healthcheck:
+      test:
+      - CMD
+      - curl
+      - -fsS
+      - http://127.0.0.1:9223/healthz
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 90s
+    labels:
+    - autoheal=true
     deploy:
       resources:
         limits:
           cpus: '1.0'
           memory: 2g
+  proxy-egress-12:
+    restart: always
+    image: ai-sale/proxy-egress:0.1.0
+    cap_add:
+    - NET_ADMIN
+    environment:
+    - EXPECTED_EGRESS_IP=<PROXY-IP-12>
+    secrets:
+    - proxy_url_12
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - sh /app/check-egress-ip.sh
+      interval: 30s
+      timeout: 10s
+      retries: 3
   agent-runner-12:
+    restart: always
     image: ai-sale/openclaw-runner:0.1.0
     container_name: agent-runner-12
-    restart: unless-stopped
+    network_mode: service:proxy-egress-12
     environment:
     - ACCOUNT_ID=7012
     - ACCOUNT_TYPE=sub
     - HOST_NODE=runner-04
-    - PROXY_URL=http://<PROXY-USER>:<PROXY-PASS>@<PROXY-IP-12>:<PORT>
+    - HTTP_PROXY=http://127.0.0.1:6152
+    - HTTPS_PROXY=http://127.0.0.1:6152
+    - NO_PROXY=localhost,127.0.0.1,app,postgres,redis,milvus,tei,nginx
+    - KB_OPENCLAW_ENDPOINT=http://127.0.0.1:9223
+    - KB_AGENT_MASTER_KEY_FILE=/run/secrets/vault_master_key
     volumes:
-    - cookie-12:/data/openclaw/cookies
+    - cookie-12:/data/cookies
+    - spool-12:/data/spool
+    secrets:
+    - vault_master_key
+    depends_on:
+    - proxy-egress-12
+    healthcheck:
+      test:
+      - CMD
+      - curl
+      - -fsS
+      - http://127.0.0.1:9223/healthz
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 90s
+    labels:
+    - autoheal=true
     deploy:
       resources:
         limits:
           cpus: '1.0'
           memory: 2g
+  proxy-egress-13:
+    restart: always
+    image: ai-sale/proxy-egress:0.1.0
+    cap_add:
+    - NET_ADMIN
+    environment:
+    - EXPECTED_EGRESS_IP=<PROXY-IP-13>
+    secrets:
+    - proxy_url_13
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - sh /app/check-egress-ip.sh
+      interval: 30s
+      timeout: 10s
+      retries: 3
   agent-runner-13:
+    restart: always
     image: ai-sale/openclaw-runner:0.1.0
     container_name: agent-runner-13
-    restart: unless-stopped
+    network_mode: service:proxy-egress-13
     environment:
     - ACCOUNT_ID=7013
     - ACCOUNT_TYPE=sub
     - HOST_NODE=runner-05
-    - PROXY_URL=http://<PROXY-USER>:<PROXY-PASS>@<PROXY-IP-13>:<PORT>
+    - HTTP_PROXY=http://127.0.0.1:6152
+    - HTTPS_PROXY=http://127.0.0.1:6152
+    - NO_PROXY=localhost,127.0.0.1,app,postgres,redis,milvus,tei,nginx
+    - KB_OPENCLAW_ENDPOINT=http://127.0.0.1:9223
+    - KB_AGENT_MASTER_KEY_FILE=/run/secrets/vault_master_key
     volumes:
-    - cookie-13:/data/openclaw/cookies
+    - cookie-13:/data/cookies
+    - spool-13:/data/spool
+    secrets:
+    - vault_master_key
+    depends_on:
+    - proxy-egress-13
+    healthcheck:
+      test:
+      - CMD
+      - curl
+      - -fsS
+      - http://127.0.0.1:9223/healthz
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 90s
+    labels:
+    - autoheal=true
     deploy:
       resources:
         limits:
           cpus: '1.0'
           memory: 2g
+  proxy-egress-14:
+    restart: always
+    image: ai-sale/proxy-egress:0.1.0
+    cap_add:
+    - NET_ADMIN
+    environment:
+    - EXPECTED_EGRESS_IP=<PROXY-IP-14>
+    secrets:
+    - proxy_url_14
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - sh /app/check-egress-ip.sh
+      interval: 30s
+      timeout: 10s
+      retries: 3
   agent-runner-14:
+    restart: always
     image: ai-sale/openclaw-runner:0.1.0
     container_name: agent-runner-14
-    restart: unless-stopped
+    network_mode: service:proxy-egress-14
     environment:
     - ACCOUNT_ID=7014
     - ACCOUNT_TYPE=sub
     - HOST_NODE=runner-05
-    - PROXY_URL=http://<PROXY-USER>:<PROXY-PASS>@<PROXY-IP-14>:<PORT>
+    - HTTP_PROXY=http://127.0.0.1:6152
+    - HTTPS_PROXY=http://127.0.0.1:6152
+    - NO_PROXY=localhost,127.0.0.1,app,postgres,redis,milvus,tei,nginx
+    - KB_OPENCLAW_ENDPOINT=http://127.0.0.1:9223
+    - KB_AGENT_MASTER_KEY_FILE=/run/secrets/vault_master_key
     volumes:
-    - cookie-14:/data/openclaw/cookies
+    - cookie-14:/data/cookies
+    - spool-14:/data/spool
+    secrets:
+    - vault_master_key
+    depends_on:
+    - proxy-egress-14
+    healthcheck:
+      test:
+      - CMD
+      - curl
+      - -fsS
+      - http://127.0.0.1:9223/healthz
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 90s
+    labels:
+    - autoheal=true
     deploy:
       resources:
         limits:
           cpus: '1.0'
           memory: 2g
+  proxy-egress-15:
+    restart: always
+    image: ai-sale/proxy-egress:0.1.0
+    cap_add:
+    - NET_ADMIN
+    environment:
+    - EXPECTED_EGRESS_IP=<PROXY-IP-15>
+    secrets:
+    - proxy_url_15
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - sh /app/check-egress-ip.sh
+      interval: 30s
+      timeout: 10s
+      retries: 3
   agent-runner-15:
+    restart: always
     image: ai-sale/openclaw-runner:0.1.0
     container_name: agent-runner-15
-    restart: unless-stopped
+    network_mode: service:proxy-egress-15
     environment:
     - ACCOUNT_ID=7015
     - ACCOUNT_TYPE=sub
     - HOST_NODE=runner-05
-    - PROXY_URL=http://<PROXY-USER>:<PROXY-PASS>@<PROXY-IP-15>:<PORT>
+    - HTTP_PROXY=http://127.0.0.1:6152
+    - HTTPS_PROXY=http://127.0.0.1:6152
+    - NO_PROXY=localhost,127.0.0.1,app,postgres,redis,milvus,tei,nginx
+    - KB_OPENCLAW_ENDPOINT=http://127.0.0.1:9223
+    - KB_AGENT_MASTER_KEY_FILE=/run/secrets/vault_master_key
     volumes:
-    - cookie-15:/data/openclaw/cookies
+    - cookie-15:/data/cookies
+    - spool-15:/data/spool
+    secrets:
+    - vault_master_key
+    depends_on:
+    - proxy-egress-15
+    healthcheck:
+      test:
+      - CMD
+      - curl
+      - -fsS
+      - http://127.0.0.1:9223/healthz
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 90s
+    labels:
+    - autoheal=true
     deploy:
       resources:
         limits:
           cpus: '1.0'
           memory: 2g
+  proxy-egress-16:
+    restart: always
+    image: ai-sale/proxy-egress:0.1.0
+    cap_add:
+    - NET_ADMIN
+    environment:
+    - EXPECTED_EGRESS_IP=<PROXY-IP-16>
+    secrets:
+    - proxy_url_16
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - sh /app/check-egress-ip.sh
+      interval: 30s
+      timeout: 10s
+      retries: 3
   agent-runner-16:
+    restart: always
     image: ai-sale/openclaw-runner:0.1.0
     container_name: agent-runner-16
-    restart: unless-stopped
+    network_mode: service:proxy-egress-16
     environment:
     - ACCOUNT_ID=7016
     - ACCOUNT_TYPE=sub
     - HOST_NODE=runner-06
-    - PROXY_URL=http://<PROXY-USER>:<PROXY-PASS>@<PROXY-IP-16>:<PORT>
+    - HTTP_PROXY=http://127.0.0.1:6152
+    - HTTPS_PROXY=http://127.0.0.1:6152
+    - NO_PROXY=localhost,127.0.0.1,app,postgres,redis,milvus,tei,nginx
+    - KB_OPENCLAW_ENDPOINT=http://127.0.0.1:9223
+    - KB_AGENT_MASTER_KEY_FILE=/run/secrets/vault_master_key
     volumes:
-    - cookie-16:/data/openclaw/cookies
+    - cookie-16:/data/cookies
+    - spool-16:/data/spool
+    secrets:
+    - vault_master_key
+    depends_on:
+    - proxy-egress-16
+    healthcheck:
+      test:
+      - CMD
+      - curl
+      - -fsS
+      - http://127.0.0.1:9223/healthz
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 90s
+    labels:
+    - autoheal=true
     deploy:
       resources:
         limits:
           cpus: '1.0'
           memory: 2g
+  proxy-egress-17:
+    restart: always
+    image: ai-sale/proxy-egress:0.1.0
+    cap_add:
+    - NET_ADMIN
+    environment:
+    - EXPECTED_EGRESS_IP=<PROXY-IP-17>
+    secrets:
+    - proxy_url_17
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - sh /app/check-egress-ip.sh
+      interval: 30s
+      timeout: 10s
+      retries: 3
   agent-runner-17:
+    restart: always
     image: ai-sale/openclaw-runner:0.1.0
     container_name: agent-runner-17
-    restart: unless-stopped
+    network_mode: service:proxy-egress-17
     environment:
     - ACCOUNT_ID=7017
     - ACCOUNT_TYPE=sub
     - HOST_NODE=runner-06
-    - PROXY_URL=http://<PROXY-USER>:<PROXY-PASS>@<PROXY-IP-17>:<PORT>
+    - HTTP_PROXY=http://127.0.0.1:6152
+    - HTTPS_PROXY=http://127.0.0.1:6152
+    - NO_PROXY=localhost,127.0.0.1,app,postgres,redis,milvus,tei,nginx
+    - KB_OPENCLAW_ENDPOINT=http://127.0.0.1:9223
+    - KB_AGENT_MASTER_KEY_FILE=/run/secrets/vault_master_key
     volumes:
-    - cookie-17:/data/openclaw/cookies
+    - cookie-17:/data/cookies
+    - spool-17:/data/spool
+    secrets:
+    - vault_master_key
+    depends_on:
+    - proxy-egress-17
+    healthcheck:
+      test:
+      - CMD
+      - curl
+      - -fsS
+      - http://127.0.0.1:9223/healthz
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 90s
+    labels:
+    - autoheal=true
     deploy:
       resources:
         limits:
           cpus: '1.0'
           memory: 2g
+  proxy-egress-18:
+    restart: always
+    image: ai-sale/proxy-egress:0.1.0
+    cap_add:
+    - NET_ADMIN
+    environment:
+    - EXPECTED_EGRESS_IP=<PROXY-IP-18>
+    secrets:
+    - proxy_url_18
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - sh /app/check-egress-ip.sh
+      interval: 30s
+      timeout: 10s
+      retries: 3
   agent-runner-18:
+    restart: always
     image: ai-sale/openclaw-runner:0.1.0
     container_name: agent-runner-18
-    restart: unless-stopped
+    network_mode: service:proxy-egress-18
     environment:
     - ACCOUNT_ID=7018
     - ACCOUNT_TYPE=sub
     - HOST_NODE=runner-06
-    - PROXY_URL=http://<PROXY-USER>:<PROXY-PASS>@<PROXY-IP-18>:<PORT>
+    - HTTP_PROXY=http://127.0.0.1:6152
+    - HTTPS_PROXY=http://127.0.0.1:6152
+    - NO_PROXY=localhost,127.0.0.1,app,postgres,redis,milvus,tei,nginx
+    - KB_OPENCLAW_ENDPOINT=http://127.0.0.1:9223
+    - KB_AGENT_MASTER_KEY_FILE=/run/secrets/vault_master_key
     volumes:
-    - cookie-18:/data/openclaw/cookies
+    - cookie-18:/data/cookies
+    - spool-18:/data/spool
+    secrets:
+    - vault_master_key
+    depends_on:
+    - proxy-egress-18
+    healthcheck:
+      test:
+      - CMD
+      - curl
+      - -fsS
+      - http://127.0.0.1:9223/healthz
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 90s
+    labels:
+    - autoheal=true
     deploy:
       resources:
         limits:
           cpus: '1.0'
           memory: 2g
+  proxy-egress-19:
+    restart: always
+    image: ai-sale/proxy-egress:0.1.0
+    cap_add:
+    - NET_ADMIN
+    environment:
+    - EXPECTED_EGRESS_IP=<PROXY-IP-19>
+    secrets:
+    - proxy_url_19
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - sh /app/check-egress-ip.sh
+      interval: 30s
+      timeout: 10s
+      retries: 3
   agent-runner-19:
+    restart: always
     image: ai-sale/openclaw-runner:0.1.0
     container_name: agent-runner-19
-    restart: unless-stopped
+    network_mode: service:proxy-egress-19
     environment:
     - ACCOUNT_ID=7019
     - ACCOUNT_TYPE=sub
     - HOST_NODE=runner-07
-    - PROXY_URL=http://<PROXY-USER>:<PROXY-PASS>@<PROXY-IP-19>:<PORT>
+    - HTTP_PROXY=http://127.0.0.1:6152
+    - HTTPS_PROXY=http://127.0.0.1:6152
+    - NO_PROXY=localhost,127.0.0.1,app,postgres,redis,milvus,tei,nginx
+    - KB_OPENCLAW_ENDPOINT=http://127.0.0.1:9223
+    - KB_AGENT_MASTER_KEY_FILE=/run/secrets/vault_master_key
     volumes:
-    - cookie-19:/data/openclaw/cookies
+    - cookie-19:/data/cookies
+    - spool-19:/data/spool
+    secrets:
+    - vault_master_key
+    depends_on:
+    - proxy-egress-19
+    healthcheck:
+      test:
+      - CMD
+      - curl
+      - -fsS
+      - http://127.0.0.1:9223/healthz
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 90s
+    labels:
+    - autoheal=true
     deploy:
       resources:
         limits:
           cpus: '1.0'
           memory: 2g
+  proxy-egress-20:
+    restart: always
+    image: ai-sale/proxy-egress:0.1.0
+    cap_add:
+    - NET_ADMIN
+    environment:
+    - EXPECTED_EGRESS_IP=<PROXY-IP-20>
+    secrets:
+    - proxy_url_20
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - sh /app/check-egress-ip.sh
+      interval: 30s
+      timeout: 10s
+      retries: 3
   agent-runner-20:
+    restart: always
     image: ai-sale/openclaw-runner:0.1.0
     container_name: agent-runner-20
-    restart: unless-stopped
+    network_mode: service:proxy-egress-20
     environment:
     - ACCOUNT_ID=7020
     - ACCOUNT_TYPE=sub
     - HOST_NODE=runner-07
-    - PROXY_URL=http://<PROXY-USER>:<PROXY-PASS>@<PROXY-IP-20>:<PORT>
+    - HTTP_PROXY=http://127.0.0.1:6152
+    - HTTPS_PROXY=http://127.0.0.1:6152
+    - NO_PROXY=localhost,127.0.0.1,app,postgres,redis,milvus,tei,nginx
+    - KB_OPENCLAW_ENDPOINT=http://127.0.0.1:9223
+    - KB_AGENT_MASTER_KEY_FILE=/run/secrets/vault_master_key
     volumes:
-    - cookie-20:/data/openclaw/cookies
+    - cookie-20:/data/cookies
+    - spool-20:/data/spool
+    secrets:
+    - vault_master_key
+    depends_on:
+    - proxy-egress-20
+    healthcheck:
+      test:
+      - CMD
+      - curl
+      - -fsS
+      - http://127.0.0.1:9223/healthz
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 90s
+    labels:
+    - autoheal=true
     deploy:
       resources:
         limits:
           cpus: '1.0'
           memory: 2g
+  proxy-egress-21:
+    restart: always
+    image: ai-sale/proxy-egress:0.1.0
+    cap_add:
+    - NET_ADMIN
+    environment:
+    - EXPECTED_EGRESS_IP=<PROXY-IP-21>
+    secrets:
+    - proxy_url_21
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - sh /app/check-egress-ip.sh
+      interval: 30s
+      timeout: 10s
+      retries: 3
   agent-runner-21:
+    restart: always
     image: ai-sale/openclaw-runner:0.1.0
     container_name: agent-runner-21
-    restart: unless-stopped
+    network_mode: service:proxy-egress-21
     environment:
     - ACCOUNT_ID=7021
     - ACCOUNT_TYPE=sub
     - HOST_NODE=runner-07
-    - PROXY_URL=http://<PROXY-USER>:<PROXY-PASS>@<PROXY-IP-21>:<PORT>
+    - HTTP_PROXY=http://127.0.0.1:6152
+    - HTTPS_PROXY=http://127.0.0.1:6152
+    - NO_PROXY=localhost,127.0.0.1,app,postgres,redis,milvus,tei,nginx
+    - KB_OPENCLAW_ENDPOINT=http://127.0.0.1:9223
+    - KB_AGENT_MASTER_KEY_FILE=/run/secrets/vault_master_key
     volumes:
-    - cookie-21:/data/openclaw/cookies
+    - cookie-21:/data/cookies
+    - spool-21:/data/spool
+    secrets:
+    - vault_master_key
+    depends_on:
+    - proxy-egress-21
+    healthcheck:
+      test:
+      - CMD
+      - curl
+      - -fsS
+      - http://127.0.0.1:9223/healthz
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 90s
+    labels:
+    - autoheal=true
     deploy:
       resources:
         limits:
           cpus: '1.0'
           memory: 2g
+  proxy-egress-22:
+    restart: always
+    image: ai-sale/proxy-egress:0.1.0
+    cap_add:
+    - NET_ADMIN
+    environment:
+    - EXPECTED_EGRESS_IP=<PROXY-IP-22>
+    secrets:
+    - proxy_url_22
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - sh /app/check-egress-ip.sh
+      interval: 30s
+      timeout: 10s
+      retries: 3
   agent-runner-22:
+    restart: always
     image: ai-sale/openclaw-runner:0.1.0
     container_name: agent-runner-22
-    restart: unless-stopped
+    network_mode: service:proxy-egress-22
     environment:
     - ACCOUNT_ID=7022
     - ACCOUNT_TYPE=sub
     - HOST_NODE=runner-08
-    - PROXY_URL=http://<PROXY-USER>:<PROXY-PASS>@<PROXY-IP-22>:<PORT>
+    - HTTP_PROXY=http://127.0.0.1:6152
+    - HTTPS_PROXY=http://127.0.0.1:6152
+    - NO_PROXY=localhost,127.0.0.1,app,postgres,redis,milvus,tei,nginx
+    - KB_OPENCLAW_ENDPOINT=http://127.0.0.1:9223
+    - KB_AGENT_MASTER_KEY_FILE=/run/secrets/vault_master_key
     volumes:
-    - cookie-22:/data/openclaw/cookies
+    - cookie-22:/data/cookies
+    - spool-22:/data/spool
+    secrets:
+    - vault_master_key
+    depends_on:
+    - proxy-egress-22
+    healthcheck:
+      test:
+      - CMD
+      - curl
+      - -fsS
+      - http://127.0.0.1:9223/healthz
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 90s
+    labels:
+    - autoheal=true
     deploy:
       resources:
         limits:
           cpus: '1.0'
           memory: 2g
+  proxy-egress-23:
+    restart: always
+    image: ai-sale/proxy-egress:0.1.0
+    cap_add:
+    - NET_ADMIN
+    environment:
+    - EXPECTED_EGRESS_IP=<PROXY-IP-23>
+    secrets:
+    - proxy_url_23
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - sh /app/check-egress-ip.sh
+      interval: 30s
+      timeout: 10s
+      retries: 3
   agent-runner-23:
+    restart: always
     image: ai-sale/openclaw-runner:0.1.0
     container_name: agent-runner-23
-    restart: unless-stopped
+    network_mode: service:proxy-egress-23
     environment:
     - ACCOUNT_ID=7023
     - ACCOUNT_TYPE=sub
     - HOST_NODE=runner-08
-    - PROXY_URL=http://<PROXY-USER>:<PROXY-PASS>@<PROXY-IP-23>:<PORT>
+    - HTTP_PROXY=http://127.0.0.1:6152
+    - HTTPS_PROXY=http://127.0.0.1:6152
+    - NO_PROXY=localhost,127.0.0.1,app,postgres,redis,milvus,tei,nginx
+    - KB_OPENCLAW_ENDPOINT=http://127.0.0.1:9223
+    - KB_AGENT_MASTER_KEY_FILE=/run/secrets/vault_master_key
     volumes:
-    - cookie-23:/data/openclaw/cookies
+    - cookie-23:/data/cookies
+    - spool-23:/data/spool
+    secrets:
+    - vault_master_key
+    depends_on:
+    - proxy-egress-23
+    healthcheck:
+      test:
+      - CMD
+      - curl
+      - -fsS
+      - http://127.0.0.1:9223/healthz
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 90s
+    labels:
+    - autoheal=true
     deploy:
       resources:
         limits:
           cpus: '1.0'
           memory: 2g
+  proxy-egress-24:
+    restart: always
+    image: ai-sale/proxy-egress:0.1.0
+    cap_add:
+    - NET_ADMIN
+    environment:
+    - EXPECTED_EGRESS_IP=<PROXY-IP-24>
+    secrets:
+    - proxy_url_24
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - sh /app/check-egress-ip.sh
+      interval: 30s
+      timeout: 10s
+      retries: 3
   agent-runner-24:
+    restart: always
     image: ai-sale/openclaw-runner:0.1.0
     container_name: agent-runner-24
-    restart: unless-stopped
+    network_mode: service:proxy-egress-24
     environment:
     - ACCOUNT_ID=7024
     - ACCOUNT_TYPE=sub
     - HOST_NODE=runner-08
-    - PROXY_URL=http://<PROXY-USER>:<PROXY-PASS>@<PROXY-IP-24>:<PORT>
+    - HTTP_PROXY=http://127.0.0.1:6152
+    - HTTPS_PROXY=http://127.0.0.1:6152
+    - NO_PROXY=localhost,127.0.0.1,app,postgres,redis,milvus,tei,nginx
+    - KB_OPENCLAW_ENDPOINT=http://127.0.0.1:9223
+    - KB_AGENT_MASTER_KEY_FILE=/run/secrets/vault_master_key
     volumes:
-    - cookie-24:/data/openclaw/cookies
+    - cookie-24:/data/cookies
+    - spool-24:/data/spool
+    secrets:
+    - vault_master_key
+    depends_on:
+    - proxy-egress-24
+    healthcheck:
+      test:
+      - CMD
+      - curl
+      - -fsS
+      - http://127.0.0.1:9223/healthz
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 90s
+    labels:
+    - autoheal=true
     deploy:
       resources:
         limits:
           cpus: '1.0'
           memory: 2g
+  proxy-egress-25:
+    restart: always
+    image: ai-sale/proxy-egress:0.1.0
+    cap_add:
+    - NET_ADMIN
+    environment:
+    - EXPECTED_EGRESS_IP=<PROXY-IP-25>
+    secrets:
+    - proxy_url_25
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - sh /app/check-egress-ip.sh
+      interval: 30s
+      timeout: 10s
+      retries: 3
   agent-runner-25:
+    restart: always
     image: ai-sale/openclaw-runner:0.1.0
     container_name: agent-runner-25
-    restart: unless-stopped
+    network_mode: service:proxy-egress-25
     environment:
     - ACCOUNT_ID=7025
     - ACCOUNT_TYPE=sub
     - HOST_NODE=runner-09
-    - PROXY_URL=http://<PROXY-USER>:<PROXY-PASS>@<PROXY-IP-25>:<PORT>
+    - HTTP_PROXY=http://127.0.0.1:6152
+    - HTTPS_PROXY=http://127.0.0.1:6152
+    - NO_PROXY=localhost,127.0.0.1,app,postgres,redis,milvus,tei,nginx
+    - KB_OPENCLAW_ENDPOINT=http://127.0.0.1:9223
+    - KB_AGENT_MASTER_KEY_FILE=/run/secrets/vault_master_key
     volumes:
-    - cookie-25:/data/openclaw/cookies
+    - cookie-25:/data/cookies
+    - spool-25:/data/spool
+    secrets:
+    - vault_master_key
+    depends_on:
+    - proxy-egress-25
+    healthcheck:
+      test:
+      - CMD
+      - curl
+      - -fsS
+      - http://127.0.0.1:9223/healthz
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 90s
+    labels:
+    - autoheal=true
     deploy:
       resources:
         limits:
           cpus: '1.0'
           memory: 2g
+  proxy-egress-26:
+    restart: always
+    image: ai-sale/proxy-egress:0.1.0
+    cap_add:
+    - NET_ADMIN
+    environment:
+    - EXPECTED_EGRESS_IP=<PROXY-IP-26>
+    secrets:
+    - proxy_url_26
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - sh /app/check-egress-ip.sh
+      interval: 30s
+      timeout: 10s
+      retries: 3
   agent-runner-26:
+    restart: always
     image: ai-sale/openclaw-runner:0.1.0
     container_name: agent-runner-26
-    restart: unless-stopped
+    network_mode: service:proxy-egress-26
     environment:
     - ACCOUNT_ID=7026
     - ACCOUNT_TYPE=sub
     - HOST_NODE=runner-09
-    - PROXY_URL=http://<PROXY-USER>:<PROXY-PASS>@<PROXY-IP-26>:<PORT>
+    - HTTP_PROXY=http://127.0.0.1:6152
+    - HTTPS_PROXY=http://127.0.0.1:6152
+    - NO_PROXY=localhost,127.0.0.1,app,postgres,redis,milvus,tei,nginx
+    - KB_OPENCLAW_ENDPOINT=http://127.0.0.1:9223
+    - KB_AGENT_MASTER_KEY_FILE=/run/secrets/vault_master_key
     volumes:
-    - cookie-26:/data/openclaw/cookies
+    - cookie-26:/data/cookies
+    - spool-26:/data/spool
+    secrets:
+    - vault_master_key
+    depends_on:
+    - proxy-egress-26
+    healthcheck:
+      test:
+      - CMD
+      - curl
+      - -fsS
+      - http://127.0.0.1:9223/healthz
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 90s
+    labels:
+    - autoheal=true
     deploy:
       resources:
         limits:
           cpus: '1.0'
           memory: 2g
+  proxy-egress-27:
+    restart: always
+    image: ai-sale/proxy-egress:0.1.0
+    cap_add:
+    - NET_ADMIN
+    environment:
+    - EXPECTED_EGRESS_IP=<PROXY-IP-27>
+    secrets:
+    - proxy_url_27
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - sh /app/check-egress-ip.sh
+      interval: 30s
+      timeout: 10s
+      retries: 3
   agent-runner-27:
+    restart: always
     image: ai-sale/openclaw-runner:0.1.0
     container_name: agent-runner-27
-    restart: unless-stopped
+    network_mode: service:proxy-egress-27
     environment:
     - ACCOUNT_ID=7027
     - ACCOUNT_TYPE=sub
     - HOST_NODE=runner-09
-    - PROXY_URL=http://<PROXY-USER>:<PROXY-PASS>@<PROXY-IP-27>:<PORT>
+    - HTTP_PROXY=http://127.0.0.1:6152
+    - HTTPS_PROXY=http://127.0.0.1:6152
+    - NO_PROXY=localhost,127.0.0.1,app,postgres,redis,milvus,tei,nginx
+    - KB_OPENCLAW_ENDPOINT=http://127.0.0.1:9223
+    - KB_AGENT_MASTER_KEY_FILE=/run/secrets/vault_master_key
     volumes:
-    - cookie-27:/data/openclaw/cookies
+    - cookie-27:/data/cookies
+    - spool-27:/data/spool
+    secrets:
+    - vault_master_key
+    depends_on:
+    - proxy-egress-27
+    healthcheck:
+      test:
+      - CMD
+      - curl
+      - -fsS
+      - http://127.0.0.1:9223/healthz
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 90s
+    labels:
+    - autoheal=true
     deploy:
       resources:
         limits:
           cpus: '1.0'
           memory: 2g
+  proxy-egress-28:
+    restart: always
+    image: ai-sale/proxy-egress:0.1.0
+    cap_add:
+    - NET_ADMIN
+    environment:
+    - EXPECTED_EGRESS_IP=<PROXY-IP-28>
+    secrets:
+    - proxy_url_28
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - sh /app/check-egress-ip.sh
+      interval: 30s
+      timeout: 10s
+      retries: 3
   agent-runner-28:
+    restart: always
     image: ai-sale/openclaw-runner:0.1.0
     container_name: agent-runner-28
-    restart: unless-stopped
+    network_mode: service:proxy-egress-28
     environment:
     - ACCOUNT_ID=7028
     - ACCOUNT_TYPE=sub
     - HOST_NODE=runner-10
-    - PROXY_URL=http://<PROXY-USER>:<PROXY-PASS>@<PROXY-IP-28>:<PORT>
+    - HTTP_PROXY=http://127.0.0.1:6152
+    - HTTPS_PROXY=http://127.0.0.1:6152
+    - NO_PROXY=localhost,127.0.0.1,app,postgres,redis,milvus,tei,nginx
+    - KB_OPENCLAW_ENDPOINT=http://127.0.0.1:9223
+    - KB_AGENT_MASTER_KEY_FILE=/run/secrets/vault_master_key
     volumes:
-    - cookie-28:/data/openclaw/cookies
+    - cookie-28:/data/cookies
+    - spool-28:/data/spool
+    secrets:
+    - vault_master_key
+    depends_on:
+    - proxy-egress-28
+    healthcheck:
+      test:
+      - CMD
+      - curl
+      - -fsS
+      - http://127.0.0.1:9223/healthz
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 90s
+    labels:
+    - autoheal=true
     deploy:
       resources:
         limits:
@@ -500,3 +1565,90 @@ volumes:
   cookie-26: {}
   cookie-27: {}
   cookie-28: {}
+  spool-01: {}
+  spool-02: {}
+  spool-03: {}
+  spool-04: {}
+  spool-05: {}
+  spool-06: {}
+  spool-07: {}
+  spool-08: {}
+  spool-09: {}
+  spool-10: {}
+  spool-11: {}
+  spool-12: {}
+  spool-13: {}
+  spool-14: {}
+  spool-15: {}
+  spool-16: {}
+  spool-17: {}
+  spool-18: {}
+  spool-19: {}
+  spool-20: {}
+  spool-21: {}
+  spool-22: {}
+  spool-23: {}
+  spool-24: {}
+  spool-25: {}
+  spool-26: {}
+  spool-27: {}
+  spool-28: {}
+secrets:
+  proxy_url_01:
+    file: ./secrets/proxy_url_01.txt
+  proxy_url_02:
+    file: ./secrets/proxy_url_02.txt
+  proxy_url_03:
+    file: ./secrets/proxy_url_03.txt
+  proxy_url_04:
+    file: ./secrets/proxy_url_04.txt
+  proxy_url_05:
+    file: ./secrets/proxy_url_05.txt
+  proxy_url_06:
+    file: ./secrets/proxy_url_06.txt
+  proxy_url_07:
+    file: ./secrets/proxy_url_07.txt
+  proxy_url_08:
+    file: ./secrets/proxy_url_08.txt
+  proxy_url_09:
+    file: ./secrets/proxy_url_09.txt
+  proxy_url_10:
+    file: ./secrets/proxy_url_10.txt
+  proxy_url_11:
+    file: ./secrets/proxy_url_11.txt
+  proxy_url_12:
+    file: ./secrets/proxy_url_12.txt
+  proxy_url_13:
+    file: ./secrets/proxy_url_13.txt
+  proxy_url_14:
+    file: ./secrets/proxy_url_14.txt
+  proxy_url_15:
+    file: ./secrets/proxy_url_15.txt
+  proxy_url_16:
+    file: ./secrets/proxy_url_16.txt
+  proxy_url_17:
+    file: ./secrets/proxy_url_17.txt
+  proxy_url_18:
+    file: ./secrets/proxy_url_18.txt
+  proxy_url_19:
+    file: ./secrets/proxy_url_19.txt
+  proxy_url_20:
+    file: ./secrets/proxy_url_20.txt
+  proxy_url_21:
+    file: ./secrets/proxy_url_21.txt
+  proxy_url_22:
+    file: ./secrets/proxy_url_22.txt
+  proxy_url_23:
+    file: ./secrets/proxy_url_23.txt
+  proxy_url_24:
+    file: ./secrets/proxy_url_24.txt
+  proxy_url_25:
+    file: ./secrets/proxy_url_25.txt
+  proxy_url_26:
+    file: ./secrets/proxy_url_26.txt
+  proxy_url_27:
+    file: ./secrets/proxy_url_27.txt
+  proxy_url_28:
+    file: ./secrets/proxy_url_28.txt
+  vault_master_key:
+    file: ./secrets/vault_master_key.txt

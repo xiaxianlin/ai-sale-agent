@@ -192,6 +192,7 @@ def run_smoke() -> dict:
     scheduler = MailScheduler(engine=engine, store=mail, transport=smtp, templates=templates,
                               suppression=suppression,
                               rate_guard=DomainRateGuard(per_domain_per_hour=500),
+                              unsub_salt="demo-unsub-salt",  # 冒烟专用盐（CR P2 修复后必填）
                               clock=clock.now, rate_backoff_min=30)
     tracker = DeliveryTracker(mail, engine, suppression, clock=clock.now)
     resolver = IdentityResolver(crm)

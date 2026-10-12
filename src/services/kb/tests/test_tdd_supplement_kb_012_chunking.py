@@ -5,10 +5,9 @@
 - 异常：blocks 不可迭代 / 缺少 blocks 属性 → CHUNK-1001（既有仅覆盖空列表分支）；
 - 边界：句聚合恰满 max_tokens（等号入块）与差 1（切分）双端点；
 - 空集/单元素：仅空文本 block 的账目覆盖、单短块 orphan 标记；
-- 缺陷钉子（xfail strict）：_degrade 列表未随 chunk() 调用重置——长生命周期
-  分块器（如增量同步 make_text_chunk_fn 复用单实例）上一个文档的
-  table_row_group_split 降级会泄漏进后续无表格文档的质量指标（真实缺陷，
-  测试固化，修复后此钉子将 XPASS 提醒摘除）。
+- 降级泄漏缺陷（CR P3-a 更新）：_degrade 跨 chunk() 调用泄漏缺陷已于 2026-10-10
+  红→绿修复（测试覆盖矩阵 docs/04-测试文档/02-测试覆盖矩阵.md §3 缺陷#1），
+  原 xfail strict 钉子已摘、转正为常规回归测试 TestDegradeStateLeakDefect。
 
 KPI 映射：SRS §16.1「检索准确率」——分块质量是召回的地基；账目不重不漏
 与降级留痕的准确性直接决定坏块能否被质量报告暴露。
