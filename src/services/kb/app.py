@@ -293,8 +293,13 @@ def _mount_admin(
     schema_provider: Any,
     sync_hook: Any,
     audit_hook: Any,
+    admin_auth: Any = None,
 ) -> None:
-    """装配管理后台组件并挂载三个路由（缺省组件见各自 docstring）。"""
+    """装配管理后台组件并挂载三个路由（缺省组件见各自 docstring）。
+
+    admin_auth 缺省为「未配置鉴权即拒绝写操作」依赖（CR P0-3 修复；
+    生产注入 JWT/RBAC 路由依赖，NFR-SEC-02）。
+    """
     store = item_store if item_store is not None else InMemoryKnowledgeItemStore()
     resolved_sync = sync_hook if sync_hook is not None else IncrementalSyncHook(
         IncrementalSyncEngine(
@@ -311,6 +316,7 @@ def _mount_admin(
         schema_provider=schema_provider if schema_provider is not None else RegistrySchemaProvider(),
         sync_hook=resolved_sync,
         audit_hook=audit_hook if audit_hook is not None else InMemoryAuditTrail(),
+        admin_auth=admin_auth,
     )
 
 
@@ -338,6 +344,7 @@ def create_app(
     admin_schema_provider: Any = None,
     admin_sync_hook: Any = None,
     admin_audit_hook: Any = None,
+    admin_auth: Any = None,
 ) -> FastAPI:
     """组装统一检索 API 应用（组件契约与适配器见模块 docstring）。
 
@@ -406,5 +413,6 @@ def create_app(
             schema_provider=admin_schema_provider,
             sync_hook=admin_sync_hook,
             audit_hook=admin_audit_hook,
+            admin_auth=admin_auth,
         )
     return app

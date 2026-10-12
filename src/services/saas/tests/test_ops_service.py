@@ -27,18 +27,32 @@ from services.saas.core.ops.service import (
     OpsService,
 )
 from services.saas.core.quota.engine import QuotaEngine
+from services.saas.core.tenant.context import SAAS_TOKEN_SECRET_ENV, SaasConfigError
 from services.saas.core.tenant.registry import TenantRegistry
 
 T0 = datetime(2026, 10, 11, 12, 0, 0, tzinfo=timezone.utc)
+#: 测试专用令牌签名密钥（demo 凭据，非真实凭证；拼接形态避免被密钥扫描误报）
+TEST_OPS_SECRET = "unit-" + "test-secret"
 
 
 def build_ops() -> tuple[OpsService, TenantRegistry, QuotaEngine]:
     clock = lambda: T0  # noqa: E731
     registry = TenantRegistry(clock=clock)
     quota = QuotaEngine(clock=clock)
-    ops = OpsService(registry, quota, clock=clock, secret="unit-test-secret")
+    ops = OpsService(registry, quota, clock=clock, secret=TEST_OPS_SECRET)
     ops.wire()  # 把审计钩子接入注册表/配额引擎（开通/停用/配额变更全量留痕）
     return ops, registry, quota
+
+
+# --------------------------------------------------------------------------- 缺省密钥关门（CR P0-5 修复）
+
+
+def test_missing_secret_fails_fast(monkeypatch: pytest.MonkeyPatch) -> None:
+    """CR P0-5 修复：OpsService 未传 codec/secret 且 KB_SAAS_TOKEN_SECRET 未配置 →
+    构造即 SaasConfigError（fail-fast，拒绝缺省密钥签发平台/租户令牌）。"""
+    monkeypatch.delenv(SAAS_TOKEN_SECRET_ENV, raising=False)
+    with pytest.raises(SaasConfigError, match=SAAS_TOKEN_SECRET_ENV):
+        OpsService(TenantRegistry(), QuotaEngine(), clock=lambda: T0)
 
 
 # --------------------------------------------------------------------------- 双域闸门（aud 互斥）

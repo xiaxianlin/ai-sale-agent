@@ -40,6 +40,10 @@ def sample_cfg() -> dict:
                          "redis": {"size_gb": 20}},
         "apps": {"kbService": {"replicas": 2}, "agentRunner": {"replicas": 1}},
         "brand": {"primaryColor": "#1E63E9", "logoUrl": ""},
+        "secrets": {"site_token_secret": "gen-demo-site-token-secret-0001",
+                    "site_sdk_key": "gen-demo-site-sdk-key-0001",
+                    "mail_webhook_key": "gen-demo-mail-webhook-key-0001",
+                    "saas_token_secret": "gen-demo-saas-token-secret-0001"},
     }
 
 
@@ -181,6 +185,35 @@ class TestExceptions:
 
 
 # ───────────────────────── 脚本契约：语法 / 步骤 / 退出码 ─────────────────────────
+
+
+class TestSecretProvisioning:
+    """密钥下发（CR P0-5 修复）：四个服务密钥经配置源 secrets 段进入 .env。"""
+
+    def test_env_renders_four_service_secret_keys(self) -> None:
+        """.env 增补下发：KB_SITE_TOKEN_SECRET/KB_SITE_SDK_KEY/KB_MAIL_WEBHOOK_KEY/
+        KB_SAAS_TOKEN_SECRET 四键非空（服务侧缺密钥即启动失败的配套供给链）。"""
+        lines = gen_config.render_env(sample_cfg())
+        flat = dict(line.split("=", 1) for line in lines.splitlines()
+                    if "=" in line and not line.startswith("#"))
+        for env_key in gen_config.SECRET_ENV_KEYS.values():
+            assert flat.get(env_key), f".env 缺密钥下发 {env_key}"
+
+    def test_missing_secrets_schema_error(self) -> None:
+        """异常：配置源缺 secrets 段 → SchemaError（密钥必填，拒绝无密钥配置出包）。"""
+        cfg = sample_cfg()
+        del cfg["secrets"]
+        with pytest.raises(gen_config.SchemaError) as ei:
+            gen_config.render(cfg, "compose")
+        assert "secrets." in str(ei.value)
+
+    def test_generate_secret_values_random_and_distinct(self) -> None:
+        """生成器：四键齐备、非空且两次生成互不相同（高熵随机，非可预测占位）。"""
+        first = gen_config.generate_secret_values()
+        second = gen_config.generate_secret_values()
+        assert set(first) == {"site_token_secret", "site_sdk_key",
+                              "mail_webhook_key", "saas_token_secret"}
+        assert all(first.values()) and first != second
 
 
 class TestScriptContract:

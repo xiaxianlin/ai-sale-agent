@@ -187,11 +187,13 @@ class OpsService:
         *,
         codec: SaasTokenCodec | None = None,
         clock: Callable[[], datetime] | None = None,
-        secret: str = "saas-demo-secret",
+        secret: str | None = None,
     ) -> None:
         self._registry = registry
         self._quota = quota
-        self._codec = codec or SaasTokenCodec(secret, clock=clock)
+        # CR P0-5 修复：无缺省密钥——自建 codec 时参数 → env → 构造即 SaasConfigError；
+        # 显式注入 codec 的装配形态密钥由 codec 自带（不重复解析）
+        self._codec = codec if codec is not None else SaasTokenCodec(secret, clock=clock)
         self.audit = AuditChain(clock=clock)
 
     # ------------------------------------------------------------------ 装配

@@ -29,7 +29,9 @@ def make_client():
     resolver = IdentityResolver(store)
     normalizer = LeadNormalizer(store, resolver, clock=clock.now)
     merger = CustomerMerger(store, clock=clock.now)
-    app = create_crm_app(normalizer=normalizer, merger=merger, store=store, clock=clock.now)
+    # allow_header_claims=True：测试显式声明 demo 形态（CR P0-3 修复后缺省关门）
+    app = create_crm_app(normalizer=normalizer, merger=merger, store=store, clock=clock.now,
+                         allow_header_claims=True)
     client = TestClient(app)
     r = client.post(CRM_LEADS_PATH, json={"channel": "site", "visitor_uid": "v-1",
                                           "email": "bob@corp.com", "name": "Bob",
@@ -110,3 +112,16 @@ class TestCrmApi:
         r = client.get(f"/api/v1/site/crm/customers/1/timeline",
                        headers={"X-User-Id": "sales", "X-User-Roles": "sales"})
         assert r.status_code == 403 and r.json()["code"] == 40301
+
+
+def test_default_denies_self_declared_header_roles() -> None:
+    """CR P0-3 修复：缺省不信任客户端自声明头——未注入 claims_provider 且未显式
+    开启 allow_header_claims 时，携带 X-User-Roles: crm_operator 头的写操作一律 40301。"""
+    store = CRMStore()
+    merger = CustomerMerger(store, clock=MutableClock().now)
+    app = create_crm_app(  # 全缺省（关门形态）
+        normalizer=LeadNormalizer(store, IdentityResolver(store), clock=MutableClock().now),
+        merger=merger, store=store)
+    r = TestClient(app).post(CRM_LEADS_PATH, json={"channel": "site", "visitor_uid": "v-1"},
+                             headers=OPERATOR)
+    assert r.status_code == 403 and r.json()["code"] == 40301

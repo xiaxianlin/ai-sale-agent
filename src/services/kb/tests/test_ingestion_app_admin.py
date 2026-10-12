@@ -29,6 +29,11 @@ class _PassthroughReranker:
         return list(cands)[:top_k]
 
 
+def _allow_admin() -> None:
+    """管理端鉴权放行桩（demo/测试形态；CR P0-3 修复后 create_app 缺省拒绝写操作）。"""
+    return None
+
+
 def _build_app_env() -> tuple[TestClient, InMemoryVectorStore, FakeEmbeddingClient, Any]:
     """组装 create_app 产物与 TestClient（内存向量库空库起步）。"""
     store = InMemoryVectorStore()
@@ -41,6 +46,7 @@ def _build_app_env() -> tuple[TestClient, InMemoryVectorStore, FakeEmbeddingClie
         _PassthroughReranker(),
         key_registry,
         meta_provider=None,
+        admin_auth=_allow_admin,  # 写链路用例显式放行（鉴权关门口径另测）
     )
     client = TestClient(app)
     client.headers.update({"Authorization": f"Bearer {issued.api_key}"})

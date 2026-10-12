@@ -13,13 +13,17 @@ from __future__ import annotations
 
 from datetime import datetime, timedelta, timezone
 
+import pytest
 from fastapi.testclient import TestClient
 
 from services.saas.api.saas_api import SAAS_PLATFORM_PREFIX, SAAS_TENANT_PREFIX, create_saas_app
 from services.saas.core.quota.engine import QuotaEngine
+from services.saas.core.tenant.context import SAAS_TOKEN_SECRET_ENV, SaasConfigError
 from services.saas.core.tenant.registry import TenantRegistry
 
 T0 = datetime(2026, 10, 11, 12, 0, 0, tzinfo=timezone.utc)
+#: 测试专用令牌签名密钥（demo 凭据，非真实凭证；CR P0-5 修复后构造处显式传入）
+TEST_SAAS_SECRET = "unit-" + "test-saas-secret"
 
 
 def build_app(**kw):
@@ -28,6 +32,7 @@ def build_app(**kw):
     令牌 TTL 取 10 年：部分用例会拨动时钟（保留期演练），平台令牌不得先于业务过期。"""
     clock = kw.pop("clock", lambda: T0)
     registry = kw.pop("registry", None) or TenantRegistry(clock=clock)
+    kw.setdefault("secret", TEST_SAAS_SECRET)
     quota = kw.pop("quota", None) or QuotaEngine(clock=clock)
     app, comps = create_saas_app(registry=registry, quota=quota, clock=clock, **kw)
     client = TestClient(app)
@@ -276,3 +281,11 @@ def test_search_quota_429_retry_after_header() -> None:
     assert blocked.headers.get("Retry-After") == "1"
     assert blocked.json()["code"] == 42901
     assert blocked.json()["data"]["resource"] == "api_qps"
+
+
+def test_missing_secret_fails_fast(monkeypatch: pytest.MonkeyPatch) -> None:
+    """CR P0-5 修复：未传 secret 且环境变量 KB_SAAS_TOKEN_SECRET 未配置 → 装配即
+    SaasConfigError（fail-fast，拒绝缺省密钥运行；对齐 vault 缺主密钥口径）。"""
+    monkeypatch.delenv(SAAS_TOKEN_SECRET_ENV, raising=False)
+    with pytest.raises(SaasConfigError, match=SAAS_TOKEN_SECRET_ENV):
+        create_saas_app()

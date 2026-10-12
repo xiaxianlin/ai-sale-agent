@@ -8,11 +8,13 @@ from fastapi.testclient import TestClient
 
 from services.site.api.app import create_site_app
 
-from .conftest import DEMO_KEY, DEMO_ORIGIN
+from .conftest import DEMO_KEY, DEMO_ORIGIN, TEST_SITE_SECRET
 
 
 def build_client(**kw: object) -> tuple[TestClient, str]:
     """装配应用并签发一个 granted 访客会话，返回 (client, visitor_token)。"""
+    kw.setdefault("secret", TEST_SITE_SECRET)
+    kw.setdefault("sdk_key", DEMO_KEY)
     client = TestClient(create_site_app(**kw))
     init = client.post(
         "/api/v1/site/session",

@@ -153,6 +153,30 @@ def scan_hardcoded_lines(lines: list[str], origin: str) -> list[str]:
     return warnings
 
 
+def _strip_docstrings(source: str) -> str:
+    """剥离模块级/类/函数 docstring 后返回源文本（保留行数与行号对齐：整行置空）。
+
+    仅处理合法 Python；语法异常时原样返回（扫描不因坏文件中断）。
+    """
+    try:
+        import ast
+
+        tree = ast.parse(source)
+    except SyntaxError:
+        return source
+    lines = source.splitlines(keepends=True)
+    for node in ast.walk(tree):
+        if isinstance(node, (ast.Module, ast.ClassDef, ast.FunctionDef, ast.AsyncFunctionDef)):
+            body = node.body
+            if body and isinstance(body[0], ast.Expr) and isinstance(body[0].value, ast.Constant) \
+                    and isinstance(body[0].value.value, str):
+                start = body[0].lineno - 1
+                end = body[0].end_lineno if body[0].end_lineno else start + 1
+                for i in range(start, min(end, len(lines))):
+                    lines[i] = "\n" if lines[i].endswith("\n") else ""
+    return "".join(lines)
+
+
 def scan_directory(root: Path) -> list[str]:
     """扫描单个目录：*.sql 做 DDL+魔数检查，*.py 额外做 op.create_table 检查。"""
     warnings: list[str] = []
@@ -167,6 +191,9 @@ def scan_directory(root: Path) -> list[str]:
         warnings.extend(scan_ddl_text(text, str(path)))
         if path.suffix == ".py":
             warnings.extend(scan_orm_ddl_text(text, str(path)))
+            # CR P0-2 修复：魔数扫描前剥离 docstring 区间（AST 定位）——文档文字中的
+            # 「tenant_id=0/1」是设计说明而非硬编码常量（saas/separation/guard.py 4 处误报根因）
+            text = _strip_docstrings(text)
         warnings.extend(scan_hardcoded_lines(text.splitlines(), str(path)))
     return warnings
 

@@ -167,3 +167,18 @@ def test_endpoint_requires_supervisor_role() -> None:
     resp = TestClient(app).get(OVERVIEW_PATH)
     assert resp.status_code == 403
     assert resp.json()["code"] == 40301
+
+
+def test_default_denies_without_claims_provider() -> None:
+    """CR P0-3 修复：缺省关门——未注入 claims_provider 且未显式开启
+    allow_header_claims 时，携带 X-User-Roles: supervisor 头也一律 40301。"""
+    source, store, flag_store, audit = build_world()
+    app = create_board_app(  # 全缺省（关门形态）
+        source=source, store=store, flag_store=flag_store,
+        directory=FakeTeamDirectory({1: TEAM1}), audit_cb=audit, today_fn=lambda: TODAY,
+    )
+    resp = TestClient(app).get(
+        OVERVIEW_PATH, headers={"X-User-Id": "sup-a", "X-User-Roles": "supervisor",
+                                "X-Team-Ids": "1"})
+    assert resp.status_code == 403
+    assert resp.json()["code"] == 40301

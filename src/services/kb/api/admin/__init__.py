@@ -25,7 +25,9 @@ include_router 前追加路由级 dependencies（本迭代未占用该参数位�
 """
 from __future__ import annotations
 
-from fastapi import FastAPI
+from typing import Any, Callable
+
+from fastapi import Depends, FastAPI
 
 from services.kb.api.routes import install_error_handlers
 
@@ -39,6 +41,7 @@ from .items import (
     NoopSyncHook,
     SchemaProvider,
     SyncHook,
+    deny_write_admin_auth,
 )
 from .items import router as items_router
 from .schemas_api import EmptySchemaProvider
@@ -56,6 +59,7 @@ __all__ = [
     "SyncHook",
     "configure_admin",
     "create_admin_app",
+    "deny_write_admin_auth",
     "items_router",
     "schemas_router",
     "stats_router",
@@ -69,20 +73,26 @@ def configure_admin(
     schema_provider: SchemaProvider | None = None,
     sync_hook: SyncHook | None = None,
     audit_hook: AuditHook | None = None,
+    admin_auth: Callable[..., Any] | None = None,
 ) -> FastAPI:
     """注入管理端组件并挂载三个路由（写入 app.state.admin_*）。
 
     缺省组件：store → InMemory；schema_provider → 空注册表；sync/audit → Noop
     （本地开发形态；生产必须显式注入真实实现，尤其审计钩子——NFR-SEC-03）。
+    :param admin_auth: 管理端路由鉴权依赖（生产 = JWT/RBAC，NFR-SEC-02）。缺省挂
+        deny_write_admin_auth——未配置鉴权即拒绝写操作（40301 信封），读操作放行
+        （CR P0-3 修复：安全缺省 fail-closed）。
     注意：不幂等，重复调用会重复挂载路由。
     """
     app.state.admin_item_store = store if store is not None else InMemoryKnowledgeItemStore()
     app.state.admin_schema_provider = schema_provider if schema_provider is not None else EmptySchemaProvider()
     app.state.admin_sync_hook = sync_hook if sync_hook is not None else NoopSyncHook()
     app.state.admin_audit_hook = audit_hook if audit_hook is not None else NoopAuditHook()
-    app.include_router(items_router)
-    app.include_router(schemas_router)
-    app.include_router(stats_router)
+    # CR P0-3 修复：未注入 admin_auth 即关门——写操作 40301、读操作放行
+    auth_dep = admin_auth if admin_auth is not None else deny_write_admin_auth
+    app.include_router(items_router, dependencies=[Depends(auth_dep)])
+    app.include_router(schemas_router, dependencies=[Depends(auth_dep)])
+    app.include_router(stats_router, dependencies=[Depends(auth_dep)])
     return app
 
 
@@ -92,6 +102,7 @@ def create_admin_app(
     schema_provider: SchemaProvider | None = None,
     sync_hook: SyncHook | None = None,
     audit_hook: AuditHook | None = None,
+    admin_auth: Callable[..., Any] | None = None,
 ) -> FastAPI:
     """独立装配（单元测试/本地开发）：新建应用 + 统一信封错误处理器 + 三路由。
 
@@ -113,4 +124,5 @@ def create_admin_app(
         schema_provider=schema_provider,
         sync_hook=sync_hook,
         audit_hook=audit_hook,
+        admin_auth=admin_auth,
     )

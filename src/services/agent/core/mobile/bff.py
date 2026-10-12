@@ -26,6 +26,7 @@ import base64
 import hashlib
 import hmac
 import json
+import os
 import secrets
 import threading
 from collections.abc import Callable
@@ -47,8 +48,9 @@ HOME_CACHE_S: float = 15.0
 CHANNELS: tuple[str, ...] = ("dingtalk", "wechat")
 #: 敏感操作所需角色
 SUPERVISOR_ROLES: tuple[str, ...] = ("supervisor", "admin")
-#: demo 令牌签名密钥占位（NFR-SEC-04：生产从密钥管理注入，严禁入库硬编码真实凭证）
-_DEMO_SIGNING_KEY = b"demo-only-signing-key-NFR-SEC-04-placeholder"
+#: 会话令牌签名密钥环境变量（CR P0-4 修复：参数 → env → 启动失败，无缺省硬编码；
+#: NFR-SEC-04 生产从密钥管理注入）
+SIGNING_KEY_ENV: str = "KB_MOBILE_SIGNING_KEY"
 
 
 class MobileError(Exception):
@@ -58,6 +60,11 @@ class MobileError(Exception):
         super().__init__(message)
         self.code = code
         self.message = message
+
+
+class MobileConfigError(Exception):
+    """配置缺失（fail-fast）：签名密钥未注入（CR P0-4 修复，NFR-SEC-04；对齐
+    vault.VaultConfigError 模式——拒绝无密钥运行，绝不回落到源码硬编码缺省值）。"""
 
 
 class PushProviderError(Exception):
@@ -113,9 +120,23 @@ class BindingStore:
             return [b for b in self._rows.values() if b.user_id == user_id]
 
 
-def _sign(payload: bytes) -> str:
+def _resolve_signing_key(signing_key: bytes | None) -> bytes:
+    """签名密钥解析（CR P0-4 修复）：构造参数 → 环境变量 ``KB_MOBILE_SIGNING_KEY``；
+    均缺即抛 MobileConfigError（中文 fail-fast，拒绝无密钥签发/验签）。"""
+    if signing_key is not None:
+        return signing_key
+    from_env = os.environ.get(SIGNING_KEY_ENV, "").strip()
+    if from_env:
+        return from_env.encode("utf-8")
+    raise MobileConfigError(
+        f"缺少移动端会话签名密钥：请经构造参数 signing_key 注入或设置环境变量 "
+        f"{SIGNING_KEY_ENV}（demo 口径 fail-fast；生产从密钥管理下发，严禁源码硬编码）"
+    )
+
+
+def _sign(payload: bytes, key: bytes) -> str:
     """HMAC-SHA256 签名截断（demo；生产 = JWT RS256，见 SR-SC-006 §7）。"""
-    return hmac.new(_DEMO_SIGNING_KEY, payload, hashlib.sha256).hexdigest()[:32]
+    return hmac.new(key, payload, hashlib.sha256).hexdigest()[:32]
 
 
 def _b64e(raw: bytes) -> str:
@@ -128,23 +149,28 @@ def _b64d(text: str) -> bytes:
 
 
 def issue_session_token(user_id: str, name: str, roles: tuple[str, ...],
-                        issued_at: datetime, ttl_s: int = SESSION_TTL_S) -> str:
-    """签发会话令牌：``v1.<b64(payload)>.<hmac>``（demo 形态，结构对齐 JWT 三段式）。"""
+                        issued_at: datetime, ttl_s: int = SESSION_TTL_S, *,
+                        key: bytes | None = None) -> str:
+    """签发会话令牌：``v1.<b64(payload)>.<hmac>``（demo 形态，结构对齐 JWT 三段式）。
+
+    :param key: 签名密钥（CR P0-4 修复；缺省经 _resolve_signing_key 走 env，均缺抛
+        MobileConfigError——由 MobileBff 构造期显式解析，本参数保留直调口径）。
+    """
     payload = json.dumps(
         {"uid": user_id, "name": name, "roles": list(roles),
          "exp": (issued_at + timedelta(seconds=ttl_s)).isoformat()},
         ensure_ascii=False).encode("utf-8")
     body = _b64e(payload)
-    return f"v1.{body}.{_sign(body.encode('ascii'))}"
+    return f"v1.{body}.{_sign(body.encode('ascii'), _resolve_signing_key(key))}"
 
 
-def parse_session_token(token: str, now: datetime) -> dict[str, Any]:
+def parse_session_token(token: str, now: datetime, *, key: bytes | None = None) -> dict[str, Any]:
     """校验并解析会话令牌（签名/格式/有效期三查）；任一失败抛 40101。"""
     parts = token.split(".")
     if len(parts) != 3 or parts[0] != "v1":
         raise MobileError(40101, "登录态无效或已过期，请重新登录")
     body = parts[1]
-    if not hmac.compare_digest(_sign(body.encode("ascii")), parts[2]):
+    if not hmac.compare_digest(_sign(body.encode("ascii"), _resolve_signing_key(key)), parts[2]):
         raise MobileError(40101, "登录态无效或已过期，请重新登录")
     try:
         payload = json.loads(_b64d(body))
@@ -503,7 +529,10 @@ class MobileBff:
     """移动端 BFF：鉴权换发 / 一屏聚合 / 审批移动流 / 接管 / 推送登记（§6.1-§6.4）。
 
     :param roles_of: user_id → 角色元组（None 视为无角色）；敏感操作要求主管角色；
-    :param audit: 审计流水（列表注入；生产 = audit_log 哈希链）。
+    :param audit: 审计流水（列表注入；生产 = audit_log 哈希链）；
+    :param signing_key: 会话令牌签名密钥（CR P0-4 修复）。缺省读环境变量
+        KB_MOBILE_SIGNING_KEY，均缺构造即抛 MobileConfigError（fail-fast）；
+        生产从密钥管理下发，严禁源码硬编码（NFR-SEC-04）。
     """
 
     def __init__(
@@ -519,6 +548,7 @@ class MobileBff:
         verify: VerifyGate,
         audit: list[dict[str, Any]] | None = None,
         clock: Callable[[], datetime] | None = None,
+        signing_key: bytes | None = None,
     ) -> None:
         self.bindings = bindings
         self.identity = identity
@@ -530,6 +560,8 @@ class MobileBff:
         self.verify = verify
         self.audit = audit if audit is not None else []
         self._clock = clock or (lambda: datetime.now())
+        # CR P0-4 修复：构造期一次性解析签名密钥（参数 → env → 失败关门）
+        self._signing_key = _resolve_signing_key(signing_key)
         self._home_cache: dict[str, tuple[datetime, dict[str, Any]]] = {}  # user → (at, payload)
         self._idem_done: dict[str, dict[str, Any]] = {}                    # idem_key → 结果
 
@@ -549,7 +581,8 @@ class MobileBff:
             raise MobileError(40301, "账号未绑定或凭证无效，请联系管理员确认绑定关系")
         now = self._clock()
         roles = self._roles_of(binding.user_id) or ()
-        token = issue_session_token(binding.user_id, binding.display_name, roles, now)
+        token = issue_session_token(binding.user_id, binding.display_name, roles, now,
+                                    key=self._signing_key)
         self._write_audit("mobile_login", binding.user_id,
                           extra={"channel": channel, "external_id": external_id})
         return {"token": token,
@@ -559,7 +592,7 @@ class MobileBff:
     def auth(self, token: str) -> MobileSession:
         """会话鉴权：验签/有效期 → 会话身份（bogus/过期 40101）。"""
         now = self._clock()
-        payload = parse_session_token(token, now)
+        payload = parse_session_token(token, now, key=self._signing_key)
         return MobileSession(
             user_id=str(payload["uid"]), name=str(payload.get("name", "")),
             roles=tuple(payload.get("roles", ())),
@@ -676,7 +709,7 @@ class MobileBff:
 
 __all__ = [
     "SESSION_TTL_S", "VERIFY_TTL_S", "VERIFY_MAX_FAILURES", "HOME_CACHE_S", "CHANNELS",
-    "SUPERVISOR_ROLES", "MobileError", "PushProviderError",
+    "SUPERVISOR_ROLES", "SIGNING_KEY_ENV", "MobileError", "MobileConfigError", "PushProviderError",
     "Binding", "MobileSession", "BindingStore",
     "issue_session_token", "parse_session_token",
     "IdentityProvider", "IdentityStub",

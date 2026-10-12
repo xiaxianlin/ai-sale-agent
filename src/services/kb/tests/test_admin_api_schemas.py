@@ -68,7 +68,13 @@ class StubSchemaProvider:
 
 
 def make_client(**kwargs: Any) -> TestClient:
-    """组装被测应用（缺省空注册表；用例按需注入桩/存储）。"""
+    """组装被测应用（缺省空注册表；用例按需注入桩/存储）。
+
+    admin_auth 显式注入放行桩（CR P0-3 修复后工厂缺省拒绝写操作；本文件聚焦
+    Schema 下发与统计读语义，鉴权关门口径由 test_admin_api_items 单独覆盖）。"""
+    from .test_admin_api_items import allow_all_admin_auth
+
+    kwargs.setdefault("admin_auth", allow_all_admin_auth)
     return TestClient(create_admin_app(**kwargs))
 
 

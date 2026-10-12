@@ -45,7 +45,8 @@ def make_client():
     src.mail_rows.append(MailFact("cart_recover", "delivered", "a@x.com", D1))
     src.mail_rows.append(MailFact("cart_recover", "failed", "b@x.com", D1))
     metrics = SiteMetrics(src, clock=MutableClock(D1).now)
-    app = create_admin_app(metrics=metrics)
+    # allow_header_claims=True：测试显式声明 demo 形态（CR P0-3 修复后缺省关门）
+    app = create_admin_app(metrics=metrics, allow_header_claims=True)
     return TestClient(app), metrics
 
 
@@ -104,3 +105,12 @@ class TestAdminApi:
         client, _ = make_client()
         r = client.get(ADMIN_OVERVIEW_PATH, params=params(), headers=SALES)
         assert r.status_code == 403 and r.json()["code"] == 40301
+
+
+def test_default_denies_self_declared_header_roles() -> None:
+    """CR P0-3 修复：缺省不信任客户端自声明头——未注入 claims_provider 且未显式
+    开启 allow_header_claims 时，携带 X-User-Roles: supervisor 头也一律 40301。"""
+    metrics = SiteMetrics(FakeSiteSource(), clock=MutableClock(D1).now)
+    app = create_admin_app(metrics=metrics)  # 全缺省（关门形态）
+    r = TestClient(app).get(ADMIN_OVERVIEW_PATH, params=params(), headers=SUPERVISOR)
+    assert r.status_code == 403 and r.json()["code"] == 40301

@@ -31,6 +31,11 @@ ITEMS = "/api/v1/knowledge/items"
 # ─────────────────────────── 测试桩 ───────────────────────────
 
 
+def allow_all_admin_auth() -> None:
+    """鉴权放行桩（demo/测试形态）：声明「已通过 JWT/RBAC」的管理端装配口径。"""
+    return None
+
+
 class StubSyncHook:
     """同步钩子桩：记录 enqueue 调用；可注入异常以测索引失败不阻断保存。"""
 
@@ -81,9 +86,14 @@ def make_client(
     sync: Any = None,
     audit: Any = None,
 ) -> TestClient:
-    """组装被测应用（真实链路：内存存储 + 注入桩；未注入组件取缺省装配）。"""
+    """组装被测应用（真实链路：内存存储 + 注入桩；未注入组件取缺省装配）。
+
+    admin_auth 显式注入放行桩：本文件聚焦条目 CRUD 语义，鉴权关门口径由
+    test_default_admin_auth_denies_writes_allows_reads 单独覆盖（CR P0-3 修复）。
+    """
     return TestClient(
-        create_admin_app(store=store, schema_provider=provider, sync_hook=sync, audit_hook=audit)
+        create_admin_app(store=store, schema_provider=provider, sync_hook=sync,
+                         audit_hook=audit, admin_auth=allow_all_admin_auth)
     )
 
 
@@ -501,3 +511,14 @@ def test_store_protocol_runtime_conformance() -> None:
     record = KnowledgeItemRecord(kb_type="product", title="t")
     stored = InMemoryKnowledgeItemStore().create(record)
     assert stored.uid.startswith("k-") and stored.created_at is not None
+
+
+def test_default_admin_auth_denies_writes_allows_reads() -> None:
+    """CR P0-3 修复：未注入 admin_auth 时缺省关门——写操作一律 40301（信封内码），
+    读操作放行；生产由挂载方注入 JWT/RBAC 依赖（NFR-SEC-02）。"""
+    client = TestClient(create_admin_app())  # 全缺省（关门形态）
+    created = client.post(ITEMS, json={"kb_type": "product", "title": "越权写",
+                                       "action": "save_draft"})
+    assert created.status_code == 403
+    assert created.json()["code"] == 40301
+    assert client.get(ITEMS).status_code == 200  # 读操作放行（看板/列表不受影响）

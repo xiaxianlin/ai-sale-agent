@@ -8,6 +8,11 @@
 
 新增可调参数只改 SCHEMA 与 ENV_MAP/VALUES_MAP，禁止手改生成物（SR §6.5）。
 
+密钥供给（CR P0-5 修复）：配置源 ``secrets`` 段必填四个服务密钥（site/saas 令牌与
+SDK、邮件回执入口），接入时经 ``generate_secret_values()`` 随机生成写入配置源，
+由本生成器统一下发进 ``.env``（KB_SITE_TOKEN_SECRET/KB_SITE_SDK_KEY/
+KB_MAIL_WEBHOOK_KEY/KB_SAAS_TOKEN_SECRET）——服务侧缺密钥即启动失败（fail-closed）。
+
 用法（CLI）：
   python3 tools/saas/gen_config.py -c tenant.yaml --target compose --out .env
   python3 tools/saas/gen_config.py -c tenant.yaml --target helm   --out values-t001.yaml
@@ -20,6 +25,7 @@ import argparse
 import hashlib
 import json
 import re
+import secrets as _secrets
 import sys
 from pathlib import Path
 from typing import Any
@@ -38,6 +44,20 @@ ENV_MAP: dict[str, str] = {
     "dependencies.postgresql.size_gb": "PG_SIZE_GB",
     "dependencies.milvus.size_gb": "MILVUS_SIZE_GB",
     "dependencies.redis.size_gb": "REDIS_SIZE_GB",
+    # 服务密钥下发（CR P0-5 修复）：配置源 secrets 段 → .env；服务侧缺密钥即启动失败，
+    # 本生成器负责「生成（generate_secret_values）与下发（render_env）」的供给链闭环
+    "secrets.site_token_secret": "KB_SITE_TOKEN_SECRET",
+    "secrets.site_sdk_key": "KB_SITE_SDK_KEY",
+    "secrets.mail_webhook_key": "KB_MAIL_WEBHOOK_KEY",
+    "secrets.saas_token_secret": "KB_SAAS_TOKEN_SECRET",
+}
+
+#: 密钥段 → 环境变量（CR P0-5 修复；与 ENV_MAP 的 secrets 子集同源，供测试/校验消费）
+SECRET_ENV_KEYS: dict[str, str] = {
+    "site_token_secret": "KB_SITE_TOKEN_SECRET",
+    "site_sdk_key": "KB_SITE_SDK_KEY",
+    "mail_webhook_key": "KB_MAIL_WEBHOOK_KEY",
+    "saas_token_secret": "KB_SAAS_TOKEN_SECRET",
 }
 
 #: 配置源 → Helm values 路径（SR §6.5 VALUES_MAP；目标路径必须在 values.yaml 存在）
@@ -67,7 +87,20 @@ _INT_RANGES: dict[str, tuple[int, int]] = {
 
 #: 必填字符串键（非空）
 _REQUIRED_STR: tuple[str, ...] = ("meta.tenant_id", "meta.plan", "images.registry",
-                                  "images.tag", "ingress.domain")
+                                  "images.tag", "ingress.domain",
+                                  # 服务密钥必填（CR P0-5 修复：拒绝无密钥配置出包）
+                                  "secrets.site_token_secret", "secrets.site_sdk_key",
+                                  "secrets.mail_webhook_key", "secrets.saas_token_secret")
+
+
+def generate_secret_values() -> dict[str, str]:
+    """生成四个服务密钥的随机值（CR P0-5 修复；接入新租户时写入 tenant-config.yaml
+    的 secrets 段，再由 render_env 下发进 .env——生成一次、确定性渲染、指纹可对账）。
+
+    密钥经 ``secrets.token_urlsafe(32)`` 高熵随机生成（非可预测占位）；重复调用
+    产出互不相同，接入方生成后固化于配置源（单一源，禁止手改生成物）。
+    """
+    return {name: _secrets.token_urlsafe(32) for name in SECRET_ENV_KEYS}
 
 
 class SchemaError(Exception):

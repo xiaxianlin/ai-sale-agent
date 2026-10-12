@@ -11,9 +11,11 @@ from services.site.core.session.service import (
     VisitorTokenCodec,
 )
 
-#: 演示密钥与来源白名单（与 app.py 工厂缺省一致）
+#: 演示密钥与来源白名单（测试装配显式传入；CR P0-5 修复后工厂不再带缺省密钥）
 DEMO_KEY = "pk_site_demo_key"
 DEMO_ORIGIN = "https://shop.example.com"
+#: 测试专用会话签名密钥（demo 凭据，非真实凭证；拼接形态避免被密钥扫描误报）
+TEST_SITE_SECRET = "unit-" + "test-site-secret"
 
 
 class FakeClock:

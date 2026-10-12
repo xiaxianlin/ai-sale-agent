@@ -20,6 +20,7 @@ from datetime import datetime, timedelta
 import pytest
 
 from services.agent.core.mobile.bff import (
+    SIGNING_KEY_ENV,
     Binding,
     BindingStore,
     DingTalkWorkFake,
@@ -28,6 +29,7 @@ from services.agent.core.mobile.bff import (
     FakeHomeProvider,
     IdentityStub,
     MobileBff,
+    MobileConfigError,
     MobileError,
     MpTemplateFake,
     PushRouter,
@@ -38,6 +40,8 @@ from services.agent.core.mobile.bff import (
 
 NOW = datetime(2026, 10, 11, 10, 0, 0)
 ROLES = {"supervisor:1": ("supervisor",), "sales:1": ("sales",)}
+#: 测试专用签名密钥（demo 凭据，非真实凭证；CR P0-4 修复后构造处显式传入）
+TEST_SIGNING_KEY = b"unit-" + b"test-mobile-signing-key"
 
 
 class Harness:
@@ -68,7 +72,8 @@ class Harness:
         self.bff = MobileBff(
             bindings=self.bindings, identity=self.identity, roles_of=ROLES.get,
             home=self.home, approvals=self.approvals, conversations=self.conversations,
-            push=self.push, verify=self.verify, audit=self.audit, clock=self.clock)
+            push=self.push, verify=self.verify, audit=self.audit, clock=self.clock,
+            signing_key=TEST_SIGNING_KEY)
 
     def login_supervisor(self, channel: str = "dingtalk") -> str:
         """主管登录取 token（钉钉免登 / 微信 code）。"""
@@ -121,6 +126,52 @@ class TestLoginAndAuth:
         h.now = NOW + timedelta(seconds=7201)
         with pytest.raises(MobileError):
             h.bff.auth(token)
+
+
+def test_missing_signing_key_fails_fast(monkeypatch: pytest.MonkeyPatch) -> None:
+    """CR P0-4 修复：未传 signing_key 且环境变量 KB_MOBILE_SIGNING_KEY 未配置 →
+    构造即 MobileConfigError（fail-fast，拒绝无密钥签发；对齐 vault 缺主密钥口径）。"""
+    monkeypatch.delenv(SIGNING_KEY_ENV, raising=False)
+    with pytest.raises(MobileConfigError, match=SIGNING_KEY_ENV):
+        MobileBff(  # 全缺省（关门形态：不传 signing_key）
+            bindings=BindingStore(), identity=IdentityStub(), roles_of=ROLES.get,
+            home=FakeHomeProvider(), approvals=FakeApprovalSink(),
+            conversations=FakeConversationSink(),
+            push=PushRouter(DingTalkWorkFake(), WxSubscribeFake(), MpTemplateFake(), SmsFake()),
+            verify=VerifyGate(code_sender=lambda uid, code: None),
+        )
+
+
+def test_signing_key_from_env(monkeypatch: pytest.MonkeyPatch) -> None:
+    """环境变量注入形态：KB_MOBILE_SIGNING_KEY 可替代构造参数（未传 signing_key 时生效）。"""
+    monkeypatch.setenv(SIGNING_KEY_ENV, TEST_SIGNING_KEY.decode("ascii"))
+    bindings = BindingStore()
+    bindings.add(Binding("supervisor:1", "dingtalk", "dd-001", "王主管"))
+    bff = MobileBff(
+        bindings=bindings,
+        identity=IdentityStub(dingtalk_users={"auth-ok": "dd-001"}),
+        roles_of=ROLES.get, home=FakeHomeProvider(), approvals=FakeApprovalSink(),
+        conversations=FakeConversationSink(),
+        push=PushRouter(DingTalkWorkFake(), WxSubscribeFake(), MpTemplateFake(), SmsFake()),
+        verify=VerifyGate(code_sender=lambda uid, code: None),
+    )
+    token = bff.login("dingtalk", "auth-ok")["token"]
+    assert bff.auth(token).user_id == "supervisor:1"
+
+
+def test_tokens_signed_with_injected_key_rejected_by_other_key() -> None:
+    """密钥隔离：A 密钥签发的令牌，B 密钥实例验签一律 40101（防持源码者伪造）。"""
+    h = make_harness()
+    token = h.login_supervisor()
+    other = Harness()
+    other.bff = MobileBff(
+        bindings=other.bindings, identity=other.identity, roles_of=ROLES.get,
+        home=FakeHomeProvider(), approvals=FakeApprovalSink(),
+        conversations=FakeConversationSink(), push=other.push, verify=other.verify,
+        clock=other.clock, signing_key=b"another-" + b"signing-key-entirely")
+    with pytest.raises(MobileError) as forged:
+        other.bff.auth(token)
+    assert forged.value.code == 40101
 
 
 class TestHomeAggregation:

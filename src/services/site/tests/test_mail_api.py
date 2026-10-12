@@ -10,6 +10,7 @@ from __future__ import annotations
 
 from datetime import timedelta
 
+import pytest
 from fastapi.testclient import TestClient
 
 from services.site.api.mail_api import (
@@ -18,6 +19,7 @@ from services.site.api.mail_api import (
     MAIL_TRACKING_EVENT_PATH,
     create_mail_app,
 )
+from services.site.core.errors import SiteConfigError
 from services.site.core.mailing.scheduler import DomainRateGuard, MailScheduler
 from services.site.core.mailing.sequences import MailStore, SequenceEngine
 from services.site.core.mailing.templates import TemplateRegistry
@@ -48,7 +50,8 @@ def make_client(per_hour: int = 100):
                               clock=clock.now)
     tracker = DeliveryTracker(store, engine, SuppressionList(), clock=clock.now)
     app = create_mail_app(scheduler=scheduler, tracker=tracker, templates=templates,
-                          store=store, api_key=TEST_MAIL_API_KEY, clock=clock.now)
+                          store=store, api_key=TEST_MAIL_API_KEY, clock=clock.now,
+                          allow_header_claims=True)  # 测试显式声明 demo 形态（CR P0-3 修复）
     return TestClient(app), clock, store, tracker, scheduler
 
 
@@ -125,3 +128,40 @@ class TestMailApi:
         data = r.json()["data"]
         assert data["sent"] == 1 and data["delivered"] == 1
         assert data["delivery_rate"] == 1.0 and data["meets_target"] is True
+
+
+def test_default_denies_write_without_claims_provider() -> None:
+    """CR P0-3 修复：缺省不信任客户端自声明头——未注入 claims_provider 且未显式
+    开启 allow_header_claims 时，写操作（enroll/templates）一律 40301（读/内部入口不受影响）。"""
+    clock = MutableClock()
+    store = MailStore()
+    templates = TemplateRegistry(clock=clock.now)
+    app = create_mail_app(  # 全缺省（关门形态；api_key 显式注入 demo 值）
+        scheduler=MailScheduler(engine=SequenceEngine(store, clock=clock.now), store=store,
+                                transport=FakeSmtpTransport(clock), templates=templates,
+                                suppression=SuppressionList(),
+                                rate_guard=DomainRateGuard(per_domain_per_hour=100), clock=clock.now),
+        tracker=DeliveryTracker(store, SequenceEngine(store, clock=clock.now),
+                                SuppressionList(), clock=clock.now),
+        templates=templates, store=store, api_key=TEST_MAIL_API_KEY)
+    r = TestClient(app).post(ENROLL_PATH, json=enroll_body())
+    assert r.status_code == 403 and r.json()["code"] == 40301
+
+
+def test_missing_api_key_fails_fast(monkeypatch) -> None:
+    """CR P0-5 修复：未传 api_key 且环境变量 KB_MAIL_WEBHOOK_KEY 未配置 → 启动即
+    SiteConfigError（fail-fast，拒绝无密钥运行；对齐 vault 缺主密钥口径）。"""
+    monkeypatch.delenv("KB_MAIL_WEBHOOK_KEY", raising=False)
+    clock = MutableClock()
+    store = MailStore()
+    templates = TemplateRegistry(clock=clock.now)
+    with pytest.raises(SiteConfigError, match="KB_MAIL_WEBHOOK_KEY"):
+        create_mail_app(
+            scheduler=MailScheduler(engine=SequenceEngine(store, clock=clock.now), store=store,
+                                    transport=FakeSmtpTransport(clock), templates=templates,
+                                    suppression=SuppressionList(),
+                                    rate_guard=DomainRateGuard(per_domain_per_hour=100),
+                                    clock=clock.now),
+            tracker=DeliveryTracker(store, SequenceEngine(store, clock=clock.now),
+                                    SuppressionList(), clock=clock.now),
+            templates=templates, store=store)

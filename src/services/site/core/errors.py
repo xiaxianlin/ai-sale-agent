@@ -16,6 +16,8 @@ api 层据此映射 HTTP 状态码与统一信封 {code, message, data, trace_id
 """
 from __future__ import annotations
 
+import os
+
 #: 业务错误码 → HTTP 状态码映射（api 层装配用）
 CODE_HTTP: dict[int, int] = {
     40001: 400,
@@ -37,4 +39,25 @@ class SiteServiceError(Exception):
         self.message = message
 
 
-__all__ = ["CODE_HTTP", "SiteServiceError"]
+class SiteConfigError(Exception):
+    """配置缺失（fail-fast）：密钥未注入时启动即失败（CR P0-5 修复，NFR-SEC-04；
+    对齐 vault.VaultConfigError 模式——拒绝无密钥运行，绝不回落到缺省硬编码值）。"""
+
+
+def resolve_site_secret(value: str | None, env_name: str, what: str) -> str:
+    """密钥解析（CR P0-5 修复）：显式参数 → 环境变量兜底；均缺抛 SiteConfigError。
+
+    :param value: 装配方显式传入的密钥（demo/测试传拼接字面量，生产由密钥管理下发）。
+    :param env_name: 兜底环境变量名（如 KB_SITE_TOKEN_SECRET，装配层各工厂声明）。
+    :param what: 密钥中文用途（错误文案定位用）。
+    """
+    secret = value if value is not None else os.environ.get(env_name)
+    if not secret:
+        raise SiteConfigError(
+            f"缺少{what}：请经构造参数注入或设置环境变量 {env_name}"
+            "（NFR-SEC-04；生产经密钥管理下发，严禁缺省硬编码）"
+        )
+    return secret
+
+
+__all__ = ["CODE_HTTP", "SiteConfigError", "SiteServiceError", "resolve_site_secret"]

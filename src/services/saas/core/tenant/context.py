@@ -15,6 +15,7 @@ import base64
 import hashlib
 import hmac
 import json
+import os
 import uuid as _uuid
 from contextlib import contextmanager
 from contextvars import ContextVar, Token
@@ -34,6 +35,15 @@ DEFAULT_TENANT_ID: int = 1
 #: 双域令牌 audience（SR-SAAS-003 §2 决策 1：平台域/租户域两套 JWT，互不接受）
 PLATFORM_AUD: str = "platform"
 TENANT_AUD: str = "tenant"
+
+#: 令牌签名密钥环境变量（CR P0-5 修复：参数 → env → 启动失败，无缺省硬编码；
+#: NFR-SEC-04 生产经密钥管理下发）
+SAAS_TOKEN_SECRET_ENV: str = "KB_SAAS_TOKEN_SECRET"
+
+
+class SaasConfigError(Exception):
+    """配置缺失（fail-fast）：令牌签名密钥未注入（CR P0-5 修复，NFR-SEC-04；对齐
+    vault.VaultConfigError 模式——拒绝无密钥运行，绝不回落到源码硬编码缺省值）。"""
 
 
 class TenantContextError(Exception):
@@ -73,6 +83,18 @@ def _b64url_decode(data: str) -> bytes:
     return base64.urlsafe_b64decode(data + padding)
 
 
+def resolve_saas_secret(secret: str | None) -> str:
+    """令牌签名密钥解析（CR P0-5 修复）：显式参数 → 环境变量 KB_SAAS_TOKEN_SECRET；
+    均缺抛 SaasConfigError（中文 fail-fast，拒绝无密钥签发/验签）。"""
+    value = secret if secret is not None else os.environ.get(SAAS_TOKEN_SECRET_ENV)
+    if not value:
+        raise SaasConfigError(
+            f"缺少 SaaS 令牌签名密钥：请经构造参数 secret 注入或设置环境变量 "
+            f"{SAAS_TOKEN_SECRET_ENV}（NFR-SEC-04；生产经密钥管理下发，严禁缺省硬编码）"
+        )
+    return value
+
+
 class SaasTokenCodec:
     """HMAC-SHA256 签名令牌（demo 形态，契约与 JWT 一致：header.payload.signature 的
     payload/signature 语义按 base64url(json)+hmac 简化为 sig.payload——校验强度等价，
@@ -80,11 +102,12 @@ class SaasTokenCodec:
 
     def __init__(
         self,
-        secret: str = "saas-demo-secret",
+        secret: str | None = None,
         *,
         clock: Callable[[], datetime] | None = None,
     ) -> None:
-        self._secret = secret.encode("utf-8")
+        # CR P0-5 修复：无缺省密钥——参数 → env → 构造即 SaasConfigError（fail-fast）
+        self._secret = resolve_saas_secret(secret).encode("utf-8")
         self._clock = clock or (lambda: datetime.now(timezone.utc))
 
     def issue(

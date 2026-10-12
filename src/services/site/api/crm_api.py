@@ -60,9 +60,22 @@ def _ok(request: Request, data: Any) -> JSONResponse:
 
 
 def header_claims_provider(request: Request) -> dict:
-    """缺省 claims 提供者（demo 请求头承载；生产由全局 JWT 中间件解析）。"""
+    """请求头 claims 提供者（demo 请求头承载；生产由全局 JWT 中间件解析）。
+
+    仅在工厂显式传 ``allow_header_claims=True`` 时启用（本地 demo/测试形态）；
+    缺省不信任客户端自声明头（CR P0-3 修复）。
+    """
     roles = [r.strip() for r in request.headers.get("X-User-Roles", "").split(",") if r.strip()]
     return {"sub": request.headers.get("X-User-Id", ""), "roles": roles}
+
+
+def denied_claims_provider(request: Request) -> dict:
+    """缺省关门 claims 提供者（CR P0-3 修复）：未注入 claims_provider 且未显式开启
+    allow_header_claims 时写操作一律 40301——绝不回落到信任请求头自声明角色。
+
+    生产 = JWT claims 注入（claims_provider 由网关中间件解析后提供）。
+    """
+    raise BizError(403, CODE_FORBIDDEN, "未配置身份鉴权：CRM 写操作缺省拒绝（生产须注入 JWT claims_provider）")
 
 
 def _jsonable(value: Any) -> Any:
@@ -109,9 +122,16 @@ class UndoBody(BaseModel):
 def create_crm_app(*, normalizer: LeadNormalizer, merger: CustomerMerger, store: Any,
                    clock: Callable[[], datetime] | None = None,
                    allowed_roles: tuple[str, ...] = ("crm_operator", "admin"),
-                   claims_provider: Callable[[Request], dict] | None = None) -> FastAPI:
-    """组装 CRM 数据互通 API（依赖注入；合并类端点统一 crm_operator 角色）。"""
-    claims_of = claims_provider or header_claims_provider
+                   claims_provider: Callable[[Request], dict] | None = None,
+                   allow_header_claims: bool = False) -> FastAPI:
+    """组装 CRM 数据互通 API（依赖注入；合并类端点统一 crm_operator 角色）。
+
+    :param claims_provider: claims 提供者（生产 = JWT claims 注入）。
+    :param allow_header_claims: 是否信任请求头自声明角色（X-User-Roles）。缺省 False
+        ——未提供 claims_provider 时写操作一律 40301（CR P0-3 修复）；True 仅限本地 demo/测试。
+    """
+    # CR P0-3 修复：缺省不读请求头角色——未注入 claims_provider 即关门（40301）
+    claims_of = claims_provider or (header_claims_provider if allow_header_claims else denied_claims_provider)
     app = FastAPI(title="site-service CRM 集成 API", version="0.1.0",
                   description="FR-SITE-005（SR-SITE-005）：线索归一化/跨渠道合并/客户 360。")
 

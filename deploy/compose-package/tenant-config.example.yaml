@@ -27,3 +27,9 @@ apps:                        # 服务级参数（12 服务全参数化，此处�
 brand:                       # 白标初值（FR-SAAS-006；运行时读取免发版，此处仅为冷启动）
   primaryColor: "#1E63E9"
   logoUrl: ""                # 留空=内置默认品牌；正式 Logo 经品牌后台上传本租户 OSS 目录
+secrets:                     # 服务密钥（CR P0-5 修复：必填；接入时随机生成固化于此，
+                             # 经 gen_config 下发 .env；服务侧缺密钥即启动失败 NFR-SEC-04）
+  site_token_secret: GENERATED-BY-GEN-CONFIG-REPLACE-ME   # 独立站访客令牌签名
+  site_sdk_key: GENERATED-BY-GEN-CONFIG-REPLACE-ME        # 独立站 SDK 接入键
+  mail_webhook_key: GENERATED-BY-GEN-CONFIG-REPLACE-ME    # 邮件回执入口 X-Api-Key
+  saas_token_secret: GENERATED-BY-GEN-CONFIG-REPLACE-ME   # SaaS 双域令牌签名

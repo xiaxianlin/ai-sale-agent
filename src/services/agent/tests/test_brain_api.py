@@ -14,6 +14,8 @@
 
 from __future__ import annotations
 
+from datetime import datetime
+
 from typing import Any
 
 from fastapi.testclient import TestClient
@@ -146,9 +148,11 @@ def test_respond_price_leak_never_sent() -> None:
 def test_stats_inquiries_endpoint() -> None:
     """等价类：GET /api/v1/agent/stats/inquiries 返回构成/占比/达标（NFR-PER-04 报表面）。"""
     client, _, stats = build_client()
+    # 固定落账日期（CR P0-1 修复：原用真实时钟 + 硬编码查询日，跨日即时间炸弹）
+    day = datetime(2026, 10, 11, 10, 0)
     for i in range(16):
-        stats.record_inbound(1, f"c-{i}", at=None)
-        stats.record_handled(1, f"c-{i}", "ai_auto" if i < 14 else "fallback")
+        stats.record_inbound(1, f"c-{i}", at=day)
+        stats.record_handled(1, f"c-{i}", "ai_auto" if i < 14 else "fallback", handled_at=day)
     resp = client.get("/api/v1/agent/stats/inquiries", params={"stat_date": "2026-10-11"})
     assert resp.status_code == 200
     data = resp.json()

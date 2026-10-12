@@ -8,7 +8,7 @@ from fastapi.testclient import TestClient
 
 from services.site.api.app import create_site_app
 
-from .conftest import DEMO_KEY, DEMO_ORIGIN
+from .conftest import DEMO_KEY, DEMO_ORIGIN, TEST_SITE_SECRET
 
 CHAT = "/api/v1/site/chat"
 INVITE_CHECK = "/api/v1/site/invite/check"
@@ -17,6 +17,8 @@ LEADS = "/api/v1/site/leads"
 
 def build_client(**kw: object) -> tuple[TestClient, str]:
     """装配应用 + granted 会话，返回 (client, visitor_token)。"""
+    kw.setdefault("secret", TEST_SITE_SECRET)
+    kw.setdefault("sdk_key", DEMO_KEY)
     client = TestClient(create_site_app(**kw))
     init = client.post(
         "/api/v1/site/session", json={"key": DEMO_KEY}, headers={"Origin": DEMO_ORIGIN}

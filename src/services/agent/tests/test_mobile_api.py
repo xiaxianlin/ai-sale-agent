@@ -37,6 +37,8 @@ from services.agent.core.mobile.bff import (
 
 NOW = datetime(2026, 10, 11, 10, 0, 0)
 ROLES = {"supervisor:1": ("supervisor",), "sales:1": ("sales",)}
+#: 测试专用签名密钥（demo 凭据，非真实凭证；CR P0-4 修复后构造处显式传入）
+TEST_SIGNING_KEY = b"unit-" + b"test-mobile-signing-key"
 
 
 def build_client() -> tuple[TestClient, list[tuple[str, str]], FakeApprovalSink]:
@@ -53,7 +55,7 @@ def build_client() -> tuple[TestClient, list[tuple[str, str]], FakeApprovalSink]
         identity=IdentityStub(dingtalk_users={"auth-ok": "dd-001", "auth-sales": "dd-002"}),
         roles_of=ROLES.get,
         home=FakeHomeProvider(), approvals=FakeApprovalSink(), conversations=FakeConversationSink(),
-        push=push, verify=verify, clock=lambda: NOW)
+        push=push, verify=verify, clock=lambda: NOW, signing_key=TEST_SIGNING_KEY)
     return TestClient(create_mobile_app(bff=bff)), codes, bff.approvals  # type: ignore[return-value]
 
 

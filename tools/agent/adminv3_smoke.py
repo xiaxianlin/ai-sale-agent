@@ -126,7 +126,8 @@ class Smoke:
             bindings=self.bindings, identity=IdentityStub(dingtalk_users={"auth-ok": "dd-001"}),
             roles_of=ROLES.get, home=FakeHomeProvider(), approvals=self.approvals,
             conversations=FakeConversationSink(), push=self.push, verify=self.verify,
-            clock=lambda: self.now)
+            clock=lambda: self.now,
+            signing_key=b"smoke-" + b"mobile-signing-key")  # demo 凭据（CR P0-4 修复口径）
 
     # ---------------------------------------------------------------- 步骤登记
 

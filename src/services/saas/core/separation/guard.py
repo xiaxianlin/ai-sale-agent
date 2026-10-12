@@ -273,7 +273,7 @@ class TemplateLoader:
         override = self._overrides.get(cache_key)
         if override is not None:  # ① 租户覆盖（甲方优化版话术/参数）
             body = override
-        else:  # ② 平台默认域（出厂种子，tenant_id=0 对全部租户只读可见）
+        else:  # ② 平台默认域（出厂种子行，对全部租户只读可见——域标识见上方查询常量）
             body = self._default_body(scope, key)
         if body is None:  # ③ 代码内置兜底（与出厂种子同源生成）
             body = BUILTIN_TEMPLATES.get((scope, key))

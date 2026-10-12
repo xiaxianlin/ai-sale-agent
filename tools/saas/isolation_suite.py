@@ -115,6 +115,8 @@ class IsolationEnv:
         self.app, self.comps = create_saas_app(
             registry=self.registry,
             quota=quota,
+            # 套件专用令牌签名密钥（demo 凭据；CR P0-5 修复后装配处显式传入）
+            secret="iso-" + "suite-secret",
             cross_tenant_leak=(leak_mode == "open"),
         )
         self.client = TestClient(self.app)

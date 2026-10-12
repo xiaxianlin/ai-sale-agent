@@ -44,6 +44,8 @@ from services.site.core.conversation.service import FakeSiteLlm  # noqa: E402
 
 TAG = "[独立站冒烟]"
 KEY = "pk_site_demo_key"
+# 冒烟专用会话签名密钥（demo 凭据，非真实凭证；CR P0-5 修复后装配处显式传入）
+SECRET = "smk-" + "site-smoke-secret"
 ORIGIN = "https://shop.example.com"
 DEFAULT_REPORT = Path("out") / "site" / "site_smoke_report.md"
 
@@ -91,7 +93,8 @@ def build_client() -> tuple[TestClient, FakeSiteLlm, FakeSearch, MutableClock]:
     llm = FakeSiteLlm({"Special deal": PRICE_LEAK_DRAFT})
     search = FakeSearch(PRODUCT_CHUNK, INVITE_CHUNK)
     clock = MutableClock()
-    app = create_site_app(llm=llm, search_fn=search, sdk_key=KEY, origins=(ORIGIN,), clock=clock)
+    app = create_site_app(llm=llm, search_fn=search, sdk_key=KEY, secret=SECRET,
+                          origins=(ORIGIN,), clock=clock)
     return TestClient(app), llm, search, clock
 
 

@@ -99,6 +99,9 @@ CODE_CONFLICT: int = 40901   # 乐观锁版本冲突（他人已修改）
 #: 操作人头（JWT 未接入期的承接口径，见模块 docstring 偏差③）
 ACTOR_HEADER: str = "x-actor"
 
+#: 管理端写操作 HTTP 方法集（缺省鉴权依赖的拒绝面；GET/HEAD/OPTIONS 读操作放行）
+WRITE_METHODS: frozenset[str] = frozenset({"POST", "PUT", "PATCH", "DELETE"})
+
 #: 时间兜底常量（记录缺时间字段的排序/展示兜底，正常路径不会出现）
 _EPOCH: datetime = datetime(1970, 1, 1, tzinfo=timezone.utc)
 
@@ -131,6 +134,22 @@ def request_actor(request: Request) -> str:
     """取操作人：X-Actor 头承接（缺省 anonymous；生产由 JWT 中间件注入真实用户）。"""
     actor: str = request.headers.get(ACTOR_HEADER, "").strip()
     return actor or "anonymous"
+
+
+def deny_write_admin_auth(request: Request) -> None:
+    """缺省管理端鉴权依赖（CR P0-3 修复）：未注入 ``admin_auth`` 时写操作一律拒绝
+    （HTTP 403 + 业务码 40301 信封），读操作（GET/HEAD/OPTIONS）放行。
+
+    生产 = 挂载方经 ``configure_admin(..., admin_auth=...)`` 注入 JWT/RBAC 路由依赖
+    （NFR-SEC-02）；本依赖仅为「未配置鉴权即关门」的安全缺省（fail-closed）。
+    """
+    if request.method in WRITE_METHODS:
+        raise ApiError(
+            40301,
+            403,
+            "管理端未配置鉴权依赖：写操作被拒绝（生产必须注入 JWT/RBAC admin_auth）",
+            None,
+        )
 
 
 async def _maybe_await(value: Any) -> None:

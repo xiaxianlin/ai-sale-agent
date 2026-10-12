@@ -71,7 +71,11 @@ def _trace_id_of(request: Request, x_trace_id: str) -> str:
 
 
 def header_claims_provider(request: Request) -> dict[str, Any]:
-    """缺省 claims 提供者：demo 以请求头承载（X-User-Id/X-User-Roles/X-Team-Ids）。"""
+    """请求头 claims 提供者：demo 以请求头承载（X-User-Id/X-User-Roles/X-Team-Ids）。
+
+    仅在工厂显式传 ``allow_header_claims=True`` 时启用（本地 demo/测试形态）；
+    缺省不信任客户端自声明头（CR P0-3 修复）。
+    """
     roles = [r.strip() for r in request.headers.get("X-User-Roles", "").split(",") if r.strip()]
     team_ids = [int(t) for t in request.headers.get("X-Team-Ids", "").split(",") if t.strip().isdigit()]
     return {
@@ -79,6 +83,15 @@ def header_claims_provider(request: Request) -> dict[str, Any]:
         "roles": roles,
         "data_scope": {"team_ids": team_ids},
     }
+
+
+def denied_claims_provider(request: Request) -> dict[str, Any]:
+    """缺省关门 claims 提供者（CR P0-3 修复）：未注入 claims_provider 且未显式开启
+    allow_header_claims 时一律 40301——绝不回落到信任请求头自声明角色。
+
+    生产 = JWT claims 注入（claims_provider 由全局鉴权中间件解析后提供，04 §1.2）。
+    """
+    raise ScopeDenied("未配置身份鉴权：主管看板缺省拒绝访问（生产须注入 JWT claims_provider）")
 
 
 # --------------------------------------------------------------------------- 看板读模型（API 内聚装配）
@@ -166,12 +179,24 @@ def create_board_app(
     directory: TeamDirectory,
     audit_cb: AuditCallback | None = None,
     claims_provider: Callable[[Request], dict[str, Any]] | None = None,
+    allow_header_claims: bool = False,
     today_fn: Callable[[], date] | None = None,
     team_name: str = DEFAULT_TEAM_NAME,
     version: str = "0.1.0",
 ) -> FastAPI:
-    """组装主管看板应用（组件契约见模块 docstring；全部依赖鸭子类型注入）。"""
-    claims_of = claims_provider if claims_provider is not None else header_claims_provider
+    """组装主管看板应用（组件契约见模块 docstring；全部依赖鸭子类型注入）。
+
+    :param claims_provider: claims 提供者（生产 = JWT claims 注入）。
+    :param allow_header_claims: 是否信任请求头自声明角色（X-User-Roles/X-Team-Ids）。
+        缺省 False——未提供 claims_provider 时一律 40301（CR P0-3 修复）；
+        True 仅限本地 demo/测试。
+    """
+    # CR P0-3 修复：缺省不读请求头角色——未注入 claims_provider 即关门（40301）
+    claims_of = (
+        claims_provider
+        if claims_provider is not None
+        else (header_claims_provider if allow_header_claims else denied_claims_provider)
+    )
     today_of = today_fn if today_fn is not None else date.today
 
     app = FastAPI(

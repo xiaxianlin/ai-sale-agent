@@ -38,6 +38,7 @@ from services.saas.core.tenant.context import (
     TenantContextError,
     TenantContextMiddleware,
     get_tenant_id,
+    resolve_saas_secret,
 )
 from services.saas.core.tenant.registry import RegistryError, TenantRegistry
 from services.saas.core.tenant.store import (
@@ -213,7 +214,7 @@ def create_saas_app(
     registry: TenantRegistry | None = None,
     quota: QuotaEngine | None = None,
     ops: OpsService | None = None,
-    secret: str = "saas-demo-secret",
+    secret: str | None = None,
     clock: Callable[[], datetime] | None = None,
     multi_tenancy_enabled: bool = True,
     host_resolver: Callable[[str], int | None] | None = None,
@@ -222,12 +223,16 @@ def create_saas_app(
 ) -> tuple[FastAPI, dict[str, Any]]:
     """装配 SaaS 应用：双域路由 + 租户上下文中间件 + 统一信封。
 
+    :param secret: 双域令牌签名密钥。缺省读环境变量 KB_SAAS_TOKEN_SECRET，均缺则
+        装配即 SaasConfigError（CR P0-5 修复：无缺省密钥，fail-fast）。
     cross_tenant_leak 仅供隔离套件缺陷注入元测试（模拟 RLS 失效），产品恒 False。
     返回 (app, components)——components 供测试/隔离套件直接消费核心组件。
     """
     clock = clock or (lambda: datetime.now(timezone.utc))
     registry = registry or TenantRegistry(clock=clock)
     quota = quota or QuotaEngine(clock=clock)
+    # CR P0-5 修复：缺省密钥关门——参数 → env → 启动失败（中文报错），装配层一次解析
+    secret = resolve_saas_secret(secret)
     codec = SaasTokenCodec(secret, clock=clock)
     ops = ops or OpsService(registry, quota, codec=codec, clock=clock, secret=secret)
     ops.wire()  # 审计钩子接入注册表（开通/状态/配额全量留痕，NFR-SEC-03）

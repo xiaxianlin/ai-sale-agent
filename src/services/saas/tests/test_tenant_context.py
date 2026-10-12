@@ -29,6 +29,10 @@ from starlette.testclient import TestClient
 from services.saas.api.saas_api import SAAS_TENANT_PREFIX, create_saas_app
 from services.saas.core.tenant.context import (
     DEFAULT_TENANT_ID,
+    SAAS_TOKEN_SECRET_ENV,
+    TENANT_AUD,
+    SaasConfigError,
+    SaasTokenCodec,
     TenantContextError,
     TenantContextMiddleware,
     get_tenant_id,
@@ -36,6 +40,8 @@ from services.saas.core.tenant.context import (
 )
 
 NOW = datetime(2026, 10, 11, 12, 0, 0, tzinfo=timezone.utc)
+#: 测试专用令牌签名密钥（demo 凭据，非真实凭证；CR P0-5 修复后构造处显式传入）
+TEST_SAAS_SECRET = "unit-" + "test-saas-secret"
 
 
 class TenantRegistryShim:
@@ -66,6 +72,7 @@ def build_env(multi_tenancy: bool = True, host_resolver=None):
     app, comps = create_saas_app(
         registry=registry,
         clock=clock,
+        secret=TEST_SAAS_SECRET,
         multi_tenancy_enabled=multi_tenancy,
         host_resolver=host_resolver,
     )
@@ -220,7 +227,7 @@ def test_context_reset_after_request() -> None:
         clock = lambda: NOW  # noqa: E731
         registry = TenantRegistryShim(clock=clock)
         tid = registry.add()
-        _, comps = create_saas_app(registry=registry, clock=clock)
+        _, comps = create_saas_app(registry=registry, clock=clock, secret=TEST_SAAS_SECRET)
         middleware = _direct_middleware(registry, comps)
         token = comps["ops"].issue_tenant_token(tid, sub="u")
 
@@ -243,7 +250,7 @@ def test_concurrent_requests_no_context_bleed() -> None:
         clock = lambda: NOW  # noqa: E731
         registry = TenantRegistryShim(clock=clock)
         tid_a, tid_b = registry.add(), registry.add()
-        _, comps = create_saas_app(registry=registry, clock=clock)
+        _, comps = create_saas_app(registry=registry, clock=clock, secret=TEST_SAAS_SECRET)
         middleware = _direct_middleware(registry, comps)
         token_a = comps["ops"].issue_tenant_token(tid_a, sub="a")
         token_b = comps["ops"].issue_tenant_token(tid_b, sub="b")
@@ -276,7 +283,7 @@ def test_api_surface_no_tenant_id_parameter() -> None:
     可回归的接口形态检查——端点只能经 ContextVar 取租户。）
     """
     clock = lambda: NOW  # noqa: E731
-    app, _ = create_saas_app(registry=TenantRegistryShim(clock=clock), clock=clock)
+    app, _ = create_saas_app(registry=TenantRegistryShim(clock=clock), clock=clock, secret=TEST_SAAS_SECRET)
     checked = 0
     for route in app.routes:
         if isinstance(route, APIRoute) and route.path.startswith(SAAS_TENANT_PREFIX):
@@ -284,3 +291,22 @@ def test_api_surface_no_tenant_id_parameter() -> None:
             assert "tenant_id" not in params, f"端点 {route.path} 声明了 tenant_id 形参"
             checked += 1
     assert checked >= 5  # whoami + 知识三项 + 对象/缓存，确保断言真实覆盖到端点
+
+
+# ------------------------------------------------------------------ 缺省密钥关门（CR P0-5 修复）
+
+
+def test_codec_missing_secret_fails_fast(monkeypatch: pytest.MonkeyPatch) -> None:
+    """CR P0-5 修复：SaasTokenCodec 未传 secret 且 KB_SAAS_TOKEN_SECRET 未配置 →
+    构造即 SaasConfigError（fail-fast，拒绝缺省密钥运行）。"""
+    monkeypatch.delenv(SAAS_TOKEN_SECRET_ENV, raising=False)
+    with pytest.raises(SaasConfigError, match=SAAS_TOKEN_SECRET_ENV):
+        SaasTokenCodec()
+
+
+def test_codec_secret_from_env(monkeypatch: pytest.MonkeyPatch) -> None:
+    """环境变量注入形态：KB_SAAS_TOKEN_SECRET 可替代构造参数（env 与显式参数等价）。"""
+    monkeypatch.setenv(SAAS_TOKEN_SECRET_ENV, TEST_SAAS_SECRET)
+    codec = SaasTokenCodec(clock=lambda: NOW)
+    token = codec.issue(TENANT_AUD, "u-1", tenant_id=3)
+    assert codec.verify(token, TENANT_AUD).tenant_id == 3
