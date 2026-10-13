@@ -125,8 +125,8 @@ def test_takeover_unknown_uid_404() -> None:
     client, *_ = build_client()
     resp = client.post("/api/v1/agent/sessions/alibaba:GHOST/takeover", json={"reason": "x"})
     assert resp.status_code == 404
-    assert resp.json()["detail"]["code"] == 40401
-    assert "不存在" in resp.json()["detail"]["message"]
+    assert resp.json()["code"] == 40401
+    assert "不存在" in resp.json()["message"]
 
 
 def test_takeover_from_pending_illegal_422() -> None:
@@ -136,8 +136,8 @@ def test_takeover_from_pending_illegal_422() -> None:
     sm.transition(UID, "pending_confirm", actor="ai:brain", reason="挂起")
     resp = client.post(f"/api/v1/agent/sessions/{UID}/takeover", json={"reason": "x"})
     assert resp.status_code == 422
-    assert resp.json()["detail"]["code"] == 42201
-    assert "非法" in resp.json()["detail"]["message"]
+    assert resp.json()["code"] == 42201
+    assert "非法" in resp.json()["message"]
 
 
 def test_stale_expect_version_conflict_409() -> None:
@@ -149,8 +149,8 @@ def test_stale_expect_version_conflict_409() -> None:
         json={"reason": "竞态写者", "expect_version": 99},
     )
     assert resp.status_code == 409
-    assert resp.json()["detail"]["code"] == 40901
-    assert "冲突" in resp.json()["detail"]["message"]
+    assert resp.json()["code"] == 40901
+    assert "冲突" in resp.json()["message"]
 
 
 def test_response_surface_has_no_credential_fields() -> None:

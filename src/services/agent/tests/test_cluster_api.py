@@ -90,7 +90,7 @@ def test_unknown_instance_404() -> None:
     client, *_ = build_client()
     resp = client.post(f"{PREFIX}/instances/9999/start")
     assert resp.status_code == 404
-    assert resp.json()["detail"]["code"] == "NOT_FOUND"
+    assert resp.json()["code"] == "NOT_FOUND"
 
 
 def test_illegal_transition_422() -> None:
@@ -101,7 +101,7 @@ def test_illegal_transition_422() -> None:
     registry.mark(7003, status="error", reason="drill")
     resp = client.post(f"{PREFIX}/instances/7003/start")
     assert resp.status_code == 422
-    assert resp.json()["detail"]["code"] == "ILLEGAL_TRANSITION"
+    assert resp.json()["code"] == "ILLEGAL_TRANSITION"
 
 
 def test_batch_operation_report() -> None:
@@ -122,7 +122,7 @@ def test_docker_failure_503() -> None:
     ops.fail_next_start("agent-runner-01", times=1)
     resp = client.post(f"{PREFIX}/instances/7001/start")
     assert resp.status_code == 503
-    assert resp.json()["detail"]["code"] == "DOCKER_UNREACHABLE"
+    assert resp.json()["code"] == "DOCKER_UNREACHABLE"
 
 
 # ───────────────────────── 灰度接口 ─────────────────────────
@@ -165,4 +165,4 @@ def test_gray_promote_and_rollback_roundtrip() -> None:
     again = client.post(f"{PREFIX}/gray/rollback",
                         json={"approver": "值班管理员", "reason": "重复回滚"})
     assert again.status_code == 409
-    assert again.json()["detail"]["code"] == "PLAN_STATE_INVALID"
+    assert again.json()["code"] == "PLAN_STATE_INVALID"

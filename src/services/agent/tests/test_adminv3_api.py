@@ -96,9 +96,9 @@ def test_batch_idempotent_and_error_contract() -> None:
     assert first.json()["uid"] == second.json()["uid"]
     empty = client.post("/api/v1/agent/v3/batch", json={"action": "stop", "account_ids": []},
                         headers={"X-Idempotency-Key": "k9"})
-    assert empty.status_code == 400 and empty.json()["detail"]["code"] == 40001
+    assert empty.status_code == 400 and empty.json()["code"] == 40001
     missing = client.get("/api/v1/agent/v3/batch/b-none")
-    assert missing.status_code == 404 and missing.json()["detail"]["code"] == 40401
+    assert missing.status_code == 404 and missing.json()["code"] == 40401
 
 
 def test_roi_views_and_unknown_account() -> None:
@@ -109,4 +109,4 @@ def test_roi_views_and_unknown_account() -> None:
     account = client.get("/api/v1/agent/v3/roi/1", params={"date_from": DAY, "date_to": DAY}).json()
     assert account["account_id"] == 1 and account["reply_rate"] == 1.0
     unknown = client.get("/api/v1/agent/v3/roi/99", params={"date_from": DAY, "date_to": DAY})
-    assert unknown.status_code == 404 and unknown.json()["detail"]["code"] == 40401
+    assert unknown.status_code == 404 and unknown.json()["code"] == 40401

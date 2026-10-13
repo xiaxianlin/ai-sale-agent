@@ -14,6 +14,8 @@ create_training_app 组装 AI 导师全链路，全部组件鸭子类型注入�
 """
 from __future__ import annotations
 
+from foundation.core.envelope import envelope, resolve_trace_id
+
 from collections.abc import Callable
 from typing import Any
 
@@ -33,8 +35,8 @@ from .routes import CODE_BAD_REQUEST, CODE_DOWNSTREAM, router
 
 
 def _envelope(trace_id: str, code: int, message: str, data: Any) -> dict[str, Any]:
-    """统一响应信封（04-接口设计 §1.3）：四键齐全，data 允许 None。"""
-    return {"code": code, "message": message, "data": data, "trace_id": trace_id}
+    """统一响应信封（CR A2：委托 foundation 单点；trace_id 缺省补齐非空）。"""
+    return envelope(code, message, data, trace_id)
 
 
 def install_training_error_handlers(app: FastAPI) -> FastAPI:
@@ -42,13 +44,13 @@ def install_training_error_handlers(app: FastAPI) -> FastAPI:
 
     @app.exception_handler(TutorBadRequest)
     async def _on_bad_request(request: Request, exc: TutorBadRequest) -> JSONResponse:
-        return JSONResponse(status_code=400, content=_envelope("", CODE_BAD_REQUEST, str(exc), None))
+        return JSONResponse(status_code=400, content=_envelope(resolve_trace_id(request), CODE_BAD_REQUEST, str(exc), None))
 
     @app.exception_handler(TutorDownstreamError)
     async def _on_downstream(request: Request, exc: TutorDownstreamError) -> JSONResponse:
         return JSONResponse(
             status_code=503,
-            content=_envelope("", CODE_DOWNSTREAM, str(exc) or "知识服务暂不可用，请稍后重试", None),
+            content=_envelope(resolve_trace_id(request), CODE_DOWNSTREAM, str(exc) or "知识服务暂不可用，请稍后重试", None),
         )
 
     @app.exception_handler(RequestValidationError)
@@ -63,7 +65,7 @@ def install_training_error_handlers(app: FastAPI) -> FastAPI:
         ]
         return JSONResponse(
             status_code=400,
-            content=_envelope("", CODE_BAD_REQUEST, "参数校验失败", {"errors": errors}),
+            content=_envelope(resolve_trace_id(request), CODE_BAD_REQUEST, "参数校验失败", {"errors": errors}),
         )
 
     return app

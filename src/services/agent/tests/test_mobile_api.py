@@ -91,7 +91,7 @@ def test_auth_and_home_summary() -> None:
     assert home.status_code == 200
     assert set(home.json()) == {"todo_alerts", "todo_approvals", "taking_over", "today"}
     bare = client.get("/api/v1/mobile/home")
-    assert bare.status_code == 401 and bare.json()["detail"]["code"] == 40101
+    assert bare.status_code == 401 and bare.json()["code"] == 40101
 
 
 def test_auth_unbound_403_no_leak() -> None:
@@ -99,8 +99,8 @@ def test_auth_unbound_403_no_leak() -> None:
     client, _, _ = build_client()
     resp = client.post("/api/v1/mobile/auth", json={"channel": "dingtalk", "credential": "nope"})
     assert resp.status_code == 403
-    assert resp.json()["detail"]["code"] == 40301
-    assert "不存在" not in resp.json()["detail"]["message"]
+    assert resp.json()["code"] == 40301
+    assert "不存在" not in resp.json()["message"]
 
 
 def test_verify_challenge_and_token_flow() -> None:
@@ -111,7 +111,7 @@ def test_verify_challenge_and_token_flow() -> None:
                        headers={"Authorization": f"Bearer {token}"}).json()["expires_in"] == 120
     wrong = client.post("/api/v1/mobile/verify/token", json={"answer": "000000"},
                         headers={"Authorization": f"Bearer {token}"})
-    assert wrong.status_code == 401 and wrong.json()["detail"]["code"] == 40102
+    assert wrong.status_code == 401 and wrong.json()["code"] == 40102
     right = client.post("/api/v1/mobile/verify/token", json={"answer": codes[-1][1]},
                         headers={"Authorization": f"Bearer {token}"})
     assert right.status_code == 200 and right.json()["expires_in"] == 120
@@ -123,7 +123,7 @@ def test_confirm_without_token_blocked() -> None:
     token = login(client)
     resp = client.post("/api/v1/mobile/approvals/sa-1/confirm", json={"verify_token": ""},
                        headers={"Authorization": f"Bearer {token}", "X-Idempotency-Key": "k1"})
-    assert resp.status_code == 401 and resp.json()["detail"]["code"] == 40102
+    assert resp.status_code == 401 and resp.json()["code"] == 40102
     assert sink.executed == 0
 
 
@@ -164,4 +164,4 @@ def test_takeover_push_register_and_role_guard() -> None:
     sales = login(client, credential="auth-sales")
     forbidden = client.post("/api/v1/mobile/approvals/sa-1/confirm", json={"verify_token": "x"},
                             headers={"Authorization": f"Bearer {sales}", "X-Idempotency-Key": "k5"})
-    assert forbidden.status_code == 403 and forbidden.json()["detail"]["code"] == 40301
+    assert forbidden.status_code == 403 and forbidden.json()["code"] == 40301

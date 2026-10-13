@@ -96,13 +96,13 @@ class TestSessionEndpoints:
         app = TestClient(create_admin_app(views=views))
         resp = app.post("/api/v1/agent/admin/sessions/c-x/takeover", json={"reason": "r"})
         assert resp.status_code == 422
-        assert resp.json()["detail"]["code"] == 42201
+        assert resp.json()["code"] == 42201
 
     def test_unknown_session_404(self, client: TestClient) -> None:
         """未知会话 → 404 + 错误码 40401。"""
         resp = client.get("/api/v1/agent/admin/sessions/c-none/messages")
         assert resp.status_code == 404
-        assert resp.json()["detail"]["code"] == 40401
+        assert resp.json()["code"] == 40401
 
 
 class TestSensitiveEndpoints:
@@ -135,7 +135,7 @@ class TestSensitiveEndpoints:
         dup = client.post(f"/api/v1/agent/admin/sensitive-actions/{uid}/reject",
                           json={"operator": "other", "reason": "再驳"})
         assert dup.status_code == 409
-        assert dup.json()["detail"]["code"] == 40901
+        assert dup.json()["code"] == 40901
 
     def test_reject_records_reason(self, client: TestClient) -> None:
         """驳回理由留痕并可在已驳回列表读回。"""
@@ -151,7 +151,7 @@ class TestSensitiveEndpoints:
         """未知草稿 → 404 + 40404。"""
         resp = client.get("/api/v1/agent/admin/sensitive-actions/no-such")
         assert resp.status_code == 404
-        assert resp.json()["detail"]["code"] == 40404
+        assert resp.json()["code"] == 40404
 
 
 class TestAuditEndpoint:

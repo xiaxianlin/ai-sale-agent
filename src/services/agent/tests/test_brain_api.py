@@ -182,5 +182,5 @@ def test_respond_llm_config_error_502() -> None:
     client, sender, _ = build_client(classifier=IntentClassifier(ExplodingLlm()))
     resp = post_respond(client, "ST-3200 1000pcs price?")
     assert resp.status_code == 502
-    assert resp.json()["detail"]["code"] == 50002
+    assert resp.json()["code"] == 50002
     assert len(sender.calls) == 0

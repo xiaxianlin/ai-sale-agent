@@ -155,4 +155,31 @@ def create_runner_app(
 
         return JSONResponse(status_code=exc.status_code, content={"detail": exc.detail})
 
+    install_agent_error_handlers(app)  # CR A2：统一信封
     return app
+
+
+def install_agent_error_handlers(app) -> None:
+    """统一信封错误处理（CR A2 补齐：agent 域 HTTPException → 四键信封同构）。
+
+    此前本域错误经 FastAPI 默认包裹为 {"detail": {...}}，与 04-接口设计 §1.3
+    四键信封不同构；各 app 工厂尾部调用本函数即可对齐。
+    """
+    from fastapi import HTTPException, Request
+    from fastapi.responses import JSONResponse
+
+    from foundation.core.envelope import resolve_trace_id
+
+    @app.exception_handler(HTTPException)
+    async def _agent_http_error(request: Request, exc: HTTPException) -> JSONResponse:
+        detail = exc.detail if isinstance(exc.detail, dict) else {"message": str(exc.detail)}
+        code = detail.get("code", exc.status_code * 100)  # 原样透传（兼容字符串业务码与 int 信封码）
+        return JSONResponse(
+            status_code=exc.status_code,
+            content={
+                "code": code,
+                "message": str(detail.get("message", "请求失败")),
+                "data": detail.get("data"),
+                "trace_id": resolve_trace_id(request),
+            },
+        )

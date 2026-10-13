@@ -89,14 +89,14 @@ class TestAlertEndpoints:
             "type": "risk_hit", "title": "t", "body": "b", "dedup_key": "k"}).json()["alert_uid"]
         resp = api.post(f"/api/v1/agent/alerts/{uid}/resolve", json={"operator": "x"})
         assert resp.status_code == 409
-        assert resp.json()["detail"]["code"] == 40901
+        assert resp.json()["code"] == 40901
 
     def test_unknown_uid_404(self, client) -> None:
         """未知告警 uid → 404 + 40401。"""
         api, _ = client
         resp = api.post("/api/v1/agent/alerts/no-such/ack", json={"operator": "x"})
         assert resp.status_code == 404
-        assert resp.json()["detail"]["code"] == 40401
+        assert resp.json()["code"] == 40401
 
     def test_big_customer_grade_a_high(self, client) -> None:
         """大客户 A 级：复核通过强制 high 双通道。"""
