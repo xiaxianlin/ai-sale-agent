@@ -54,6 +54,6 @@ class TestConnectFailureMasked:
             with PgConnection(dsn):
                 pass  # pragma: no cover - __enter__ 必然抛错
         message = str(excinfo.value)
-        assert secret not in message
+        assert probe_pw not in message
         assert "***" in message
         assert "127.0.0.1:1" in message  # 主机端口线索保留（上层降级排障依据）
