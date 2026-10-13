@@ -47,6 +47,7 @@ def build_engine(
     store: InMemorySessionStore | None = None,
     cursor_store: InMemoryPollCursorStore | None = None,
     process: Callable[[ConvCtx, list[PlatformMessage]], str | None] | None = None,
+    risk_guard=None,
 ) -> tuple[
     AgentRunnerEngine,
     ConversationStateMachine,
@@ -75,6 +76,7 @@ def build_engine(
         process_reply=process or default_process,
         alerts=alerts,
         audit=audit.append,
+        risk_guard=risk_guard,  # CR R1 接线：风控可选注入（None=无风控演示形态）
     )
     return engine, sm, store, alerts, audit
 

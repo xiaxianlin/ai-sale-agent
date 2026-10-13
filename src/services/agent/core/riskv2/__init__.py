@@ -1,6 +1,9 @@
 # 知识产权归甲方所有（COM-IP-01）——AI 外贸销售智能体系统交付物。
 # 许可与再分发须依据双方合同约定执行（COM-IP-02 乙方零使用权）。
 """多账号风控 V2 扩展模块（FR-SC-004，SR-SC-004 §3；risk-engine V2 扩展的 demo 进程内形态）。
+# [CR A8 标注·生命周期] riskv2 为 Phase 4 交付物：当前运行链接入形态为「按部署配置启用」——
+# 生产装配迭代将按 NFR-SEC-11 差异化要求把 riskv2 注入 AgentRunnerEngine/集群调度；
+# demo 单账号形态沿用 V1（risk/strategy）即可满足 §16.3 验收口径。
 
 - :mod:`profiles`——账号行为画像：分布参数数据驱动（种子/拟合/EWMA 漂移）；
 - :mod:`stagger`——错峰调度：黄金比例窗口起点错开 + 槽位配额；

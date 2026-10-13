@@ -275,7 +275,11 @@ class AgentRunnerEngine:
         process_reply: ProcessReply,
         alerts: AlertHook | None = None,
         audit: Callable[[dict[str, object]], None] | None = None,
+        risk_guard: "RiskGuard | None" = None,
     ) -> None:
+        # CR R1 接线：风控引擎可选注入——None 仅限无风控演示形态（既有装配/测试兼容）；
+        # 生产必配（FR-AG-005：发送前必须过 check，敏感 INTERCEPT/红线 BLOCK 拦截）
+        self._risk_guard = risk_guard
         self._account_id = account_id
         self._driver = driver
         self._sm = state_machine
@@ -343,10 +347,38 @@ class AgentRunnerEngine:
         return replace(report, **deltas)
 
     def _send(self, conv: ConvCtx, draft: str) -> bool:
-        """发送链：状态机门禁（人工态 AI 静默）→ 闸门 acquire/verify（物理阻断）→ 发送。"""
+        """发送链：状态机门禁 → **风控判定（CR R1 接线，FR-AG-005）** → 闸门 → 发送。"""
         state, _version = self._sm.get_state(conv.uid)
         if not self._sm.send_allowed(state):
             return False                                     # 人工接管/挂起/关闭：AI 静默
+        if self._risk_guard is not None:
+            from datetime import datetime, timezone
+
+            from services.agent.core.risk.guard import (
+                RiskAction,
+                Verdict,
+            )
+
+            decision = self._risk_guard.check(
+                RiskAction(
+                    op_uid=f"engine:{conv.uid}:{hash(draft) & 0xFFFFFFFF}",
+                    account_id=self._account_id,
+                    conversation_uid=conv.uid,
+                    action_type="send_message",
+                    content=draft,
+                ),
+                now=datetime.now(timezone.utc),
+            )
+            if decision.verdict is not Verdict.PASS:
+                # INTERCEPT（敏感草稿待确认）/ BLOCK（红线）/ QUEUE_*（限额）一律不发送；
+                # INTERCEPT 额外迁移会话至 pending_confirm（人工确认链路入口）
+                if decision.verdict is Verdict.INTERCEPT:
+                    self._sm.transition(conv.uid, "pending_confirm", actor="risk_guard",
+                                        reason=f"sensitive:{decision.reason}")
+                if self._alerts is not None:
+                    self._alerts.send("mid", "risk_hit",
+                                       f"风控拦截 {decision.verdict.value}", decision.reason)
+                return False
         token = self._gate.acquire(conv.uid)                 # 非法态抛 AISendBlockedError
         plan = self._typer.plan(draft)                       # 拟人化输入计划
         if not self._gate.verify(conv.uid, token):           # 发送前最后一瞬校验
