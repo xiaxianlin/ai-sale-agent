@@ -157,6 +157,8 @@ def _default_service() -> DrillService:
     """
     global _default_service_instance
     if _default_service_instance is None:
+        # CR A1 登记：装配层懒加载（monolith 同进程形态合法）；拆分部署时改为
+        # 构造注入 MaskingGate 协议（core 层已按协议解耦，见 drill/casebank.py）
         from services.kb.core.pipeline.cleaning.masking import MaskingEngine, default_ruleset
 
         bank: DrillCaseBank = DrillCaseBank(MaskingEngine(default_ruleset()))

@@ -25,3 +25,5 @@ jobs:
         run: python tools/ci_gates/scan_secrets.py
       - name: 架构守护（NFR-SCA-01）
         run: python tools/archguard/check_account_id.py
+      - name: OpenAPI 快照比对（FR-KB-030 契约冻结，CR R3）
+        run: python tools/ci_gates/openapi_snapshot.py

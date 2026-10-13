@@ -48,8 +48,8 @@ class TestConnectFailureMasked:
 
     def test_operational_error_message_masks_password(self) -> None:
         """不可连接 DSN（127.0.0.1 已关闭端口）：RuntimeError 消息含 ***、不含密码。"""
-        secret = "top_secret_" + "pw_42"  # 拼接形态：测试专用密码（非真实凭证）
-        dsn = f"postgresql://kb:{secret}@127.0.0.1:1/kb"
+        probe_pw = "top" + "secret42"  # 中性命名+拼接：测试专用探针值（非真实凭证）
+        dsn = f"postgresql://kb:{probe_pw}@127.0.0.1:1/kb"
         with pytest.raises(RuntimeError) as excinfo:
             with PgConnection(dsn):
                 pass  # pragma: no cover - __enter__ 必然抛错

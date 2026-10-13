@@ -32,7 +32,8 @@ from pydantic import BaseModel, ConfigDict, field_validator
 
 # ── 契约常量：collection_schema.py 的 Milvus 建表定义与此同源（单测守护两处一致）──
 #: 六大知识库枚举（03-数据库设计 §4.2 kb_type 取值；同时是 P0-P4 的六个分区名）
-KB_TYPES: tuple[str, ...] = ("product", "customer", "skill", "process", "negative_case", "training")
+# CR A1 修复：枚举权威下沉 foundation.core.kbtypes（跨服务共享单点），此处 re-export
+from foundation.core.kbtypes import KB_TYPES  # noqa: E402  (保持既有导入路径兼容)
 #: BGE-M3 稠密向量维度（03-数据库设计 §4.2 FloatVector(1024)）
 DENSE_DIM: int = 1024
 #: 默认租户编号（P0-P4 单租户恒为 1，SR-KB-014 §4）

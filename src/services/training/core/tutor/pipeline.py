@@ -32,7 +32,7 @@ from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from typing import Any, Protocol
 
-from services.kb.core.vectorstore.base import KB_TYPES
+from foundation.core.kbtypes import KB_TYPES  # CR A1：契约下沉单点，不再直连 kb 内部
 
 from .gap import (
     REASON_CITE_FAIL,

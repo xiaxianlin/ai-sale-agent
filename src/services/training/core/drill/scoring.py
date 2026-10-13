@@ -315,7 +315,7 @@ class DeepSeekDrillScorer:
         fail-closed，与 tutor/llm.py 同模式）——白名单外 / OI-09 未确认即拒，
         无「先发后审」路径。
         """
-        import httpx
+        from foundation.core.llmhttp import post_chat_completions  # CR A3：公共骨架单点
 
         payload = {
             "model": self._model,
@@ -323,27 +323,16 @@ class DeepSeekDrillScorer:
             "response_format": {"type": "json_object"},
             "messages": [{"role": "user", "content": prompt}],
         }
-        url = f"{self._base_url}/chat/completions"
-        # ── 出域白名单断言（NFR-SEC-06 fail-closed；拦截前守卫已留痕）──
-        self._guard.assert_egress(
-            url,
-            EGRESS_PURPOSE_LLM_CHAT,
-            content=json.dumps(payload, ensure_ascii=False),
-            caller=EGRESS_CALLER,
-        )
         try:
-            with httpx.Client(timeout=self._timeout_s, transport=self._transport) as client:
-                response = client.post(
-                    url,
-                    json=payload,
-                    headers={"Authorization": f"Bearer {self._api_key}"},
-                )
-            if response.status_code != 200:
-                raise ScoringError(f"DeepSeek 评分接口返回 HTTP {response.status_code}")
-            return response.json()["choices"][0]["message"]["content"]
-        except ScoringError:
-            raise
-        except (httpx.HTTPError, KeyError, IndexError, TypeError, ValueError) as exc:
+            data = post_chat_completions(
+                api_key=self._api_key, base_url=self._base_url, payload=payload,
+                timeout_s=self._timeout_s, guard=self._guard,
+                caller=EGRESS_CALLER, transport=self._transport,
+            )
+            return data["choices"][0]["message"]["content"]
+        except ValueError as exc:  # 非流式骨架的非 200 转译点（"HTTP <status>"）
+            raise ScoringError(f"DeepSeek 评分接口返回 {exc}") from exc
+        except (KeyError, IndexError, TypeError) as exc:
             raise ScoringError(f"DeepSeek 评分响应不可解析：{exc}") from exc
 
     def _parse(self, content: str) -> ScoreOutput:

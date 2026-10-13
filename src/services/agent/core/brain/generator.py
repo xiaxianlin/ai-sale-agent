@@ -26,6 +26,7 @@ from collections.abc import Callable, Mapping
 from dataclasses import dataclass, field
 from typing import Any
 
+from foundation.core.textblocks import parse_chunk_blocks
 from services.agent.core.brain.confidence import ConfidenceComposer, SelfEval
 from services.agent.core.brain.fallback import (
     FallbackEvidence,
@@ -320,27 +321,8 @@ class FakeBrainLlm:
 
     @classmethod
     def parse_chunk_blocks(cls, prompt: str) -> list[dict[str, str]]:
-        """解析 【知识片段】…【引用格式】 之间的编号块 → [{ref, title, text}]。"""
-        if "【知识片段】" not in prompt:
-            return []
-        section = prompt.split("【知识片段】", 1)[1].split("【引用格式】", 1)[0]
-        blocks: list[dict[str, str]] = []
-        current: dict[str, str] | None = None
-        body: list[str] = []
-        for line in section.splitlines():
-            matched = cls._BLOCK_HEADER_RE.match(line.strip())
-            if matched:
-                if current is not None:
-                    current["text"] = " ".join(body).strip()
-                    blocks.append(current)
-                current = {"ref": matched.group(1), "title": matched.group(2).strip()}
-                body = []
-            elif current is not None and line.strip():
-                body.append(line.strip())
-        if current is not None:
-            current["text"] = " ".join(body).strip()
-            blocks.append(current)
-        return blocks
+        """委托 foundation 单一实现（CR Q1：跨服务拷贝收敛，格式变更单点生效）。"""
+        return parse_chunk_blocks(prompt)
 
     @staticmethod
     def default_payload(blocks: list[dict[str, str]]) -> dict[str, Any]:

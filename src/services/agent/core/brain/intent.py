@@ -134,36 +134,31 @@ class DeepSeekBrainClient:
         self, prompt: str, *, timeout_s: float, max_tokens: int, temperature: float
     ) -> str:
         """单轮补全（OpenAI 兼容 /chat/completions 非流式；出域断言失败即抛错）。"""
-        import httpx
-
         if not self._api_key:
             raise LlmConfigError(
                 f"未配置环境变量 {ENV_API_KEY}，无法调用 DeepSeek-V3；"
                 "demo 环境请改用 FakeIntentLlm，生产环境由运维注入密钥后再启用真实调用"
             )
+        from foundation.core.llmhttp import post_chat_completions  # CR A3：公共骨架单点
         from foundation.net.egress import EgressGuard
 
         guard = self._guard if self._guard is not None else EgressGuard()
-        url = f"{self._base_url}/chat/completions"
         payload = {
             "model": self._model,
             "temperature": temperature if temperature >= 0 else self._temperature,
             "max_tokens": max_tokens if max_tokens > 0 else self._max_tokens,
             "messages": [{"role": "user", "content": prompt}],
         }
-        # ── 出域白名单断言（NFR-SEC-06 fail-closed；拦截前守卫已留痕）──
-        guard.assert_egress(
-            url, EGRESS_PURPOSE_LLM_CHAT,
-            content=json.dumps(payload, ensure_ascii=False), caller="agent.brain.intent",
-        )
-        headers = {"Authorization": f"Bearer {self._api_key}"}
-        with httpx.Client(timeout=timeout_s or self._timeout_s, transport=self._transport) as client:
-            response = client.post(url, json=payload, headers=headers)
-        if response.status_code != 200:
-            raise LlmDownstreamError(f"DeepSeek 接口返回 HTTP {response.status_code}，本轮意图识别失败")
         try:
-            return str(response.json()["choices"][0]["message"]["content"])
-        except (json.JSONDecodeError, KeyError, IndexError, TypeError) as exc:
+            data = post_chat_completions(
+                api_key=self._api_key, base_url=self._base_url, payload=payload,
+                timeout_s=timeout_s or self._timeout_s, guard=guard,
+                caller="agent.brain.intent", transport=self._transport,
+            )
+            return str(data["choices"][0]["message"]["content"])
+        except ValueError as exc:  # 非流式骨架的非 200 转译点（"HTTP <status>"）
+            raise LlmDownstreamError(f"DeepSeek 接口返回 {exc}，本轮意图识别失败") from exc
+        except (KeyError, IndexError, TypeError) as exc:
             raise LlmDownstreamError(f"DeepSeek 响应不可解析：{exc}") from exc
 
 
