@@ -47,7 +47,7 @@ echo "[步骤1] 源码 bundle 完成：${BUNDLE}（验收 tag ${TAG} -> $(cat "$
 # ── 步骤 2 迁移脚本链：拷贝迁移目录 + 空库重放校验（占位）──
 # 占位说明：alembic 接入后启用 migration_replay_check.sh 三重校验——①空库 upgrade head
 #       全程成功（断链即失败）；②alembic check 无模型/迁移漂移；③单链头无分叉孤儿版本
-#       （SR-COM-IP-03 §6.3）。当前仓库 migrations/ 未落位，先出占位报告随包留痕。
+#       （SR-COM-IP-03 §6.3）。当前仓库 migrations/ 为裸 SQL（001_kb_core.sql），先出占位报告随包留痕。
 if [ -d migrations ]; then
   cp -r migrations "${DIST}/03-migration/"
 fi

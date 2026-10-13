@@ -66,14 +66,6 @@ def topic_sentence(topic: str, idx: int, han: int = 12) -> str:
     return body + "。"
 
 
-def para_of_sentences(count: int, han: int = 12, start: int = 0, prefix: str = "") -> FakeBlock:
-    """构造含 count 个句子的段落 block；prefix 用于标记主题（语义边界测试用）。"""
-    text = prefix + cn_sentence(start, han)
-    for i in range(start + 1, start + count):
-        text += cn_sentence(i, han)
-    return para(text)
-
-
 def tokens_of(text: str) -> int:
     """测试统一口径的 token 计量（与分块器默认计量一致）。"""
     return default_token_counter(text)

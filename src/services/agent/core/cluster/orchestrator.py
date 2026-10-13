@@ -21,6 +21,9 @@ demo/测试 = :class:`FakeContainerOps` 内存编排模拟（kill 演练 = SRS �
 """
 
 from __future__ import annotations
+import logging
+
+_LOGGER = logging.getLogger(__name__)
 
 import threading
 from dataclasses import dataclass, field
@@ -424,5 +427,5 @@ class ClusterOrchestrator:
             return
         try:
             self._alerts.send(level=level, type_=type_, title=title, body=body)
-        except Exception:  # noqa: BLE001
-            pass
+        except Exception as exc:  # noqa: BLE001 —— 集群告警通道故障不阻断编排主链路（CR Q2 补日志）
+            _LOGGER.warning("集群告警发送失败（已容忍）: %s", type(exc).__name__)

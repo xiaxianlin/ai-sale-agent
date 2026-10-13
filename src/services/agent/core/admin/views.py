@@ -16,6 +16,9 @@
 """
 
 from __future__ import annotations
+import logging
+
+_LOGGER = logging.getLogger(__name__)
 
 import hashlib
 import json
@@ -391,8 +394,9 @@ class AdminViews:
         try:
             self._sm.transition(record.conversation_uid, ConvState.AI_MANAGED,
                                 actor=operator, reason=f"sensitive_{record.status}")
-        except (IllegalTransitionError, ConversationNotFoundError):
-            pass
+        except (IllegalTransitionError, ConversationNotFoundError) as exc:
+            # 幂等跳过（如人工接管中不抢回）：留痕便于事后核对跳过原因（CR Q2 补日志）
+            _LOGGER.info("确认后回迁 AI 态跳过（幂等, conv=%s）: %s", record.conversation_uid, type(exc).__name__)
 
     @staticmethod
     def _normalize_message(message: dict[str, object]) -> dict[str, object]:

@@ -1,3 +1,4 @@
+<!-- 知识产权归甲方所有（COM-IP-01）——AI 外贸销售智能体系统交付物，许可与再分发依双方合同约定。 -->
 # deploy/firewall —— 出网白名单防火墙（NFR-SEC-06 数据不出域·网络层防线）
 
 | 文件 | 说明 |
@@ -12,7 +13,7 @@ NFR-SEC-06「数据不出域」由三层防线构成，本目录承载**网络�
 
 | 防线 | 落点 | 语义 |
 |---|---|---|
-| 代码层 | `platform/core/net/egress.py`（EgressGuard）+ `llm_gateway.py`（LLMEgressGateway） | 出域调用前强制断言：目标未注册 / OI-09 未确认即拒（fail-closed），调用留痕 |
+| 代码层 | `src/foundation/net/egress.py`（EgressGuard）+ `llm_gateway.py`（LLMEgressGateway） | 出域调用前强制断言：目标未注册 / OI-09 未确认即拒（fail-closed），调用留痕 |
 | **网络层（本目录）** | `egress.rules` | 出方向默认 DROP，仅放行注册表目的地；白名单外尝试产生 EGRESS-DROP 日志 → 告警 |
 | 流程层 | OI-09 数据边界评估单（本文 §5 模板） | LLM 出域启用前必须评估 + 甲方确认（confirmed），变更触发重评 |
 

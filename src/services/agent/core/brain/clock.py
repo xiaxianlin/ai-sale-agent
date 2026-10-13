@@ -19,6 +19,9 @@ detect/read/intent/retrieval/generate/typing/send 随 message 生命周期落库
 demo 形态：同步进程内（生产 = agent-runner 异步旁路 + Prometheus Histogram 推送）。
 """
 from __future__ import annotations
+import logging
+
+_LOGGER = logging.getLogger(__name__)
 
 import math
 import time
@@ -156,8 +159,8 @@ def finish(
     if store is not None:
         try:
             store.append(record)  # 生产 = 与首响 message 同事务写 inquiry_response_trace
-        except Exception:  # noqa: BLE001 —— best-effort：失败仅记日志，不阻断主链路
-            pass
+        except Exception as exc:  # noqa: BLE001 —— best-effort：仅记日志不阻断主链路（CR Q2 补日志）
+            _LOGGER.warning("响应时钟留痕失败（已容忍）: %s", type(exc).__name__, exc_info=True)
     if (
         outcome == "sent"
         and alert_sink is not None

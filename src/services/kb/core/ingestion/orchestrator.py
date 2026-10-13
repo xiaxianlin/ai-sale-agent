@@ -31,6 +31,9 @@ IngestionOrchestrator 驱动单个素材文件的完整入库链路（全部组�
          docs/01-需求文档/AI外贸销售智能体系统_需求规格说明书.md §16.1。
 """
 from __future__ import annotations
+import logging
+
+_LOGGER = logging.getLogger(__name__)
 
 import itertools
 import uuid
@@ -484,8 +487,8 @@ class IngestionOrchestrator:
                 source, batch_id, stage,
                 {"status": STATUS_FAILED, "error_code": code, "error_msg": message},
             )
-        except Exception:  # noqa: BLE001 —— 失败留痕失败不应扩大为批次异常
-            pass
+        except Exception as exc:  # noqa: BLE001 —— 失败留痕失败不应扩大为批次异常（CR Q2 补日志）
+            _LOGGER.warning("入库失败留痕写入失败（已容忍, stage=%s）: %s", stage, type(exc).__name__)
 
     def _clean_blocks(
         self, doc: UnstructuredDoc, source: SourceMaterial, batch_id: str

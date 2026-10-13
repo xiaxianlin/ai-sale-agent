@@ -17,6 +17,9 @@ Stream 削峰队列由生产形态承载——本模块保持「受理→去重�
 """
 
 from __future__ import annotations
+import logging
+
+_LOGGER = logging.getLogger(__name__)
 
 import hashlib
 import uuid
@@ -371,8 +374,8 @@ class AlertRouter:
             return
         try:
             self._audit(payload)
-        except Exception:  # noqa: BLE001
-            pass
+        except Exception as exc:  # noqa: BLE001 —— 审计投递失败不阻断告警主链路（CR Q2 补日志）
+            _LOGGER.warning("告警审计投递失败（已容忍, alert=%s）: %s", payload.get("alert_id"), type(exc).__name__)
 
 
 __all__ = [

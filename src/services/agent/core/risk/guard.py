@@ -19,6 +19,9 @@ demo 形态边界：Redis Lua / PG risk_event 由生产形态承载；存储替�
 """
 
 from __future__ import annotations
+import logging
+
+_LOGGER = logging.getLogger(__name__)
 
 import random
 import re
@@ -539,8 +542,8 @@ class RiskGuard:
         try:
             self._alerts.send(level=level, type_=type_, title=title,
                               body=body or f"account={action.account_id} op={action.op_uid}")
-        except Exception:  # noqa: BLE001
-            pass
+        except Exception as exc:  # noqa: BLE001 —— 告警通道故障不影响风控判定本身（CR Q2 补日志）
+            _LOGGER.warning("风控告警发送失败（已容忍, op=%s）: %s", action.op_uid, type(exc).__name__)
 
     def _emit(self, action: RiskAction, verdict: Verdict, reason: str, *, now: datetime,
               rule_code: str | None = None, next_allowed_at: datetime | None = None,

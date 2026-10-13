@@ -5,7 +5,7 @@
 #      docs/02-设计文档/06-安全与合规设计.md §6
 #
 # 同源逻辑（决策 D2）：本文件的放行条目与代码层出域白名单引擎
-# platform/core/net/egress.py（EgressGuard 目的地注册表：host/port/用途/负责人）
+# src/foundation/net/egress.py（EgressGuard 目的地注册表：host/port/用途/负责人）
 # 逐条对应——「新增/变更出域目的地」必须双侧同步修改并走 docs/06-变更管理/ 变更流程，
 # 任何单侧修改视为配置漂移（月度审计报表的对账项，见 platform/core/net/report.py 第四节）。
 #
