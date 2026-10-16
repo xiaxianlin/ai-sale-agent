@@ -117,6 +117,11 @@ def create_training_app(
 
     # 依赖注入（routes.py 端点从 app.state 取用）
     app.state.tutor_pipeline = pipeline
+    # CR 遗留 R2：租户上下文薄中间件（demo 单租户默认 1；多租户经部署开关）
+    from foundation.core.tenantctx import TenantContextLiteMiddleware
+
+    app.add_middleware(TenantContextLiteMiddleware)
+
     return app
 
 

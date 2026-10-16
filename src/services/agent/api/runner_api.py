@@ -156,6 +156,11 @@ def create_runner_app(
         return JSONResponse(status_code=exc.status_code, content={"detail": exc.detail})
 
     install_agent_error_handlers(app)  # CR A2：统一信封
+    # CR 遗留 R2：租户上下文薄中间件（demo 单租户默认 1；多租户经部署开关）
+    from foundation.core.tenantctx import TenantContextLiteMiddleware
+
+    app.add_middleware(TenantContextLiteMiddleware)
+
     return app
 
 

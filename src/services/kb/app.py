@@ -415,4 +415,9 @@ def create_app(
             audit_hook=admin_audit_hook,
             admin_auth=admin_auth,
         )
+    # CR 遗留 R2：租户上下文薄中间件（demo 单租户默认 1；多租户经部署开关）
+    from foundation.core.tenantctx import TenantContextLiteMiddleware
+
+    app.add_middleware(TenantContextLiteMiddleware)
+
     return app
