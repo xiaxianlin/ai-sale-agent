@@ -49,6 +49,8 @@ services:
     - ACCOUNT_ID=7001
     - ACCOUNT_TYPE=main
     - HOST_NODE=runner-01
+    - KB_AGENT_WINDOW_START=08:40
+    - KB_AGENT_ONLINE_SLOTS=2
     - HTTP_PROXY=http://127.0.0.1:6152
     - HTTPS_PROXY=http://127.0.0.1:6152
     - NO_PROXY=localhost,127.0.0.1,app,postgres,redis,milvus,tei,nginx
@@ -103,6 +105,8 @@ services:
     - ACCOUNT_ID=7002
     - ACCOUNT_TYPE=main
     - HOST_NODE=runner-01
+    - KB_AGENT_WINDOW_START=08:06
+    - KB_AGENT_ONLINE_SLOTS=0
     - HTTP_PROXY=http://127.0.0.1:6152
     - HTTPS_PROXY=http://127.0.0.1:6152
     - NO_PROXY=localhost,127.0.0.1,app,postgres,redis,milvus,tei,nginx
@@ -157,6 +161,8 @@ services:
     - ACCOUNT_ID=7003
     - ACCOUNT_TYPE=main
     - HOST_NODE=runner-01
+    - KB_AGENT_WINDOW_START=09:01
+    - KB_AGENT_ONLINE_SLOTS=0
     - HTTP_PROXY=http://127.0.0.1:6152
     - HTTPS_PROXY=http://127.0.0.1:6152
     - NO_PROXY=localhost,127.0.0.1,app,postgres,redis,milvus,tei,nginx
@@ -211,6 +217,8 @@ services:
     - ACCOUNT_ID=7004
     - ACCOUNT_TYPE=main
     - HOST_NODE=runner-02
+    - KB_AGENT_WINDOW_START=08:27
+    - KB_AGENT_ONLINE_SLOTS=1
     - HTTP_PROXY=http://127.0.0.1:6152
     - HTTPS_PROXY=http://127.0.0.1:6152
     - NO_PROXY=localhost,127.0.0.1,app,postgres,redis,milvus,tei,nginx
@@ -265,6 +273,8 @@ services:
     - ACCOUNT_ID=7005
     - ACCOUNT_TYPE=sub
     - HOST_NODE=runner-02
+    - KB_AGENT_WINDOW_START=07:53
+    - KB_AGENT_ONLINE_SLOTS=2
     - HTTP_PROXY=http://127.0.0.1:6152
     - HTTPS_PROXY=http://127.0.0.1:6152
     - NO_PROXY=localhost,127.0.0.1,app,postgres,redis,milvus,tei,nginx
@@ -319,6 +329,8 @@ services:
     - ACCOUNT_ID=7006
     - ACCOUNT_TYPE=sub
     - HOST_NODE=runner-02
+    - KB_AGENT_WINDOW_START=08:48
+    - KB_AGENT_ONLINE_SLOTS=2
     - HTTP_PROXY=http://127.0.0.1:6152
     - HTTPS_PROXY=http://127.0.0.1:6152
     - NO_PROXY=localhost,127.0.0.1,app,postgres,redis,milvus,tei,nginx
@@ -373,6 +385,8 @@ services:
     - ACCOUNT_ID=7007
     - ACCOUNT_TYPE=sub
     - HOST_NODE=runner-03
+    - KB_AGENT_WINDOW_START=08:14
+    - KB_AGENT_ONLINE_SLOTS=0
     - HTTP_PROXY=http://127.0.0.1:6152
     - HTTPS_PROXY=http://127.0.0.1:6152
     - NO_PROXY=localhost,127.0.0.1,app,postgres,redis,milvus,tei,nginx
@@ -427,6 +441,8 @@ services:
     - ACCOUNT_ID=7008
     - ACCOUNT_TYPE=sub
     - HOST_NODE=runner-03
+    - KB_AGENT_WINDOW_START=09:09
+    - KB_AGENT_ONLINE_SLOTS=2
     - HTTP_PROXY=http://127.0.0.1:6152
     - HTTPS_PROXY=http://127.0.0.1:6152
     - NO_PROXY=localhost,127.0.0.1,app,postgres,redis,milvus,tei,nginx
@@ -481,6 +497,8 @@ services:
     - ACCOUNT_ID=7009
     - ACCOUNT_TYPE=sub
     - HOST_NODE=runner-03
+    - KB_AGENT_WINDOW_START=08:35
+    - KB_AGENT_ONLINE_SLOTS=0
     - HTTP_PROXY=http://127.0.0.1:6152
     - HTTPS_PROXY=http://127.0.0.1:6152
     - NO_PROXY=localhost,127.0.0.1,app,postgres,redis,milvus,tei,nginx
@@ -535,6 +553,8 @@ services:
     - ACCOUNT_ID=7010
     - ACCOUNT_TYPE=sub
     - HOST_NODE=runner-04
+    - KB_AGENT_WINDOW_START=08:01
+    - KB_AGENT_ONLINE_SLOTS=1
     - HTTP_PROXY=http://127.0.0.1:6152
     - HTTPS_PROXY=http://127.0.0.1:6152
     - NO_PROXY=localhost,127.0.0.1,app,postgres,redis,milvus,tei,nginx
@@ -589,6 +609,8 @@ services:
     - ACCOUNT_ID=7011
     - ACCOUNT_TYPE=sub
     - HOST_NODE=runner-04
+    - KB_AGENT_WINDOW_START=08:56
+    - KB_AGENT_ONLINE_SLOTS=1
     - HTTP_PROXY=http://127.0.0.1:6152
     - HTTPS_PROXY=http://127.0.0.1:6152
     - NO_PROXY=localhost,127.0.0.1,app,postgres,redis,milvus,tei,nginx
@@ -643,6 +665,8 @@ services:
     - ACCOUNT_ID=7012
     - ACCOUNT_TYPE=sub
     - HOST_NODE=runner-04
+    - KB_AGENT_WINDOW_START=08:22
+    - KB_AGENT_ONLINE_SLOTS=2
     - HTTP_PROXY=http://127.0.0.1:6152
     - HTTPS_PROXY=http://127.0.0.1:6152
     - NO_PROXY=localhost,127.0.0.1,app,postgres,redis,milvus,tei,nginx
@@ -697,6 +721,8 @@ services:
     - ACCOUNT_ID=7013
     - ACCOUNT_TYPE=sub
     - HOST_NODE=runner-05
+    - KB_AGENT_WINDOW_START=07:48
+    - KB_AGENT_ONLINE_SLOTS=0
     - HTTP_PROXY=http://127.0.0.1:6152
     - HTTPS_PROXY=http://127.0.0.1:6152
     - NO_PROXY=localhost,127.0.0.1,app,postgres,redis,milvus,tei,nginx
@@ -751,6 +777,8 @@ services:
     - ACCOUNT_ID=7014
     - ACCOUNT_TYPE=sub
     - HOST_NODE=runner-05
+    - KB_AGENT_WINDOW_START=08:43
+    - KB_AGENT_ONLINE_SLOTS=0
     - HTTP_PROXY=http://127.0.0.1:6152
     - HTTPS_PROXY=http://127.0.0.1:6152
     - NO_PROXY=localhost,127.0.0.1,app,postgres,redis,milvus,tei,nginx
@@ -805,6 +833,8 @@ services:
     - ACCOUNT_ID=7015
     - ACCOUNT_TYPE=sub
     - HOST_NODE=runner-05
+    - KB_AGENT_WINDOW_START=08:09
+    - KB_AGENT_ONLINE_SLOTS=1
     - HTTP_PROXY=http://127.0.0.1:6152
     - HTTPS_PROXY=http://127.0.0.1:6152
     - NO_PROXY=localhost,127.0.0.1,app,postgres,redis,milvus,tei,nginx
@@ -859,6 +889,8 @@ services:
     - ACCOUNT_ID=7016
     - ACCOUNT_TYPE=sub
     - HOST_NODE=runner-06
+    - KB_AGENT_WINDOW_START=09:04
+    - KB_AGENT_ONLINE_SLOTS=1
     - HTTP_PROXY=http://127.0.0.1:6152
     - HTTPS_PROXY=http://127.0.0.1:6152
     - NO_PROXY=localhost,127.0.0.1,app,postgres,redis,milvus,tei,nginx
@@ -913,6 +945,8 @@ services:
     - ACCOUNT_ID=7017
     - ACCOUNT_TYPE=sub
     - HOST_NODE=runner-06
+    - KB_AGENT_WINDOW_START=08:30
+    - KB_AGENT_ONLINE_SLOTS=2
     - HTTP_PROXY=http://127.0.0.1:6152
     - HTTPS_PROXY=http://127.0.0.1:6152
     - NO_PROXY=localhost,127.0.0.1,app,postgres,redis,milvus,tei,nginx
@@ -967,6 +1001,8 @@ services:
     - ACCOUNT_ID=7018
     - ACCOUNT_TYPE=sub
     - HOST_NODE=runner-06
+    - KB_AGENT_WINDOW_START=07:56
+    - KB_AGENT_ONLINE_SLOTS=0
     - HTTP_PROXY=http://127.0.0.1:6152
     - HTTPS_PROXY=http://127.0.0.1:6152
     - NO_PROXY=localhost,127.0.0.1,app,postgres,redis,milvus,tei,nginx
@@ -1021,6 +1057,8 @@ services:
     - ACCOUNT_ID=7019
     - ACCOUNT_TYPE=sub
     - HOST_NODE=runner-07
+    - KB_AGENT_WINDOW_START=08:51
+    - KB_AGENT_ONLINE_SLOTS=0
     - HTTP_PROXY=http://127.0.0.1:6152
     - HTTPS_PROXY=http://127.0.0.1:6152
     - NO_PROXY=localhost,127.0.0.1,app,postgres,redis,milvus,tei,nginx
@@ -1075,6 +1113,8 @@ services:
     - ACCOUNT_ID=7020
     - ACCOUNT_TYPE=sub
     - HOST_NODE=runner-07
+    - KB_AGENT_WINDOW_START=08:17
+    - KB_AGENT_ONLINE_SLOTS=1
     - HTTP_PROXY=http://127.0.0.1:6152
     - HTTPS_PROXY=http://127.0.0.1:6152
     - NO_PROXY=localhost,127.0.0.1,app,postgres,redis,milvus,tei,nginx
@@ -1129,6 +1169,8 @@ services:
     - ACCOUNT_ID=7021
     - ACCOUNT_TYPE=sub
     - HOST_NODE=runner-07
+    - KB_AGENT_WINDOW_START=09:13
+    - KB_AGENT_ONLINE_SLOTS=0
     - HTTP_PROXY=http://127.0.0.1:6152
     - HTTPS_PROXY=http://127.0.0.1:6152
     - NO_PROXY=localhost,127.0.0.1,app,postgres,redis,milvus,tei,nginx
@@ -1183,6 +1225,8 @@ services:
     - ACCOUNT_ID=7022
     - ACCOUNT_TYPE=sub
     - HOST_NODE=runner-08
+    - KB_AGENT_WINDOW_START=08:38
+    - KB_AGENT_ONLINE_SLOTS=1
     - HTTP_PROXY=http://127.0.0.1:6152
     - HTTPS_PROXY=http://127.0.0.1:6152
     - NO_PROXY=localhost,127.0.0.1,app,postgres,redis,milvus,tei,nginx
@@ -1237,6 +1281,8 @@ services:
     - ACCOUNT_ID=7023
     - ACCOUNT_TYPE=sub
     - HOST_NODE=runner-08
+    - KB_AGENT_WINDOW_START=08:04
+    - KB_AGENT_ONLINE_SLOTS=2
     - HTTP_PROXY=http://127.0.0.1:6152
     - HTTPS_PROXY=http://127.0.0.1:6152
     - NO_PROXY=localhost,127.0.0.1,app,postgres,redis,milvus,tei,nginx
@@ -1291,6 +1337,8 @@ services:
     - ACCOUNT_ID=7024
     - ACCOUNT_TYPE=sub
     - HOST_NODE=runner-08
+    - KB_AGENT_WINDOW_START=08:59
+    - KB_AGENT_ONLINE_SLOTS=2
     - HTTP_PROXY=http://127.0.0.1:6152
     - HTTPS_PROXY=http://127.0.0.1:6152
     - NO_PROXY=localhost,127.0.0.1,app,postgres,redis,milvus,tei,nginx
@@ -1345,6 +1393,8 @@ services:
     - ACCOUNT_ID=7025
     - ACCOUNT_TYPE=sub
     - HOST_NODE=runner-09
+    - KB_AGENT_WINDOW_START=08:25
+    - KB_AGENT_ONLINE_SLOTS=0
     - HTTP_PROXY=http://127.0.0.1:6152
     - HTTPS_PROXY=http://127.0.0.1:6152
     - NO_PROXY=localhost,127.0.0.1,app,postgres,redis,milvus,tei,nginx
@@ -1399,6 +1449,8 @@ services:
     - ACCOUNT_ID=7026
     - ACCOUNT_TYPE=sub
     - HOST_NODE=runner-09
+    - KB_AGENT_WINDOW_START=07:51
+    - KB_AGENT_ONLINE_SLOTS=1
     - HTTP_PROXY=http://127.0.0.1:6152
     - HTTPS_PROXY=http://127.0.0.1:6152
     - NO_PROXY=localhost,127.0.0.1,app,postgres,redis,milvus,tei,nginx
@@ -1453,6 +1505,8 @@ services:
     - ACCOUNT_ID=7027
     - ACCOUNT_TYPE=sub
     - HOST_NODE=runner-09
+    - KB_AGENT_WINDOW_START=08:46
+    - KB_AGENT_ONLINE_SLOTS=1
     - HTTP_PROXY=http://127.0.0.1:6152
     - HTTPS_PROXY=http://127.0.0.1:6152
     - NO_PROXY=localhost,127.0.0.1,app,postgres,redis,milvus,tei,nginx
@@ -1507,6 +1561,8 @@ services:
     - ACCOUNT_ID=7028
     - ACCOUNT_TYPE=sub
     - HOST_NODE=runner-10
+    - KB_AGENT_WINDOW_START=08:12
+    - KB_AGENT_ONLINE_SLOTS=2
     - HTTP_PROXY=http://127.0.0.1:6152
     - HTTPS_PROXY=http://127.0.0.1:6152
     - NO_PROXY=localhost,127.0.0.1,app,postgres,redis,milvus,tei,nginx

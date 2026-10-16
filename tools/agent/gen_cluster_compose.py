@@ -104,7 +104,7 @@ def render_egress(row: dict) -> dict:
     }
 
 
-def render_service(row: dict) -> dict:
+def render_service(row: dict, plan: dict, slots: dict) -> dict:
     """单实例 runner 渲染：容器名/独立卷/网络绑定/健康检查/资源配额（渲染即校验）。
 
     出口绑定双重强制：network_mode 共享 proxy-egress-NN 命名空间（透明代理）+
@@ -120,6 +120,9 @@ def render_service(row: dict) -> dict:
             f"ACCOUNT_ID={row['account_id']}",
             f"ACCOUNT_TYPE={row['account_type']}",
             f"HOST_NODE={row['host_node']}",
+            # CR 遗留 A8 接线：riskv2 错峰窗口下发（黄金比例错开，R-06 反同质化）
+            f"KB_AGENT_WINDOW_START={plan[row['account_id']]:%H:%M}",
+            f"KB_AGENT_ONLINE_SLOTS={','.join(map(str, slots[row['account_id']]))}",
             "HTTP_PROXY=http://127.0.0.1:6152",         # 应用层显式代理（双保险）
             "HTTPS_PROXY=http://127.0.0.1:6152",
             "NO_PROXY=localhost,127.0.0.1,app,postgres,redis,milvus,tei,nginx",
@@ -146,12 +149,28 @@ def render_service(row: dict) -> dict:
 
 
 def build_compose(count: int = DEFAULT_COUNT) -> str:
+    # CR 遗留 A8 接线：错峰窗口分配消费 riskv2.StaggerScheduler（黄金比例错开，
+    # 28 起点两两互异——此前生成器未接错峰调度，账号同窗口启动有同质化风控风险 R-06）
+    import sys as _sys
+    from pathlib import Path as _Path
+    _sys.path.insert(0, str(_Path(__file__).resolve().parents[2] / "src"))
+    from datetime import date as _date, time as _time
+
+    from services.agent.core.riskv2.stagger import StaggerScheduler
+
+    _stagger = StaggerScheduler(
+        account_ids=[7000 + seq for seq in range(1, count + 1)],  # 与 build_rows 的 7000+seq 同源
+        window_start=_time(8, 30), window_end=_time(19, 0),
+    )
+    _plan = {aid: start for aid, start, _end in _stagger.plan(day=_date(2026, 10, 12))}
+    _slots = _stagger.allocate_slots(day=_date(2026, 10, 12))
+
     """整包构建：x-cluster 元数据 + services/volumes/secrets，yaml 文本（可复核）。"""
     plan = instance_plan(count)
     services: dict[str, dict] = {}
     for row in plan:  # 每账号一组：先出口容器后 runner（depends_on 指向已定义服务）
         services[row["egress_service"]] = render_egress(row)
-        services[f"agent-runner-{row['seq']:02d}"] = render_service(row)
+        services[f"agent-runner-{row['seq']:02d}"] = render_service(row, _plan, _slots)
     document = {
         "x-cluster": {
             "instance_count": count,

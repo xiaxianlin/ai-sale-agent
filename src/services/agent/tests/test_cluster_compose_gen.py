@@ -55,7 +55,15 @@ class TestGeneratorUnit:
         """单实例 runner 渲染：容器名 agent-runner-NN、卷 cookie-NN、账号 env 注入，
         且网络绑定 service:proxy-egress-NN、健康检查与 restart: always 齐备。"""
         row = instance_plan(1)[0]
-        svc = render_service(row)
+        from datetime import date, time as dtime
+
+        from services.agent.core.riskv2.stagger import StaggerScheduler
+
+        _st = StaggerScheduler(account_ids=[row["account_id"]],
+                               window_start=dtime(8, 30), window_end=dtime(19, 0))
+        _plan = {aid: s for aid, s, _e in _st.plan(day=date(2026, 10, 12))}
+        _slots = _st.allocate_slots(day=date(2026, 10, 12))
+        svc = render_service(row, _plan, _slots)  # CR A8：错峰窗口参数（riskv2 消费）
         assert svc["container_name"] == "agent-runner-01"
         assert "cookie-01:/data/cookies" in svc["volumes"]
         assert "spool-01:/data/spool" in svc["volumes"]
