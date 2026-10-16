@@ -44,32 +44,7 @@ if __package__ in (None, ""):
     sys.path.insert(0, str(_REPO_ROOT / "src"))
 
 
-def _restore_stdlib_platform() -> None:
-    """仓库根包名 platform 与标准库 platform 冲突的自愈（同 tools/regression、tools/loadtest）。
-
-    仓库根进入 sys.path 后顶层目录 platform 先于标准库被解析，httpx→rich→attrs
-    链路上的 ``platform.python_implementation()`` 会 AttributeError；在导入
-    services（间接导入 httpx）之前恢复标准库语义。幂等：已是标准库语义直接返回。
-    """
-    cached = sys.modules.get("platform")
-    if cached is not None and hasattr(cached, "python_implementation"):
-        return
-    std_path = os.path.join(sysconfig.get_paths()["stdlib"], "platform.py")
-    spec = importlib.util.spec_from_file_location("platform", std_path)
-    if spec is None or spec.loader is None:
-        raise RuntimeError("无法定位标准库 platform 模块（运行环境损坏）")
-    module = ModuleType("platform")
-    spec.loader.exec_module(module)
-    if cached is None:
-        sys.modules["platform"] = module
-        return
-    for name, value in vars(module).items():
-        if not name.startswith("__"):
-            setattr(cached, name, value)
-
-
 # services 导入链会触达 httpx（embedding 客户端模块），必须先恢复标准库 platform 语义
-_restore_stdlib_platform()
 
 from services.kb.core.evaluation.dataset import EvalDataset  # noqa: E402 (自举后导入)
 from services.kb.core.evaluation.gate import GATE_FLOOR_PCT_DEFAULT, evaluate_gate  # noqa: E402

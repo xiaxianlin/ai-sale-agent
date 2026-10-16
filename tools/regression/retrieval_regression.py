@@ -23,6 +23,11 @@ SR-KB-016 §2）；单条失败按未命中计入分母（保守口径）。工�
 """
 from __future__ import annotations
 
+import sys as _sys
+from pathlib import Path as _Path
+_sys.path.insert(0, str(_Path(__file__).resolve().parents[1]))
+from _bootstrap import bootstrap_repo
+
 import argparse
 import importlib.util
 import json
@@ -66,31 +71,6 @@ API_KEY_ENV = "KB_EVAL_API_KEY"  # 凭证环境变量（不入 Git）
 TAG = "[评测门禁]"
 
 
-def _restore_stdlib_platform() -> None:
-    """仓库根包名 platform 与标准库 platform 冲突的自愈（同 tools/loadtest）。
-
-    以 ``python3 -m tools.regression.retrieval_regression`` 从仓库根运行时，
-    顶层包目录 platform 先于标准库被解析，httpx→rich→attrs 链路上的
-    ``platform.python_implementation()`` 会 AttributeError；在导入 httpx 前
-    恢复标准库语义。直接以文件路径运行时本地包不在 sys.path，幂等跳过。
-    """
-    cached = sys.modules.get("platform")
-    if cached is not None and hasattr(cached, "python_implementation"):
-        return
-    std_path = os.path.join(sysconfig.get_paths()["stdlib"], "platform.py")
-    spec = importlib.util.spec_from_file_location("platform", std_path)
-    if spec is None or spec.loader is None:  # 标准库定位失败属环境损坏，应显式失败
-        raise RuntimeError("无法定位标准库 platform 模块（运行环境损坏）")
-    module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(module)
-    if cached is None:
-        sys.modules["platform"] = module
-        return
-    for name, value in vars(module).items():
-        if not name.startswith("__"):
-            setattr(cached, name, value)
-
-
 def http_search_fn(base_url: str, api_key: str, timeout_s: float = DEFAULT_TIMEOUT_S) -> Any:
     """生产 search_fn：同步 httpx 调用统一检索 API，返回其 data 段（黑盒）。
 
@@ -106,7 +86,7 @@ def http_search_fn(base_url: str, api_key: str, timeout_s: float = DEFAULT_TIMEO
         filters: Any = None,
         top_k: int = 5,
     ) -> dict[str, Any]:
-        _restore_stdlib_platform()
+        bootstrap_repo(__file__)
         import httpx  # noqa: PLC0415  (须在标准库 platform 语义恢复之后导入)
 
         payload: dict[str, Any] = {"query": query, "top_k": top_k, "rerank": True}

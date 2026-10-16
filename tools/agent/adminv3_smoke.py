@@ -22,6 +22,12 @@
 """
 from __future__ import annotations
 
+# 工具脚本自举：先挂 tools/ 再导入单点（CR 遗留批3：五份 platform 自愈拷贝收敛）
+import sys as _sys
+from pathlib import Path as _Path
+_sys.path.insert(0, str(_Path(__file__).resolve().parents[1 if _Path(__file__).resolve().parent.name == "agent" or _Path(__file__).resolve().parent.name in ("loadtest","precheck","regression") else 1]))
+from _bootstrap import bootstrap_repo
+
 import argparse
 import importlib.util
 import os
@@ -38,27 +44,9 @@ if __package__ in (None, ""):
     sys.path.insert(0, str(_REPO_ROOT / "src"))
 
 
-def _restore_stdlib_platform() -> None:
-    """仓库根包名 platform 与标准库 platform 冲突的自愈（同 tools/precheck/phase0_kpi.py）。"""
-    cached = sys.modules.get("platform")
-    if cached is not None and hasattr(cached, "python_implementation"):
-        return
-    std_path = os.path.join(sysconfig.get_paths()["stdlib"], "platform.py")
-    spec = importlib.util.spec_from_file_location("platform", std_path)
-    if spec is None or spec.loader is None:
-        raise RuntimeError("无法定位标准库 platform 模块（运行环境损坏）")
-    module = ModuleType("platform")
-    spec.loader.exec_module(module)
-    if cached is None:
-        sys.modules["platform"] = module
-        return
-    for name, value in vars(module).items():
-        if not name.startswith("__"):
-            setattr(module, name, value)
-    sys.modules["platform"] = module
 
 
-_restore_stdlib_platform()
+bootstrap_repo(__file__)
 
 from fastapi.testclient import TestClient  # noqa: E402
 

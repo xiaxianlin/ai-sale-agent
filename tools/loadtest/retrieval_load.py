@@ -31,33 +31,6 @@ from pathlib import Path
 from typing import Any, Callable, Sequence
 
 
-def _restore_stdlib_platform() -> None:
-    """仓库根包名 platform 与标准库 platform 冲突的自愈（同 platform/tests/conftest.py）。
-
-    以 ``python3 -m tools.loadtest.retrieval_load`` 从仓库根运行时，顶层包目录
-    platform 先于标准库被解析，httpx→rich→attrs 链路上的
-    ``platform.python_implementation()`` 会抛 AttributeError；在导入 httpx 前把标准库
-    语义恢复到 sys.modules。直接以文件路径运行时 sys.path 不含仓库根，本函数幂等跳过。
-    """
-    cached = sys.modules.get("platform")
-    if cached is not None and hasattr(cached, "python_implementation"):
-        return
-    std_path = os.path.join(sysconfig.get_paths()["stdlib"], "platform.py")
-    spec = importlib.util.spec_from_file_location("platform", std_path)
-    if spec is None or spec.loader is None:  # 标准库定位失败属环境损坏，应显式失败
-        raise RuntimeError("无法定位标准库 platform 模块（运行环境损坏）")
-    module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(module)
-    if cached is None:
-        sys.modules["platform"] = module
-        return
-    for name, value in vars(module).items():
-        if not name.startswith("__"):
-            setattr(cached, name, value)
-
-
-_restore_stdlib_platform()
-
 import httpx  # noqa: E402  (须在标准库 platform 语义恢复之后导入)
 
 # ── 默认参数（口径来源：SRS §11.6 并发基线 / SR-NFR-PER-02 §6.6、§1 验收 KPI）──

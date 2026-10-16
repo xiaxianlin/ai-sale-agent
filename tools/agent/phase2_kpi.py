@@ -42,27 +42,6 @@ if __package__ in (None, ""):
     sys.path.insert(0, str(_REPO_ROOT / "src"))
 
 
-def _restore_stdlib_platform() -> None:
-    """仓库根包名 platform 与标准库 platform 冲突的自愈（同 tools/precheck/phase0_kpi.py）。"""
-    cached = sys.modules.get("platform")
-    if cached is not None and hasattr(cached, "python_implementation"):
-        return
-    std_path = os.path.join(sysconfig.get_paths()["stdlib"], "platform.py")
-    spec = importlib.util.spec_from_file_location("platform", std_path)
-    if spec is None or spec.loader is None:
-        raise RuntimeError("无法定位标准库 platform 模块（运行环境损坏）")
-    module = ModuleType("platform")
-    spec.loader.exec_module(module)
-    if cached is None:
-        sys.modules["platform"] = module
-        return
-    for name, value in vars(module).items():
-        if not name.startswith("__"):
-            setattr(cached, name, value)
-
-
-_restore_stdlib_platform()
-
 from services.agent.core.brain.clock import ResponseClock, finish, summarize  # noqa: E402
 from services.agent.core.brain.fallback import FallbackGate  # noqa: E402
 from services.agent.core.brain.confidence import ConfidenceComposer  # noqa: E402
