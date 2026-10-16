@@ -282,7 +282,7 @@ def test_optimistic_lock_conflict() -> None:
     )
     assert resp.status_code == 409
     body = resp.json()
-    assert body["code"] == 40901 and "他人" in body["message"] and body["data"] is None
+    assert body["code"] == 40901 and "他人" in body["message"] and body["data"]["hints"]["title"]
 
     detail = client.get(f"{ITEMS}/{data['uid']}").json()["data"]
     assert detail["current_version"] == 2 and detail["title"] != "被覆盖的标题"
@@ -299,7 +299,7 @@ def test_update_missing_item_40401() -> None:
             resp = client.get(path)
         assert resp.status_code == 404
         payload = resp.json()
-        assert payload["code"] == 40401 and payload["data"] is None
+        assert payload["code"] == 40401 and payload["data"]["hints"]["title"]
         assert payload["trace_id"]
 
 
@@ -490,7 +490,7 @@ def test_envelope_shape_on_success_and_error() -> None:
 
     missing = client.get(f"{ITEMS}/k-none")
     assert set(missing.json()) == {"code", "message", "data", "trace_id"}
-    assert missing.json()["data"] is None
+    assert missing.json()["data"]["hints"]["title"]  # CR i18n：404 附用户建议
 
 
 def test_trace_id_passthrough_and_generation() -> None:

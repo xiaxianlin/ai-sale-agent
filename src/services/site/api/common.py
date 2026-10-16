@@ -2,6 +2,8 @@
 """site-service API 层共享辅助（统一信封 + trace_id 解析，04-接口设计 §1.3/§1.4）。"""
 from __future__ import annotations
 
+from foundation.core.envelope import envelope as foundation_envelope
+
 import uuid
 from typing import Any
 
@@ -15,7 +17,7 @@ def trace_id_of(request: Request) -> str:
 
 def envelope(request: Request, code: int, message: str, data: Any) -> dict[str, Any]:
     """统一响应信封（04 §1.3）：{code, message, data, trace_id} 四键齐全，data 允许 None。"""
-    return {"code": code, "message": message, "data": data, "trace_id": trace_id_of(request)}
+    return foundation_envelope(code, message, data, trace_id_of(request))  # CR A2：值构造委托 foundation 单点
 
 
 def ok(request: Request, data: Any) -> dict[str, Any]:

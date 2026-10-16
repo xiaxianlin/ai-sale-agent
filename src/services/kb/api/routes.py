@@ -27,6 +27,8 @@
 """
 from __future__ import annotations
 
+from foundation.core.envelope import envelope
+
 import asyncio
 import threading
 from collections.abc import Mapping, Sequence
@@ -38,6 +40,7 @@ from fastapi import APIRouter, Depends, FastAPI, HTTPException, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from foundation.apikey.dependency import api_key_exception_handler, resolve_trace_id
+from foundation.core.envelope import error_envelope
 from foundation.apikey.keys import ConsumerContext
 
 from services.kb.core.retrieval import Hit, RetrievalDownstreamError, RetrievalResult
@@ -71,8 +74,8 @@ class ApiError(Exception):
 
 
 def _envelope(trace_id: str, code: int, message: str, data: Any) -> dict[str, Any]:
-    """统一响应信封（04-接口设计 §1.3）：四键齐全，data 允许 None。"""
-    return {"code": code, "message": message, "data": data, "trace_id": trace_id}
+    """统一响应信封（CR A2 全面委托化：foundation.core.envelope 单点实现）。"""
+    return envelope(code, message, data, trace_id)
 
 
 def _request_trace_id(request: Request) -> str:
@@ -110,15 +113,16 @@ def install_error_handlers(app: FastAPI) -> FastAPI:
     async def _on_api_error(request: Request, exc: ApiError) -> JSONResponse:
         return JSONResponse(
             status_code=exc.http_status,
-            content=_envelope(_request_trace_id(request), exc.code, exc.message, exc.data),
+            # CR i18n 接线：错误信封自动附用户行动建议（技术 message 保持）
+            content=error_envelope(exc.code, exc.message, request, exc.data),
         )
 
     @app.exception_handler(RequestValidationError)
     async def _on_validation_error(request: Request, exc: RequestValidationError) -> JSONResponse:
         return JSONResponse(
             status_code=400,
-            content=_envelope(
-                _request_trace_id(request), CODE_BAD_REQUEST, "参数校验失败",
+            content=error_envelope(
+                CODE_BAD_REQUEST, "参数校验失败", request,
                 {"errors": _json_safe_errors(exc)},
             ),
         )

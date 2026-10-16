@@ -13,6 +13,8 @@ rbac_deny 留痕（NFR-SEC-02/03）。
 """
 from __future__ import annotations
 
+from foundation.core.envelope import envelope
+
 import uuid
 from collections.abc import Callable
 from datetime import date
@@ -61,8 +63,8 @@ class NotFoundError(Exception):
 
 
 def _envelope(trace_id: str, code: int, message: str, data: Any) -> dict[str, Any]:
-    """统一响应信封（04 §1.3）：四键齐全。"""
-    return {"code": code, "message": message, "data": data, "trace_id": trace_id}
+    """统一响应信封（CR A2 全面委托化：foundation 单点实现）。"""
+    return envelope(code, message, data, trace_id)
 
 
 def _trace_id_of(request: Request, x_trace_id: str) -> str:

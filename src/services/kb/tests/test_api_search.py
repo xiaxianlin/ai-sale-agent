@@ -437,7 +437,9 @@ class TestDownstream50002:
         assert resp.status_code == 503
         body = resp.json()
         assert set(body) == ENVELOPE_KEYS
-        assert body["code"] == 50002 and body["data"] is None
+        assert body["code"] == 50002
+        # CR i18n 接线：错误信封附用户行动建议（技术 message 不变；原 data=None → hints 增强）
+        assert body["data"]["hints"]["title"]
         assert "降级" in body["message"]
         assert store.calls >= 2  # dense/sparse 两路均已发起后全部失败
 

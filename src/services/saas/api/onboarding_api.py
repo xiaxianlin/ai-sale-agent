@@ -12,6 +12,8 @@
 """
 from __future__ import annotations
 
+from foundation.core.envelope import envelope
+
 import uuid
 from typing import Any
 
@@ -45,8 +47,8 @@ class SaasApiError(Exception):
 
 
 def _envelope(trace_id: str, code: int, message: str, data: Any) -> dict[str, Any]:
-    """统一响应信封（04 §1.3）：四键齐全，data 允许 None。"""
-    return {"code": code, "message": message, "data": data, "trace_id": trace_id}
+    """统一响应信封（CR A2 全面委托化：foundation 单点实现）。"""
+    return envelope(code, message, data, trace_id)
 
 
 def request_trace_id(request: Request) -> str:

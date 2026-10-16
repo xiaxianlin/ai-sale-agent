@@ -33,3 +33,25 @@ def envelope(code: int, message: str, data: Any = None, trace_id: str = "") -> d
         "data": data,
         "trace_id": trace_id or f"trc-{uuid.uuid4().hex[:16]}",
     }
+
+
+def error_envelope(code: int, message: str, request: Request | None = None,
+                   data: Any = None) -> dict[str, Any]:
+    """错误信封（CR 遗留重构·i18n 接线）：在统一信封上自动附带用户可行动文案。
+
+    - message 保持技术口径（调用方/日志可读）；
+    - data.hints 来自 foundation.i18n 文案中心（title=用户人话 + action=下一步建议，
+      SR-KB-023 §6.3 口径），i18n 无词条的错误码不附 hints（零破坏）。
+    """
+    payload = envelope(code, message, data, resolve_trace_id(request))
+    try:
+        from foundation.i18n.messages import message as i18n_lookup
+
+        hints = i18n_lookup(code)
+        if hints is not None:
+            base = dict(payload["data"]) if isinstance(payload["data"], dict) else {}
+            base["hints"] = {"title": hints.title, "action": hints.action}
+            payload["data"] = base
+    except Exception:  # noqa: BLE001 —— 文案中心不可用不阻断错误响应本身
+        pass
+    return payload

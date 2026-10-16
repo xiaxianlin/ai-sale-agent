@@ -16,6 +16,8 @@
 
 from __future__ import annotations
 
+from foundation.core.envelope import resolve_trace_id
+
 import uuid
 from datetime import datetime, timezone
 from typing import Any, Callable
@@ -108,7 +110,7 @@ class SearchBody(BaseModel):
 
 def _envelope_response(data: Any, request: Request, status_code: int = 200) -> JSONResponse:
     """成功信封（04 §1.3 四键；trace_id 优先透传 X-Trace-Id）。"""
-    trace_id = request.headers.get("X-Trace-Id", "").strip() or uuid.uuid4().hex
+    trace_id = request.headers.get("X-Trace-Id", "").strip() or resolve_trace_id()  # CR A2：trc- 前缀统一格式
     return JSONResponse(
         status_code=status_code,
         content={"code": 0, "message": "ok", "data": data, "trace_id": trace_id},
@@ -119,7 +121,7 @@ def _install_error_handlers(app: FastAPI) -> None:
     """域异常 → 统一信封（RegistryError 派生类经 MRO 命中基类处理器）。"""
 
     def _wrap(request: Request, code: int, http_status: int, message: str) -> JSONResponse:
-        trace_id = request.headers.get("X-Trace-Id", "").strip() or uuid.uuid4().hex
+        trace_id = request.headers.get("X-Trace-Id", "").strip() or resolve_trace_id()  # CR A2：trc- 前缀统一格式
         return JSONResponse(
             status_code=http_status,
             content={"code": code, "message": message, "data": None, "trace_id": trace_id},
@@ -127,7 +129,7 @@ def _install_error_handlers(app: FastAPI) -> None:
 
     @app.exception_handler(SaasApiError)
     async def _on_api_error(request: Request, exc: SaasApiError) -> JSONResponse:
-        trace_id = request.headers.get("X-Trace-Id", "").strip() or uuid.uuid4().hex
+        trace_id = request.headers.get("X-Trace-Id", "").strip() or resolve_trace_id()  # CR A2：trc- 前缀统一格式
         return JSONResponse(
             status_code=exc.http_status,
             content={"code": exc.code, "message": exc.message, "data": exc.data,
@@ -160,7 +162,7 @@ def _install_error_handlers(app: FastAPI) -> None:
 
     @app.exception_handler(QuotaExceededError)
     async def _on_quota_error(request: Request, exc: QuotaExceededError) -> JSONResponse:
-        trace_id = request.headers.get("X-Trace-Id", "").strip() or uuid.uuid4().hex
+        trace_id = request.headers.get("X-Trace-Id", "").strip() or resolve_trace_id()  # CR A2：trc- 前缀统一格式
         return JSONResponse(
             status_code=exc.http_status,
             content={"code": exc.code, "message": exc.message,

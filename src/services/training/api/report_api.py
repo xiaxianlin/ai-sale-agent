@@ -13,6 +13,8 @@ core 不耦合具体库）。错误码：40001 入参 / 40404 不存在 / 40902 
 """
 from __future__ import annotations
 
+from foundation.core.envelope import envelope
+
 import uuid
 from pathlib import Path
 from typing import Any
@@ -55,8 +57,8 @@ MEDIA_TYPES: dict[str, str] = {
 
 
 def _envelope(trace_id: str, code: int, message: str, data: Any) -> dict[str, Any]:
-    """统一响应信封（04 §1.3）：四键齐全。"""
-    return {"code": code, "message": message, "data": data, "trace_id": trace_id}
+    """统一响应信封（CR A2 全面委托化：foundation 单点实现）。"""
+    return envelope(code, message, data, trace_id)
 
 
 def _trace_id_of(request: Request) -> str:

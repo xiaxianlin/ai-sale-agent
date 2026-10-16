@@ -14,6 +14,8 @@ api_key 缺省读环境变量 KB_MAIL_WEBHOOK_KEY，均缺启动失败（CR P0-5
 """
 from __future__ import annotations
 
+from foundation.core.envelope import envelope
+
 import uuid
 from collections.abc import Callable
 from datetime import date, datetime
@@ -54,8 +56,8 @@ class BizError(Exception):
 
 
 def _envelope(trace_id: str, code: int, message: str, data: Any) -> dict:
-    """统一响应信封（04 §1.3）：四键齐全。"""
-    return {"code": code, "message": message, "data": data, "trace_id": trace_id}
+    """统一响应信封（CR A2 全面委托化：foundation 单点实现）。"""
+    return envelope(code, message, data, trace_id)
 
 
 def _trace_id_of(request: Request) -> str:

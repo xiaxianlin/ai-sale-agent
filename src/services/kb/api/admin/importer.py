@@ -26,6 +26,8 @@ ImportService 经 ``app.state.import_service`` 注入（装配由 admin 应用�
 """
 from __future__ import annotations
 
+from foundation.core.envelope import envelope
+
 import asyncio
 import io
 from typing import Any
@@ -92,8 +94,8 @@ def _trace_id(request: Request) -> str:
 
 
 def _envelope(trace_id: str, code: int, message: str, data: Any) -> dict[str, Any]:
-    """统一响应信封：四键齐全（04-接口设计 §1.3）。"""
-    return {"code": code, "message": message, "data": data, "trace_id": trace_id}
+    """统一响应信封（CR A2 全面委托化：foundation 单点实现）。"""
+    return envelope(code, message, data, trace_id)
 
 
 def _error(trace_id: str, http_status: int, code: int, message: str) -> JSONResponse:
