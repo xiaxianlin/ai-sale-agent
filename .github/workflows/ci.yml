@@ -4,6 +4,18 @@ on: [push, pull_request]
 jobs:
   gates:
     runs-on: ubuntu-latest
+    services:
+      postgres:  # CR 遗留批3b：PG 存储对拍测试在 CI 强制运行（本地无容器时自动 skip）
+        image: postgres:16
+        env:
+          POSTGRES_USER: kb
+          POSTGRES_PASSWORD: kb_local_dev
+          POSTGRES_DB: kb
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U kb"
+          --health-interval 5s
+          --health-retries 10
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -14,7 +26,7 @@ jobs:
       # CR T3 修复：分支覆盖率报告（--cov-branch）——依赖走 dev extras（pyproject 由并行任务补 pytest-cov）。
       # 阈值 75：门禁线起步值（当前 services/foundation 主链路盲区小）；后续随迭代收口按 80/85 逐级上调。
       - name: 分支覆盖率报告
-        run: python -m pytest --cov=src/services --cov=src/foundation --cov-branch --cov-report=term --cov-fail-under=75
+        run: python -m pytest --cov=src/services --cov=src/foundation --cov-branch --cov-report=term --cov-fail-under=90
       - name: 静态检查
         run: ruff check src/foundation src/services tools
       - name: 注释头门禁（COM-IP-04）
